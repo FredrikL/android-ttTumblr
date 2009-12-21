@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+<TextView android:text="Text:" 
+	android:id="@+id/labelText" 
+	android:layout_width="fill_parent" 
+	android:layout_height="wrap_content"/>
+<EditText android:text="" 
+		android:id="@+id/inputText" 
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:layout_below="@id/labelText" />
+<TextView android:text="Type"
+	android:id="@+id/labelType"
+	android:layout_width="fill_parent" 
+	android:layout_height="wrap_content"
+	android:layout_below="@id/inputText"/>
+<Spinner android:id="@+id/spinnerType" 
+	android:layout_width="wrap_content" 
+	android:layout_height="wrap_content" 
+	android:layout_below="@+id/labelType"/>
+</RelativeLayout>

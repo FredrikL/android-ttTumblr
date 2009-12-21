@@ -1,0 +1,8 @@
+<resources>
+
+    <string-array name="texttypes">
+        <item>regular</item>
+        <item>quote</item>
+    </string-array>
+    
+</resources>
