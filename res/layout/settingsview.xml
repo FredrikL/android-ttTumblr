@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+<TextView android:text="Username:" 
+	android:id="@+id/labelUsername" 
+	android:layout_width="fill_parent" 
+	android:layout_height="wrap_content"/>
+<EditText android:text="" 
+		android:id="@+id/inputUsername" 
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:layout_below="@id/labelUsername" />
+<TextView android:text="Password"
+	android:id="@+id/labelPassword"
+	android:layout_width="fill_parent" 
+	android:layout_height="wrap_content"
+	android:layout_below="@id/inputUsername"/>
+<EditText android:text="" 
+		android:id="@+id/inputPassword"
+		android:password="true" 
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:layout_below="@id/labelPassword" />
+	<Button
+        android:id="@+id/settingsBtnOk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/inputPassword"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="10dip"
+        android:text="OK" />
+
+    <Button
+    	android:id="@+id/settingsBtnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/settingsBtnOk"
+        android:layout_alignTop="@id/settingsBtnOk"
+        android:text="Cancel" />
+	
+</RelativeLayout>

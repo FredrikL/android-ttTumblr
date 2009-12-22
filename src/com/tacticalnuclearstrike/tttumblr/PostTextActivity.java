@@ -1,7 +1,5 @@
 package com.tacticalnuclearstrike.tttumblr;
 
-import com.tacticalnuclearstrike.tttumblr.TumblrApi.TumblrPostTypes;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -27,7 +25,7 @@ public class PostTextActivity extends Activity {
 
 	private void setupSpinner() {
 		Spinner s = (Spinner) findViewById(R.id.spinnerType);
-		ArrayAdapter adapter = ArrayAdapter.createFromResource(this,
+		ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(this,
 				R.array.texttypes, android.R.layout.simple_spinner_item);
 		adapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -35,8 +33,8 @@ public class PostTextActivity extends Activity {
 	}
 	
 	private void returnToMainActivity() {
-		// TODO Auto-generated method stub
-		
+		setResult(RESULT_OK);
+		finish();
 	}
 
 	private void setupCancelButton() {
@@ -54,10 +52,16 @@ public class PostTextActivity extends Activity {
 		btnOk.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				EditText text = (EditText) findViewById(R.id.inputText);
-				TumblrApi.postText(text.getText().toString(), TumblrPostTypes.Text);
-				returnToMainActivity();
+				okButtonClick();
 			}
 		});
+	}
+
+	private void okButtonClick() {
+		//TODO: quote support
+		EditText text = (EditText) findViewById(R.id.inputText);
+		TumblrApi api = new TumblrApi(this);
+		api.postRegular("", text.getText().toString());
+		returnToMainActivity();
 	}
 }
