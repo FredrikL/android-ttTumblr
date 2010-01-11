@@ -1,5 +1,10 @@
 package com.tacticalnuclearstrike.tttumblr;
 
+import com.tacticalnuclearstrike.tttumblr.activites.GalleryActivity;
+import com.tacticalnuclearstrike.tttumblr.activites.PostTextActivity;
+import com.tacticalnuclearstrike.tttumblr.activites.SettingsActivity;
+import com.tacticalnuclearstrike.tttumblr.activites.UploadPhotoActivity;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +26,24 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				Intent startPostText = new Intent(MainActivity.this, PostTextActivity.class);
 				startActivity(startPostText);
+			}
+		});
+        
+        Button btnPostFromGallery = (Button)findViewById(R.id.postFromGalleryBtn);
+        btnPostFromGallery.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, GalleryActivity.class);
+				startActivity(intent);
+			}
+		});
+        
+        Button btnPostFromCamera = (Button)findViewById(R.id.postFromCameraBtn);
+        btnPostFromCamera.setOnClickListener(new View.OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, UploadPhotoActivity.class);
+				startActivity(intent);
 			}
 		});
     }
