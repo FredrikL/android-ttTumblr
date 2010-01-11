@@ -13,6 +13,8 @@ public class SettingsActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// TODO load values from settings too
+		
 		setContentView(R.layout.settingsview);
 
 		setupControls();
