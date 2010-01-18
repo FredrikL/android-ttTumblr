@@ -17,6 +17,7 @@ public final class R {
         public static final int icon=0x7f020000;
     }
     public static final class id {
+        public static final int btnPostImage=0x7f060013;
         public static final int btnSelectImage=0x7f060010;
         public static final int btnTakePicture=0x7f060011;
         public static final int gvGallery=0x7f060000;
@@ -35,6 +36,7 @@ public final class R {
         public static final int settingsBtnCancel=0x7f06000e;
         public static final int settingsBtnOk=0x7f06000d;
         public static final int spinnerType=0x7f060006;
+        public static final int tbImageCaption=0x7f060012;
     }
     public static final class layout {
         public static final int galleryview=0x7f030000;

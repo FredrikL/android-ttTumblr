@@ -68,7 +68,7 @@ public class TumblrApi {
 		return true;
 	}
 
-	public void PostImage(File image) {
+	public void PostImage(File image, String caption) {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
 
@@ -77,6 +77,7 @@ public class TumblrApi {
 
 			entity.addPart("email", new StringBody(getUserName()));
 			entity.addPart("password", new StringBody(getPassword()));
+			entity.addPart("caption", new StringBody(caption));
 			entity.addPart("type", new StringBody("photo"));
 			entity.addPart("generator", new StringBody("ttTumblr"));
 			entity.addPart("data", new FileBody(image));

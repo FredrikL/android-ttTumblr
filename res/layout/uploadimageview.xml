@@ -4,7 +4,11 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-	<ImageView android:id="@+id/selectedImage" />
+	<ImageView android:id="@+id/selectedImage"
+	android:maxWidth="100px" android:maxHeight="100px"
+	android:adjustViewBounds="true"
+	android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 	<Button android:id="@+id/btnSelectImage"
 		android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -13,4 +17,14 @@
 	android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 		android:text="Take picture" />	
+	<TextView android:text="Caption (optional)"
+	android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+	<EditText android:id="@+id/tbImageCaption"
+	android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button android:id="@+id/btnPostImage"
+    android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+    	android:text="Upload photo" />
 </LinearLayout>
