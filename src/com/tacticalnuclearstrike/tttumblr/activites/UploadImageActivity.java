@@ -12,7 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 
-public class UploadPhotoActivity extends Activity {
+public class UploadImageActivity extends Activity {
 	Uri outputFileUri;
 	int TAKE_PICTURE=0 ;
 	

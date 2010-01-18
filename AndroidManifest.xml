@@ -12,8 +12,7 @@
 
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.PostTextActivity"></activity>
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.SettingsActivity"></activity>
-		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.GalleryActivity"></activity>
-		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.UploadPhotoActivity"></activity>
+		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.UploadImageActivity"></activity>
 	</application>
 	<uses-sdk android:minSdkVersion="3" />
 	<uses-permission android:name="android.permission.INTERNET"></uses-permission>

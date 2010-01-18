@@ -4,15 +4,13 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
- <Button
-    	android:id="@+id/postTextBtn"
-        android:layout_width="wrap_content"
+	<ImageView android:id="@+id/selectedImage" />
+	<Button android:id="@+id/btnSelectImage"
+		android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Post Text" />
-        
-<Button
-    	android:id="@+id/postImageBtn"
-        android:layout_width="wrap_content"
+		android:text="Select image from Gallery" />
+	<Button android:id="@+id/btnTakePicture"
+	android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Post Image" />
+		android:text="Take picture" />	
 </LinearLayout>
