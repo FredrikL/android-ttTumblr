@@ -1,6 +1,5 @@
 package com.tacticalnuclearstrike.tttumblr;
 
-import com.tacticalnuclearstrike.tttumblr.activites.GalleryActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.PostTextActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.SettingsActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.UploadImageActivity;
