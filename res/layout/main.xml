@@ -4,13 +4,13 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
- <Button
+	 <Button
     	android:id="@+id/postTextBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Post Text" />
         
-<Button
+	<Button
     	android:id="@+id/postImageBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

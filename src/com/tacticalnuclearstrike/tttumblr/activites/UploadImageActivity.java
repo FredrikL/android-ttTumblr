@@ -23,6 +23,7 @@ public class UploadImageActivity extends Activity {
 	Uri outputFileUri;
 	int TAKE_PICTURE = 0;
 	int SELECT_IMAGE = 1;
+	final TumblrApi api = new TumblrApi(this);
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -69,24 +70,19 @@ public class UploadImageActivity extends Activity {
 
 		if (requestCode == TAKE_PICTURE) {
 			try {
-				// HACK: create thumbnail from the temp file
-				// since adding it to the media store
-				// seems to take a short while.
+				File f = new File(outputFileUri.getPath());
+
+				outputFileUri = Uri
+						.parse(android.provider.MediaStore.Images.Media
+								.insertImage(getContentResolver(), f
+										.getAbsolutePath(), null, null));
+
+				f.delete();
 				setSelectedImageThumbnail(outputFileUri);
 
-				// move image to mediastore so that i can be
-				// seen in the gallery
-				File f = new File(outputFileUri.getPath());
-				try {
-					outputFileUri = Uri
-							.parse(android.provider.MediaStore.Images.Media
-									.insertImage(getContentResolver(), f
-											.getAbsolutePath(), null, null));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
 
-					f.delete();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -98,7 +94,8 @@ public class UploadImageActivity extends Activity {
 
 	private void setSelectedImageThumbnail(Uri image) {
 		try {
-			Drawable dr = Drawable.createFromPath(image.getPath());
+			String path = getRealPathFromURI(image);
+			Drawable dr = Drawable.createFromPath(path);
 			ImageView iv = (ImageView) findViewById(R.id.selectedImage);
 			iv.setImageDrawable(dr);
 			iv.setMaxHeight(100);
@@ -111,8 +108,6 @@ public class UploadImageActivity extends Activity {
 	}
 
 	private String getRealPathFromURI(Uri contentUri) {
-
-		// can post image
 		String[] proj = { MediaStore.Images.Media.DATA };
 		Cursor cursor = managedQuery(contentUri, proj, null, null, null);
 		int column_index = cursor
@@ -124,13 +119,17 @@ public class UploadImageActivity extends Activity {
 
 	private void uploadImage() {
 		EditText text = (EditText) findViewById(R.id.tbImageCaption);
-		String caption = text.getText().toString();
+		final String caption = text.getText().toString();
 
 		String path = getRealPathFromURI(outputFileUri);
-		File photoToUpload = new File(path);
+		final File photoToUpload = new File(path);
 
-		TumblrApi api = new TumblrApi(this);
-		api.PostImage(photoToUpload, caption);
+		new Thread(new Runnable() {
+			public void run() {
+				api.PostImage(photoToUpload, caption);
+				
+			}
+		}).start();
 
 		setResult(RESULT_OK);
 		finish();
@@ -142,5 +141,5 @@ public class UploadImageActivity extends Activity {
 		intent.setAction(Intent.ACTION_GET_CONTENT);
 		startActivityForResult(Intent.createChooser(intent, "Select Picture"),
 				SELECT_IMAGE);
-	}
+	} 
 }

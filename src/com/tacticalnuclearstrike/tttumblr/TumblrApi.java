@@ -17,7 +17,11 @@ import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 
 public class TumblrApi {
@@ -85,10 +89,34 @@ public class TumblrApi {
 			httppost.setEntity(entity);
 
 			HttpResponse response = httpclient.execute(httppost);
+			
+			if(response.getStatusLine().getStatusCode() == 201)
+				ShowNotification("ttTumblr", "Image Posted", "");
+			else
+				ShowNotification("ttTumblr", "Image upload failed", "");
 		} catch (ClientProtocolException e) {
-			String s = e.toString();
+			ShowNotification("ttTumblr", "Image upload failed", e.toString());
 		} catch (IOException e) {
-			String s = e.toString();
+			ShowNotification("ttTumblr", "Image upload failed", e.toString());
 		}
+	}
+	
+    public void ShowNotification(String tickerText, String contentTitle, String contentText)
+	{
+		String ns = Context.NOTIFICATION_SERVICE;
+		NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(ns);
+		
+		int icon = R.drawable.tumblr24x24;
+		long when = System.currentTimeMillis();
+
+		Notification notification = new Notification(icon, tickerText, when);
+		notification.flags = Notification.FLAG_AUTO_CANCEL;
+		
+		Intent notificationIntent = new Intent(context, MainActivity.class);
+		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+		notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
+		
+
+		mNotificationManager.notify(1, notification);
 	}
 }

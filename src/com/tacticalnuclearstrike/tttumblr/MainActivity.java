@@ -1,16 +1,20 @@
 package com.tacticalnuclearstrike.tttumblr;
 
-import com.tacticalnuclearstrike.tttumblr.activites.PostTextActivity;
-import com.tacticalnuclearstrike.tttumblr.activites.SettingsActivity;
-import com.tacticalnuclearstrike.tttumblr.activites.UploadImageActivity;
-
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+
+import com.tacticalnuclearstrike.tttumblr.activites.PostTextActivity;
+import com.tacticalnuclearstrike.tttumblr.activites.SettingsActivity;
+import com.tacticalnuclearstrike.tttumblr.activites.UploadImageActivity;
 
 public class MainActivity extends Activity {
     /** Called when the activity is first created. */

@@ -14,7 +14,12 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int icon=0x7f020000;
+        public static final int photo=0x7f020000;
+        public static final int quote=0x7f020001;
+        public static final int text=0x7f020002;
+        public static final int tumblr24x24=0x7f020003;
+        public static final int tumblr48x48=0x7f020004;
+        public static final int video=0x7f020005;
     }
     public static final class id {
         public static final int btnPostImage=0x7f060012;
