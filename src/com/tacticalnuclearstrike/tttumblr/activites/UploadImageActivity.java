@@ -117,13 +117,19 @@ public class UploadImageActivity extends Activity {
 	}
 
 	private void uploadImage() {
+		if(outputFileUri == null)
+		{
+			Toast.makeText(this, "No image to upload!", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		
 		EditText text = (EditText) findViewById(R.id.tbImageCaption);
 		final String caption = text.getText().toString();
 
 		String path = getRealPathFromURI(outputFileUri);
 		final File photoToUpload = new File(path);
 		
-		Toast.makeText(this, "Upload started", Toast.LENGTH_LONG);
+		Toast.makeText(this, "Upload started", Toast.LENGTH_LONG).show();
 
 		new Thread(new Runnable() {
 			public void run() {

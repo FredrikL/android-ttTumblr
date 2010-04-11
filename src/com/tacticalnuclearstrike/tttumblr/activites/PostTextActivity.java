@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import com.tacticalnuclearstrike.tttumblr.R;
 import com.tacticalnuclearstrike.tttumblr.TumblrApi;
 
@@ -35,8 +37,25 @@ public class PostTextActivity extends Activity {
 	private void okButtonClick() {
 		EditText title = (EditText) findViewById(R.id.inputText);
 		EditText post = (EditText) findViewById(R.id.inputPost);
-		TumblrApi api = new TumblrApi(this);
-		api.postText(title.getText().toString(), post.getText().toString());
+		
+		final String titleText = title.getText().toString();
+		final String postText = post.getText().toString();
+		
+		if(postText.compareTo("") == 0){
+			Toast.makeText(this, "Cannont create post without content!", Toast.LENGTH_SHORT).show();
+			return;		
+		}
+		
+		final TumblrApi api = new TumblrApi(this);
+		
+		Toast.makeText(this, "Creating post", Toast.LENGTH_LONG).show();
+		
+		new Thread(new Runnable() {
+			public void run() {
+				api.postText(titleText, postText);
+			}
+		}).start();
+		
 		returnToMainActivity();
 	}
 }
