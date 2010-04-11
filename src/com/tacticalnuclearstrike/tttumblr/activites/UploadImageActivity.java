@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.tacticalnuclearstrike.tttumblr.R;
 import com.tacticalnuclearstrike.tttumblr.TumblrApi;
@@ -98,9 +99,7 @@ public class UploadImageActivity extends Activity {
 			Drawable dr = Drawable.createFromPath(path);
 			ImageView iv = (ImageView) findViewById(R.id.selectedImage);
 			iv.setImageDrawable(dr);
-			iv.setMaxHeight(100);
-			iv.setMaxWidth(100);
-			iv.setScaleType(ImageView.ScaleType.FIT_XY);
+			iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
 			iv.invalidate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -123,6 +122,8 @@ public class UploadImageActivity extends Activity {
 
 		String path = getRealPathFromURI(outputFileUri);
 		final File photoToUpload = new File(path);
+		
+		Toast.makeText(this, "Upload started", Toast.LENGTH_LONG);
 
 		new Thread(new Runnable() {
 			public void run() {
@@ -130,7 +131,7 @@ public class UploadImageActivity extends Activity {
 				
 			}
 		}).start();
-
+		
 		setResult(RESULT_OK);
 		finish();
 	}

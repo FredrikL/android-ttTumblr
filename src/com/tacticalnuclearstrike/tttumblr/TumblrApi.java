@@ -46,7 +46,7 @@ public class TumblrApi {
 		return settings;
 	}
 
-	public boolean postRegular(String Title, String Body) {
+	public boolean postText(String Title, String Body) {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
 

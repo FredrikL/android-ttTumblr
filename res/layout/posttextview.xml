@@ -3,39 +3,57 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent">
-<TextView android:text="Text:" 
-	android:id="@+id/labelText" 
+  
+    <TextView android:text="Create a Text entry" 
+  android:textSize="20dp"
+  android:id="@+id/labelTextInfo" android:layout_width="fill_parent" 
+  android:padding="10dp"
+  android:layout_height="wrap_content" />
+  
+<TextView android:text="Title (optional):" 
+	android:id="@+id/labelText"
+	android:padding="10dp" 
+	android:textSize="18dp" 
 	android:layout_width="fill_parent" 
-	android:layout_height="wrap_content"/>
+	android:layout_height="wrap_content"
+	android:layout_below="@id/labelTextInfo"/>
 <EditText android:text="" 
+android:layout_marginLeft="10dp"
+android:layout_marginRight="10dp"
 		android:id="@+id/inputText" 
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content"
 		android:layout_below="@id/labelText" />
-<TextView android:text="Type"
-	android:id="@+id/labelType"
+
+<TextView android:text="Post:" 
+	android:id="@+id/labelPost"
+	android:padding="10dp"
+	android:textSize="18dp"  
 	android:layout_width="fill_parent" 
 	android:layout_height="wrap_content"
 	android:layout_below="@id/inputText"/>
-<Spinner android:id="@+id/spinnerType" 
-	android:layout_width="wrap_content" 
-	android:layout_height="wrap_content" 
-	android:layout_below="@+id/labelType"/>
+<EditText android:text="" 
+android:layout_marginLeft="10dp"
+android:layout_marginRight="10dp"
+android:layout_marginBottom="30dp"
+android:lines="5"
+android:gravity="top"
+		android:id="@+id/inputPost" 
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:layout_below="@id/labelPost" />
+
+
 	<Button
         android:id="@+id/postTextBtnOk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/spinnerType"
+        android:layout_below="@id/inputPost"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="10dip"
-        android:text="OK" />
-
-    <Button
-    	android:id="@+id/postTextBtnCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/postTextBtnOk"
-        android:layout_alignTop="@id/postTextBtnOk"
-        android:text="Cancel" />
+        android:layout_marginRight="10dp"
+        android:padding="20dp"
+    	android:textSize="18dp"
+        android:text="Create" />
 	
 </RelativeLayout>
