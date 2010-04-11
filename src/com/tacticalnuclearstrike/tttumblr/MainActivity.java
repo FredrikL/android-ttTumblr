@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.tacticalnuclearstrike.tttumblr.activites.PostTextActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.SettingsActivity;
@@ -36,6 +37,8 @@ public class MainActivity extends Activity {
 				startActivity(intent);
 			}
 		});
+        
+        CheckIsUserNameAndPasswordCorrect();
     }
     
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -49,10 +52,27 @@ public class MainActivity extends Activity {
         switch (item.getItemId()) {
         case Menu.FIRST:
             Intent startSettings = new Intent(MainActivity.this, SettingsActivity.class);
-            startActivity(startSettings);
+            startActivityForResult(startSettings, 0);
             return true;
         }
        
         return super.onOptionsItemSelected(item);
+    }
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		CheckIsUserNameAndPasswordCorrect();
+	}
+    
+    public void CheckIsUserNameAndPasswordCorrect()
+    {
+    	TextView infoView = (TextView)findViewById(R.id.labelAuthStatus);
+    	
+    	TumblrApi api = new TumblrApi(this);
+    	if(!api.isUserNameAndPasswordStored())
+    	{
+    		infoView.setText("Please enter email and password in settings.");
+    	} else {
+    		infoView.setText("");
+    	}
     }
 }

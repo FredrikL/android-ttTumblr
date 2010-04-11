@@ -33,11 +33,11 @@ public class TumblrApi {
 		this.context = context;
 	}
 
-	private String getUserName() {
+	public String getUserName() {
 		return getSharePreferences().getString("USERNAME", "");
 	}
 
-	private String getPassword() {
+	public String getPassword() {
 		return getSharePreferences().getString("PASSWORD", "");
 	}
 
@@ -46,6 +46,39 @@ public class TumblrApi {
 		return settings;
 	}
 
+	public boolean isUserNameAndPasswordStored()
+	{
+		return (getUserName().compareTo("") != 0) && (getPassword().compareTo("") != 0); 
+	}
+	
+	public boolean validateUsernameAndPassword(String Username, String Password)
+	{
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/authenticate");
+
+		try {
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+			nameValuePairs.add(new BasicNameValuePair("email", Username));
+			nameValuePairs
+					.add(new BasicNameValuePair("password", Password));
+
+			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+			HttpResponse response = httpclient.execute(httppost);
+			
+			if(response.getStatusLine().getStatusCode() != 200)
+			{
+				return false;
+			}
+			return true;
+		} catch (ClientProtocolException e) {
+		} catch (IOException e) {
+		}
+
+		
+		return false;
+	}
+	
 	public boolean postText(String Title, String Body) {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
@@ -65,6 +98,11 @@ public class TumblrApi {
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 			HttpResponse response = httpclient.execute(httppost);
+			
+			if(response.getStatusLine().getStatusCode() != 201)
+			{
+				ShowNotification("ttTumblr", "Text creation failed", "");
+			}
 		} catch (ClientProtocolException e) {
 		} catch (IOException e) {
 		}

@@ -1,23 +1,34 @@
 package com.tacticalnuclearstrike.tttumblr.activites;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.tacticalnuclearstrike.tttumblr.R;
+import com.tacticalnuclearstrike.tttumblr.TumblrApi;
 
 public class SettingsActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// TODO load values from settings too
-		
 		setContentView(R.layout.settingsview);
 
 		setupControls();
+		
+		loadUserNameAndPassword();
+	}
+
+	private void loadUserNameAndPassword() {
+		TumblrApi api = new TumblrApi(this);
+		EditText username = (EditText)findViewById(R.id.inputUsername);
+		username.setText(api.getUserName());
+		EditText password = (EditText)findViewById(R.id.inputPassword);
+		password.setText(api.getPassword());
 	}
 
 	private void setupControls() {
@@ -30,10 +41,22 @@ public class SettingsActivity extends Activity {
 		btnOk.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				saveSettings();
-				returnToMainActivity();
+				okButtonClick();				
 			}
 		});
+	}
+	
+	private void okButtonClick()
+	{
+		if (IsAuthenticationCorrect())
+		{
+		saveSettings();
+		returnToMainActivity();
+		}
+		else
+		{
+			Toast.makeText(this, "email and/or password incorrect", Toast.LENGTH_LONG).show();
+		}	
 	}
 
 	private void returnToMainActivity() {
@@ -65,5 +88,20 @@ public class SettingsActivity extends Activity {
 		text = (EditText) findViewById(R.id.inputPassword);
 		setSetting("PASSWORD", text.getEditableText().toString());
 
+	}
+	
+	private Boolean IsAuthenticationCorrect()
+	{
+		EditText text = (EditText) findViewById(R.id.inputUsername);
+		String username =  text.getEditableText().toString();
+
+		text = (EditText) findViewById(R.id.inputPassword);
+		String password = text.getEditableText().toString();
+		
+		TumblrApi api = new TumblrApi(this);
+		ProgressDialog pd = ProgressDialog.show(this, "Authenticating", "", true, false); 
+		Boolean result = api.validateUsernameAndPassword(username, password);
+		pd.dismiss();
+		return result;
 	}
 }

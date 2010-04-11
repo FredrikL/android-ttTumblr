@@ -31,5 +31,11 @@
         android:layout_height="wrap_content"
         android:text="Post Text" />
         
+        <TextView android:id="@+id/labelAuthStatus"
+        android:gravity="center"
+        android:layout_width="fill_parent"
+        android:padding="10dp"
+        android:layout_height="wrap_content" />
+        
 	
 </LinearLayout>
