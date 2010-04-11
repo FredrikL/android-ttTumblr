@@ -99,7 +99,7 @@ public class SettingsActivity extends Activity {
 		String password = text.getEditableText().toString();
 		
 		TumblrApi api = new TumblrApi(this);
-		ProgressDialog pd = ProgressDialog.show(this, "Authenticating", "", true, false); 
+		ProgressDialog pd = ProgressDialog.show(this, "Authenticating", "Validating email/password with tumblr", true, false); 
 		Boolean result = api.validateUsernameAndPassword(username, password);
 		pd.dismiss();
 		return result;
