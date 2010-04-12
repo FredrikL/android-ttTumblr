@@ -94,10 +94,10 @@ public class UploadImageActivity extends Activity {
 	}
 
 	private void setSelectedImageThumbnail(Uri image) {
-		try {
+		try {			
 			String path = getRealPathFromURI(image);
-			Drawable dr = Drawable.createFromPath(path);
 			ImageView iv = (ImageView) findViewById(R.id.selectedImage);
+			Drawable dr = Drawable.createFromPath(path);
 			iv.setImageDrawable(dr);
 			iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
 			iv.invalidate();

@@ -1,6 +1,8 @@
 package com.tacticalnuclearstrike.tttumblr;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -43,17 +45,21 @@ public class MainActivity extends Activity {
     
     public boolean onCreateOptionsMenu(Menu menu) {
         boolean result = super.onCreateOptionsMenu(menu);
-        menu.add(0,Menu.FIRST,0, "Settings");
+        menu.add(0,1,0, "Settings");
+        menu.add(0,2,0, "About");
         return result;
     }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case Menu.FIRST:
+        case 1:
             Intent startSettings = new Intent(MainActivity.this, SettingsActivity.class);
             startActivityForResult(startSettings, 0);
             return true;
+        case 2:
+        	createAboutDialog();
+        	return true;
         }
        
         return super.onOptionsItemSelected(item);
@@ -61,6 +67,20 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		CheckIsUserNameAndPasswordCorrect();
+	}
+	
+	private void createAboutDialog()
+	{
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("ttTumblr r1\n\nIf you find any errors please contact me so that I can fix them.\n\nKnown issues: selecting an image from gallery multiple times causes a crash.")
+		       .setCancelable(true)
+		       .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		                
+		           }
+		       });
+		AlertDialog alert = builder.create();
+		alert.show();
 	}
     
     public void CheckIsUserNameAndPasswordCorrect()

@@ -1,2 +1,5 @@
 Icon from
 http://paulrobertlloyd.com/2009/06/social_media_icons
+
+Apache-mime4j from: http://james.apache.org/mime4j/
+httpclient, httpcore, httpmime from: http://hc.apache.org/downloads.cgi
