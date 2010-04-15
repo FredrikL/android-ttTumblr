@@ -157,4 +157,33 @@ public class TumblrApi {
 
 		mNotificationManager.notify(1, notification);
 	}
+
+	public void PostVideo(File videoToUpload, String caption) {
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
+
+		try {
+			MultipartEntity entity = new MultipartEntity();
+
+			entity.addPart("email", new StringBody(getUserName()));
+			entity.addPart("password", new StringBody(getPassword()));
+			entity.addPart("caption", new StringBody(caption));
+			entity.addPart("type", new StringBody("video"));
+			entity.addPart("generator", new StringBody("ttTumblr"));
+			entity.addPart("data", new FileBody(videoToUpload));
+
+			httppost.setEntity(entity);
+
+			HttpResponse response = httpclient.execute(httppost);
+			
+			if(response.getStatusLine().getStatusCode() == 201)
+				ShowNotification("ttTumblr", "Video Posted", "");
+			else
+				ShowNotification("ttTumblr", "Video upload failed", "");
+		} catch (ClientProtocolException e) {
+			ShowNotification("ttTumblr", "Video upload failed", e.toString());
+		} catch (IOException e) {
+			ShowNotification("ttTumblr", "Video upload failed", e.toString());
+		}
+	}
 }

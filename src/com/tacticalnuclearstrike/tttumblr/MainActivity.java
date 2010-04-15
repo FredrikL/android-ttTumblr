@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.tacticalnuclearstrike.tttumblr.activites.PostTextActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.SettingsActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.UploadImageActivity;
+import com.tacticalnuclearstrike.tttumblr.activites.UploadVideoActivity;
 
 public class MainActivity extends Activity {
     /** Called when the activity is first created. */
@@ -36,6 +37,14 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(MainActivity.this, UploadImageActivity.class);
+				startActivity(intent);
+			}
+		});
+        
+        findViewById(R.id.postVideoBtn).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, UploadVideoActivity.class);
 				startActivity(intent);
 			}
 		});

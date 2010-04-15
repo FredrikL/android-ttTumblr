@@ -21,6 +21,15 @@
         android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:text="Upload photo" />
+        
+        <Button
+    android:layout_marginTop="15dp"
+	android:padding="20dp"
+	android:textSize="18dp"
+    	android:id="@+id/postVideoBtn"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:text="Upload video" />
     
 	 <Button
 	 android:layout_marginTop="15dp"
