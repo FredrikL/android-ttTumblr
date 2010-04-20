@@ -12,11 +12,12 @@
 
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.PostTextActivity"></activity>
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.PostQuoteActivity"></activity>
+		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.PostLinkActivity"></activity>
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.SettingsActivity"></activity>
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.UploadImageActivity"
 			android:screenOrientation="portrait"></activity>
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.UploadVideoActivity"></activity>
 	</application>
-	<uses-sdk android:minSdkVersion="7" />
+	<uses-sdk android:minSdkVersion="3" />
 	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
-</manifest> 
+</manifest>

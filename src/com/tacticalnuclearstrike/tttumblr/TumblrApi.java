@@ -191,7 +191,7 @@ public class TumblrApi {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
 
-		try {
+		try { 
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 			nameValuePairs.add(new BasicNameValuePair("email", getUserName()));
 			nameValuePairs
@@ -210,6 +210,39 @@ public class TumblrApi {
 			if(response.getStatusLine().getStatusCode() != 201)
 			{
 				ShowNotification("ttTumblr", "Quote creation failed", "");
+			}
+		} catch (ClientProtocolException e) {
+		} catch (IOException e) {
+		}
+
+		return true;
+	}
+
+	public boolean postUrl(String url, String name, String description) {
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
+
+		try { 
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+			nameValuePairs.add(new BasicNameValuePair("email", getUserName()));
+			nameValuePairs
+					.add(new BasicNameValuePair("password", getPassword()));
+			nameValuePairs.add(new BasicNameValuePair("type", "link"));
+			if (url.compareTo("") != 0)
+				nameValuePairs.add(new BasicNameValuePair("url", url));
+			if (name.compareTo("") != 0)
+				nameValuePairs.add(new BasicNameValuePair("name", name));
+			if (description.compareTo("") != 0)
+				nameValuePairs.add(new BasicNameValuePair("description", description));
+			nameValuePairs.add(new BasicNameValuePair("generator", "ttTumblr"));
+
+			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+			HttpResponse response = httpclient.execute(httppost);
+			
+			if(response.getStatusLine().getStatusCode() != 201)
+			{
+				ShowNotification("ttTumblr", "Link creation failed", "");
 			}
 		} catch (ClientProtocolException e) {
 		} catch (IOException e) {

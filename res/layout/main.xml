@@ -15,6 +15,13 @@
   android:layout_width="fill_parent" 
   android:padding="10dp"
   android:layout_height="wrap_content" />
+  
+          <TextView android:id="@+id/labelAuthStatus"
+        android:gravity="center"
+        android:layout_width="fill_parent"
+        android:visibility="gone"
+        android:padding="10dp"
+        android:layout_height="wrap_content" />
     
     <Button
     android:layout_marginTop="15dp"
@@ -44,6 +51,24 @@
         android:text="Post Quote" />
         
         <Button
+	 android:layout_marginTop="15dp"
+	 android:padding="20dp"
+	android:textSize="18dp"
+    	android:id="@+id/postLinkBtn"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:text="Post Link" />
+        
+        <Button
+	 android:layout_marginTop="15dp"
+	 android:padding="20dp"
+	android:textSize="18dp"
+    	android:id="@+id/postConversationBtn"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:text="Post Conversation" />
+        
+        <Button
     android:layout_marginTop="15dp"
 	android:padding="20dp"
 	android:textSize="18dp"
@@ -52,15 +77,6 @@
         android:layout_height="wrap_content"
         android:text="Upload video"
         android:enabled="false" />
-    
-	
-        
-        <TextView android:id="@+id/labelAuthStatus"
-        android:gravity="center"
-        android:layout_width="fill_parent"
-        android:padding="10dp"
-        android:layout_height="wrap_content" />
-        
 	
 </LinearLayout>
 </ScrollView>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<RelativeLayout
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+  
+    <TextView android:text="Create a Url entry" 
+  android:textSize="20dp"
+  android:id="@+id/labelUrlInfo" android:layout_width="fill_parent" 
+  android:padding="10dp"
+  android:layout_height="wrap_content" />
+  
+<TextView android:text="Name (optional):" 
+	android:id="@+id/labelName"
+	android:padding="10dp" 
+	android:textSize="18dp" 
+	android:layout_width="fill_parent" 
+	android:layout_height="wrap_content"
+	android:layout_below="@id/labelUrlInfo"/>
+<EditText android:text="" 
+android:layout_marginLeft="10dp"
+android:layout_marginRight="10dp"
+		android:id="@+id/inputName" 
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:layout_below="@id/labelName" />
+		
+		<TextView android:text="URL:" 
+	android:id="@+id/labelUrl"
+	android:padding="10dp" 
+	android:textSize="18dp" 
+	android:layout_width="fill_parent" 
+	android:layout_height="wrap_content"
+	android:layout_below="@id/inputName"/>
+<EditText android:text="" 
+android:layout_marginLeft="10dp"
+android:layout_marginRight="10dp"
+		android:id="@+id/inputUrl" 
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:layout_below="@id/labelUrl" />
+
+<TextView android:text="Description (optional):" 
+	android:id="@+id/labelDescription"
+	android:padding="10dp"
+	android:textSize="18dp"  
+	android:layout_width="fill_parent" 
+	android:layout_height="wrap_content"
+	android:layout_below="@id/inputUrl"/>
+<EditText android:text="" 
+android:layout_marginLeft="10dp"
+android:layout_marginRight="10dp"
+android:layout_marginBottom="30dp"
+android:gravity="top"
+android:lines="5"
+		android:id="@+id/inputDescription" 
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:layout_below="@id/labelDescription" />
+
+
+	<Button
+        android:id="@+id/postQuoteBtnOk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/inputDescription"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dp"
+        android:padding="20dp"
+    	android:textSize="18dp"
+        android:text="Create" />
+	
+</RelativeLayout>
+</ScrollView>

@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.tacticalnuclearstrike.tttumblr.activites.PostConversationActivity;
+import com.tacticalnuclearstrike.tttumblr.activites.PostLinkActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.PostQuoteActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.PostTextActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.SettingsActivity;
@@ -58,6 +60,22 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(MainActivity.this, PostQuoteActivity.class);
+				startActivity(intent);
+			}
+		});
+        
+        findViewById(R.id.postLinkBtn).setOnClickListener(new View.OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, PostLinkActivity.class);
+				startActivity(intent);
+			}
+		});
+        
+        findViewById(R.id.postConversationBtn).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, PostConversationActivity.class);
 				startActivity(intent);
 			}
 		});
@@ -111,8 +129,9 @@ public class MainActivity extends Activity {
     	if(!api.isUserNameAndPasswordStored())
     	{
     		infoView.setText("Please enter email and password in settings.");
+    		infoView.setVisibility(View.VISIBLE);
     	} else {
-    		infoView.setText("");
+    		infoView.setVisibility(View.GONE);
     	}
     }
 }
