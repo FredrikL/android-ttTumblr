@@ -186,4 +186,35 @@ public class TumblrApi {
 			ShowNotification("ttTumblr", "Video upload failed", e.toString());
 		}
 	}
+
+	public boolean postQuote(String quoteText, String sourceText) {
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
+
+		try {
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+			nameValuePairs.add(new BasicNameValuePair("email", getUserName()));
+			nameValuePairs
+					.add(new BasicNameValuePair("password", getPassword()));
+			nameValuePairs.add(new BasicNameValuePair("type", "quote"));
+			if (quoteText.compareTo("") != 0)
+				nameValuePairs.add(new BasicNameValuePair("quote", quoteText));
+			if (sourceText.compareTo("") != 0)
+				nameValuePairs.add(new BasicNameValuePair("source", sourceText));
+			nameValuePairs.add(new BasicNameValuePair("generator", "ttTumblr"));
+
+			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+			HttpResponse response = httpclient.execute(httppost);
+			
+			if(response.getStatusLine().getStatusCode() != 201)
+			{
+				ShowNotification("ttTumblr", "Quote creation failed", "");
+			}
+		} catch (ClientProtocolException e) {
+		} catch (IOException e) {
+		}
+
+		return true;
+	}
 }

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.tacticalnuclearstrike.tttumblr.activites.PostQuoteActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.PostTextActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.SettingsActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.UploadImageActivity;
@@ -23,8 +24,13 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        Button btnPostText = (Button)findViewById(R.id.postTextBtn);
-        btnPostText.setOnClickListener(new View.OnClickListener() {
+        setupButtons();
+        
+        CheckIsUserNameAndPasswordCorrect();
+    }
+
+	private void setupButtons() {
+		findViewById(R.id.postTextBtn).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent startPostText = new Intent(MainActivity.this, PostTextActivity.class);
@@ -32,8 +38,7 @@ public class MainActivity extends Activity {
 			}
 		});
         
-        Button btnPostFromCamera = (Button)findViewById(R.id.postImageBtn);
-        btnPostFromCamera.setOnClickListener(new View.OnClickListener() {			
+        findViewById(R.id.postImageBtn).setOnClickListener(new View.OnClickListener() {			
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(MainActivity.this, UploadImageActivity.class);
@@ -49,8 +54,14 @@ public class MainActivity extends Activity {
 			}
 		});
         
-        CheckIsUserNameAndPasswordCorrect();
-    }
+        findViewById(R.id.postQuoteBtn).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, PostQuoteActivity.class);
+				startActivity(intent);
+			}
+		});
+	}
     
     public boolean onCreateOptionsMenu(Menu menu) {
         boolean result = super.onCreateOptionsMenu(menu);

@@ -11,6 +11,7 @@
 		</activity>
 
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.PostTextActivity"></activity>
+		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.PostQuoteActivity"></activity>
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.SettingsActivity"></activity>
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.UploadImageActivity"
 			android:screenOrientation="portrait"></activity>

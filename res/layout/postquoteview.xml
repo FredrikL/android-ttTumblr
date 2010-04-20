@@ -6,51 +6,52 @@
   android:layout_width="fill_parent"
   android:layout_height="fill_parent">
   
-    <TextView android:text="Create a Text entry" 
+    <TextView android:text="Create a Quote entry" 
   android:textSize="20dp"
-  android:id="@+id/labelTextInfo" android:layout_width="fill_parent" 
+  android:id="@+id/labelQuoteInfo" android:layout_width="fill_parent" 
   android:padding="10dp"
   android:layout_height="wrap_content" />
   
-<TextView android:text="Title (optional):" 
-	android:id="@+id/labelText"
+<TextView android:text="Quote:" 
+	android:id="@+id/labelQuote"
 	android:padding="10dp" 
 	android:textSize="18dp" 
 	android:layout_width="fill_parent" 
 	android:layout_height="wrap_content"
-	android:layout_below="@id/labelTextInfo"/>
+	android:layout_below="@id/labelQuoteInfo"/>
 <EditText android:text="" 
 android:layout_marginLeft="10dp"
 android:layout_marginRight="10dp"
-		android:id="@+id/inputText" 
+		android:id="@+id/inputQuote" 
+		android:gravity="top"
+		android:lines="5"
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content"
-		android:layout_below="@id/labelText" />
+		android:layout_below="@id/labelQuote" />
 
-<TextView android:text="Post:" 
-	android:id="@+id/labelPost"
+<TextView android:text="Source (optional):" 
+	android:id="@+id/labelSource"
 	android:padding="10dp"
 	android:textSize="18dp"  
 	android:layout_width="fill_parent" 
 	android:layout_height="wrap_content"
-	android:layout_below="@id/inputText"/>
+	android:layout_below="@id/inputQuote"/>
 <EditText android:text="" 
 android:layout_marginLeft="10dp"
 android:layout_marginRight="10dp"
 android:layout_marginBottom="30dp"
-android:lines="5"
 android:gravity="top"
-		android:id="@+id/inputPost" 
+		android:id="@+id/inputSource" 
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content"
-		android:layout_below="@id/labelPost" />
+		android:layout_below="@id/labelSource" />
 
 
 	<Button
-        android:id="@+id/postTextBtnOk"
+        android:id="@+id/postQuoteBtnOk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/inputPost"
+        android:layout_below="@id/inputSource"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dp"
