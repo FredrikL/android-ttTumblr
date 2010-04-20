@@ -76,7 +76,8 @@
         android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:text="Upload video"
-        android:enabled="false" />
+        android:visibility="gone"
+        android:enabled="true" />
 	
 </LinearLayout>
 </ScrollView>
