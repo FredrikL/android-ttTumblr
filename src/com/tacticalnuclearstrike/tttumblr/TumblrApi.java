@@ -250,4 +250,35 @@ public class TumblrApi {
 
 		return true;
 	}
+
+	public boolean postConversation(String title, String convo) {
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
+
+		try { 
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+			nameValuePairs.add(new BasicNameValuePair("email", getUserName()));
+			nameValuePairs
+					.add(new BasicNameValuePair("password", getPassword()));
+			nameValuePairs.add(new BasicNameValuePair("type", "conversation"));
+			if (title.compareTo("") != 0)
+				nameValuePairs.add(new BasicNameValuePair("title", title));
+			if (convo.compareTo("") != 0)
+				nameValuePairs.add(new BasicNameValuePair("conversation", convo));
+			nameValuePairs.add(new BasicNameValuePair("generator", "ttTumblr"));
+
+			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+			HttpResponse response = httpclient.execute(httppost);
+			
+			if(response.getStatusLine().getStatusCode() != 201)
+			{
+				ShowNotification("ttTumblr", "Conversation creation failed", "");
+			}
+		} catch (ClientProtocolException e) {
+		} catch (IOException e) {
+		}
+
+		return true;
+	}
 }

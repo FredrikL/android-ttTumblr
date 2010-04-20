@@ -14,7 +14,7 @@ public class PostConversationActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.postquoteview);
+		setContentView(R.layout.postconversationview);
 
 		setupOkButton();
 	}
@@ -25,7 +25,7 @@ public class PostConversationActivity extends Activity {
 	}
 
 	private void setupOkButton() {
-		Button btnOk = (Button) findViewById(R.id.postQuoteBtnOk);
+		Button btnOk = (Button) findViewById(R.id.postConversationBtnOk);
 		btnOk.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -35,13 +35,10 @@ public class PostConversationActivity extends Activity {
 	}
 
 	private void okButtonClick() {
-		EditText quote = (EditText) findViewById(R.id.inputQuote);
-		EditText source = (EditText) findViewById(R.id.inputSource);
+		final String title = ((EditText)findViewById(R.id.inputTitle)).getText().toString();
+		final String convo = ((EditText)findViewById(R.id.inputConversation)).getText().toString();
 		
-		final String quoteText = quote.getText().toString();
-		final String sourceText = source.getText().toString();
-		
-		if(quoteText.compareTo("") == 0){
+		if(convo.compareTo("") == 0){
 			Toast.makeText(this, "Cannont create post without content!", Toast.LENGTH_SHORT).show();
 			return;		
 		}
@@ -52,7 +49,7 @@ public class PostConversationActivity extends Activity {
 		
 		new Thread(new Runnable() {
 			public void run() {
-				api.postQuote(quoteText, sourceText);
+				api.postConversation(title, convo);
 			}
 		}).start();
 		
