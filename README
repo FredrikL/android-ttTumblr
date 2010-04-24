@@ -1,6 +1,6 @@
 ttTumblr
 
-Tumblr post creation application for Android, targets sdk 2.1 (7) for now until more stable.
+Tumblr application for android devices, handles view dashboard, post images, text, links, quotes and chats.
 
 Released under the MIT License.
 
