@@ -22,6 +22,15 @@
         android:visibility="gone"
         android:padding="10dp"
         android:layout_height="wrap_content" />
+        
+   <Button
+    android:layout_marginTop="15dp"
+	android:padding="20dp"
+	android:textSize="18dp"
+    	android:id="@+id/dashboardBtn"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:text="View Dashboard" /> 
     
     <Button
     android:layout_marginTop="15dp"

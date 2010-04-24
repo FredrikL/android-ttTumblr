@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.tacticalnuclearstrike.tttumblr.activites.Dashboard;
 import com.tacticalnuclearstrike.tttumblr.activites.PostConversationActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.PostLinkActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.PostQuoteActivity;
@@ -76,6 +77,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				Intent intent = new Intent(MainActivity.this, PostConversationActivity.class);
 				startActivity(intent);
+			}
+		});
+        
+        findViewById(R.id.dashboardBtn).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(MainActivity.this, Dashboard.class));
 			}
 		});
 	}
