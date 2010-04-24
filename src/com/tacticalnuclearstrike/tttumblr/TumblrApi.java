@@ -11,6 +11,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
@@ -79,9 +80,9 @@ public class TumblrApi {
 		return false;
 	}
 	
-	public HttpResponse authenticateAndReturnResponse()
+	public List<Cookie> authenticateAndReturnCookies()
 	{
-		HttpClient httpclient = new DefaultHttpClient();
+		DefaultHttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/login");
 
 		try {
@@ -89,12 +90,11 @@ public class TumblrApi {
 			nameValuePairs.add(new BasicNameValuePair("email", getUserName()));
 			nameValuePairs
 					.add(new BasicNameValuePair("password", getPassword()));
-			nameValuePairs.add(new BasicNameValuePair("destination_url", "/iphone"));
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
-			HttpResponse response = httpclient.execute(httppost);
+			httpclient.execute(httppost);
 			
-			return response;
+			return httpclient.getCookieStore().getCookies();
 		} catch (ClientProtocolException e) {
 		} catch (IOException e) {
 		}
