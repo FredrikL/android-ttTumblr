@@ -79,6 +79,29 @@ public class TumblrApi {
 		return false;
 	}
 	
+	public HttpResponse authenticateAndReturnResponse()
+	{
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpPost httppost = new HttpPost("http://www.tumblr.com/login");
+
+		try {
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+			nameValuePairs.add(new BasicNameValuePair("email", getUserName()));
+			nameValuePairs
+					.add(new BasicNameValuePair("password", getPassword()));
+			nameValuePairs.add(new BasicNameValuePair("destination_url", "/iphone"));
+			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+			HttpResponse response = httpclient.execute(httppost);
+			
+			return response;
+		} catch (ClientProtocolException e) {
+		} catch (IOException e) {
+		}
+
+		return null;
+	}
+	
 	public boolean postText(String Title, String Body) {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
