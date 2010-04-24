@@ -117,7 +117,7 @@ public class MainActivity extends Activity {
 	private void createAboutDialog()
 	{
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage("ttTumblr r1\n\nIf you find any errors please contact me so that I can fix them.\n\nKnown issues: selecting an image from gallery multiple times causes a crash.")
+		builder.setMessage("ttTumblr r4\n\nIf you find any errors please contact me so that I can fix them.\n\nKnown issues: selecting an image from gallery multiple times causes a crash.")
 		       .setCancelable(true)
 		       .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 		           public void onClick(DialogInterface dialog, int id) {
