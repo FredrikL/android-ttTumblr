@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.tacticalnuclearstrike.tttumblr" android:versionCode="4"
-	android:versionName="r4">
+	package="com.tacticalnuclearstrike.tttumblr" android:versionCode="5"
+	android:versionName="r5">
 	<application android:icon="@drawable/tumblr48x48" android:label="@string/app_name" android:debuggable="false">
 		<activity android:name=".MainActivity" android:label="@string/app_name">
 			<intent-filter>
@@ -15,7 +15,7 @@
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.PostLinkActivity"></activity>
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.PostConversationActivity"></activity>
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.SettingsActivity"></activity>
-		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.Dashboard"></activity>
+		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.Dashboard"  android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.UploadImageActivity"
 			android:screenOrientation="portrait"></activity>
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.UploadVideoActivity"></activity>

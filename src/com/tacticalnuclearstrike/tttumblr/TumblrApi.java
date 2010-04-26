@@ -2,6 +2,9 @@ package com.tacticalnuclearstrike.tttumblr;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +48,20 @@ public class TumblrApi {
 	private SharedPreferences getSharePreferences() {
 		SharedPreferences settings = context.getSharedPreferences("tumblr", 0);
 		return settings;
+	}
+	
+	private String convertToUTF8(String input)
+	{
+		try{
+		CharsetEncoder utf8Encoder =
+			Charset.forName("UTF-8").newEncoder();
+			                String utf8S = new
+			String(utf8Encoder.encode(CharBuffer.wrap(input.toCharArray())).array());
+		return utf8S;
+		}
+		catch(Exception e)
+		{}
+		return "";
 	}
 
 	public boolean isUserNameAndPasswordStored()
@@ -105,7 +122,6 @@ public class TumblrApi {
 	public boolean postText(String Title, String Body) {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
-
 		try {
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 			nameValuePairs.add(new BasicNameValuePair("email", getUserName()));
