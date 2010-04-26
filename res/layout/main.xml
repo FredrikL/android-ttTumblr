@@ -9,7 +9,7 @@
     android:gravity="center"
     >
     
-     <TextView android:text="ttTumbr!" 
+     <TextView android:text="ttTumblr!" 
   android:textSize="24dp"
   android:gravity="center"
   android:layout_width="fill_parent" 
