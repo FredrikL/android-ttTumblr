@@ -50,20 +50,6 @@ public class TumblrApi {
 		return settings;
 	}
 	
-	private String convertToUTF8(String input)
-	{
-		try{
-		CharsetEncoder utf8Encoder =
-			Charset.forName("UTF-8").newEncoder();
-			                String utf8S = new
-			String(utf8Encoder.encode(CharBuffer.wrap(input.toCharArray())).array());
-		return utf8S;
-		}
-		catch(Exception e)
-		{}
-		return "";
-	}
-
 	public boolean isUserNameAndPasswordStored()
 	{
 		return (getUserName().compareTo("") != 0) && (getPassword().compareTo("") != 0); 
@@ -123,18 +109,18 @@ public class TumblrApi {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
 		try {
-			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-			nameValuePairs.add(new BasicNameValuePair("email", getUserName()));
-			nameValuePairs
-					.add(new BasicNameValuePair("password", getPassword()));
-			nameValuePairs.add(new BasicNameValuePair("type", "regular"));
-			if (Body.compareTo("") != 0)
-				nameValuePairs.add(new BasicNameValuePair("body", Body));
-			if (Title.compareTo("") != 0)
-				nameValuePairs.add(new BasicNameValuePair("title", Title));
-			nameValuePairs.add(new BasicNameValuePair("generator", "ttTumblr"));
+			MultipartEntity entity = new MultipartEntity();
 
-			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			entity.addPart("email", new StringBody(getUserName()));
+			entity.addPart("password", new StringBody(getPassword()));
+			if (Body.compareTo("") != 0)
+				entity.addPart("body", new StringBody(Body));
+			if (Title.compareTo("") != 0)
+				entity.addPart("title", new StringBody(Title));
+			entity.addPart("type", new StringBody("regular"));
+			entity.addPart("generator", new StringBody("ttTumblr"));
+			
+			httppost.setEntity(entity);
 
 			HttpResponse response = httpclient.execute(httppost);
 			
@@ -231,18 +217,18 @@ public class TumblrApi {
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
 
 		try { 
-			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-			nameValuePairs.add(new BasicNameValuePair("email", getUserName()));
-			nameValuePairs
-					.add(new BasicNameValuePair("password", getPassword()));
-			nameValuePairs.add(new BasicNameValuePair("type", "quote"));
-			if (quoteText.compareTo("") != 0)
-				nameValuePairs.add(new BasicNameValuePair("quote", quoteText));
-			if (sourceText.compareTo("") != 0)
-				nameValuePairs.add(new BasicNameValuePair("source", sourceText));
-			nameValuePairs.add(new BasicNameValuePair("generator", "ttTumblr"));
+			MultipartEntity entity = new MultipartEntity();
 
-			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			entity.addPart("email", new StringBody(getUserName()));
+			entity.addPart("password", new StringBody(getPassword()));
+			if (quoteText.compareTo("") != 0)
+				entity.addPart("quote", new StringBody(quoteText));
+			if (sourceText.compareTo("") != 0)
+				entity.addPart("source", new StringBody(sourceText));
+			entity.addPart("type", new StringBody("quote"));
+			entity.addPart("generator", new StringBody("ttTumblr"));
+			
+			httppost.setEntity(entity);
 
 			HttpResponse response = httpclient.execute(httppost);
 			
@@ -262,20 +248,20 @@ public class TumblrApi {
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
 
 		try { 
-			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-			nameValuePairs.add(new BasicNameValuePair("email", getUserName()));
-			nameValuePairs
-					.add(new BasicNameValuePair("password", getPassword()));
-			nameValuePairs.add(new BasicNameValuePair("type", "link"));
-			if (url.compareTo("") != 0)
-				nameValuePairs.add(new BasicNameValuePair("url", url));
-			if (name.compareTo("") != 0)
-				nameValuePairs.add(new BasicNameValuePair("name", name));
-			if (description.compareTo("") != 0)
-				nameValuePairs.add(new BasicNameValuePair("description", description));
-			nameValuePairs.add(new BasicNameValuePair("generator", "ttTumblr"));
+			MultipartEntity entity = new MultipartEntity();
 
-			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			entity.addPart("email", new StringBody(getUserName()));
+			entity.addPart("password", new StringBody(getPassword()));
+			if (url.compareTo("") != 0)
+				entity.addPart("url", new StringBody(url));
+			if (name.compareTo("") != 0)
+				entity.addPart("name", new StringBody(name));
+			if (description.compareTo("") != 0)
+				entity.addPart("description", new StringBody(description));
+			entity.addPart("type", new StringBody("link"));
+			entity.addPart("generator", new StringBody("ttTumblr"));
+			
+			httppost.setEntity(entity);
 
 			HttpResponse response = httpclient.execute(httppost);
 			
@@ -295,18 +281,18 @@ public class TumblrApi {
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
 
 		try { 
-			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-			nameValuePairs.add(new BasicNameValuePair("email", getUserName()));
-			nameValuePairs
-					.add(new BasicNameValuePair("password", getPassword()));
-			nameValuePairs.add(new BasicNameValuePair("type", "conversation"));
-			if (title.compareTo("") != 0)
-				nameValuePairs.add(new BasicNameValuePair("title", title));
-			if (convo.compareTo("") != 0)
-				nameValuePairs.add(new BasicNameValuePair("conversation", convo));
-			nameValuePairs.add(new BasicNameValuePair("generator", "ttTumblr"));
+			MultipartEntity entity = new MultipartEntity();
 
-			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			entity.addPart("email", new StringBody(getUserName()));
+			entity.addPart("password", new StringBody(getPassword()));
+			if (title.compareTo("") != 0)
+				entity.addPart("title", new StringBody(title));
+			if (convo.compareTo("") != 0)
+				entity.addPart("conversation", new StringBody(convo));
+			entity.addPart("type", new StringBody("conversation"));
+			entity.addPart("generator", new StringBody("ttTumblr"));
+			
+			httppost.setEntity(entity);
 
 			HttpResponse response = httpclient.execute(httppost);
 			
