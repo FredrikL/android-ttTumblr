@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -40,6 +41,7 @@ public class PostTextActivity extends Activity {
 		
 		final String titleText = title.getText().toString();
 		final String postText = post.getText().toString();
+		final Boolean privPost = ((CheckBox)findViewById(R.id.textPrivate)).isChecked();
 		
 		if(postText.compareTo("") == 0){
 			Toast.makeText(this, "Cannont create post without content!", Toast.LENGTH_SHORT).show();
@@ -52,7 +54,7 @@ public class PostTextActivity extends Activity {
 		
 		new Thread(new Runnable() {
 			public void run() {
-				api.postText(titleText, postText);
+				api.postText(titleText, postText, privPost);
 			}
 		}).start();
 		

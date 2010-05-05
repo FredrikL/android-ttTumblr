@@ -100,7 +100,7 @@ public class TumblrApi {
 		return null;
 	}
 	
-	public boolean postText(String Title, String Body) {
+	public boolean postText(String Title, String Body, Boolean Private) {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
 		try {
@@ -112,6 +112,8 @@ public class TumblrApi {
 				entity.addPart("body", new StringBody(Body));
 			if (Title.compareTo("") != 0)
 				entity.addPart("title", new StringBody(Title));
+			if(Private)
+				entity.addPart("private", new StringBody("1"));
 			entity.addPart("type", new StringBody("regular"));
 			entity.addPart("generator", new StringBody("ttTumblr"));
 			

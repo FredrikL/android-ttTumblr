@@ -18,30 +18,30 @@ public final class R {
         public static final int tumblr48x48=0x7f020001;
     }
     public static final class id {
-        public static final int btnPostImage=0x7f06002c;
-        public static final int btnPostVideo=0x7f06002f;
-        public static final int btnSelectImage=0x7f060029;
-        public static final int btnSelectVideo=0x7f06002d;
-        public static final int btnTakePicture=0x7f06002a;
+        public static final int btnPostImage=0x7f06002d;
+        public static final int btnPostVideo=0x7f060030;
+        public static final int btnSelectImage=0x7f06002a;
+        public static final int btnSelectVideo=0x7f06002e;
+        public static final int btnTakePicture=0x7f06002b;
         public static final int dashboardBtn=0x7f060001;
         public static final int inputConversation=0x7f06000c;
         public static final int inputDescription=0x7f060014;
         public static final int inputName=0x7f060010;
-        public static final int inputPassword=0x7f060025;
+        public static final int inputPassword=0x7f060026;
         public static final int inputPost=0x7f06001f;
         public static final int inputQuote=0x7f060018;
         public static final int inputSource=0x7f06001a;
         public static final int inputText=0x7f06001d;
         public static final int inputTitle=0x7f06000a;
         public static final int inputUrl=0x7f060012;
-        public static final int inputUsername=0x7f060023;
+        public static final int inputUsername=0x7f060024;
         public static final int labelAuthStatus=0x7f060000;
         public static final int labelConversation=0x7f06000b;
         public static final int labelConvoInfo=0x7f060008;
         public static final int labelDescription=0x7f060013;
-        public static final int labelInfo=0x7f060021;
+        public static final int labelInfo=0x7f060022;
         public static final int labelName=0x7f06000f;
-        public static final int labelPassword=0x7f060024;
+        public static final int labelPassword=0x7f060025;
         public static final int labelPost=0x7f06001e;
         public static final int labelQuote=0x7f060017;
         public static final int labelQuoteInfo=0x7f060016;
@@ -51,7 +51,7 @@ public final class R {
         public static final int labelTitle=0x7f060009;
         public static final int labelUrl=0x7f060011;
         public static final int labelUrlInfo=0x7f06000e;
-        public static final int labelUsername=0x7f060022;
+        public static final int labelUsername=0x7f060023;
         public static final int postConversationBtn=0x7f060006;
         public static final int postConversationBtnOk=0x7f06000d;
         public static final int postImageBtn=0x7f060002;
@@ -59,13 +59,14 @@ public final class R {
         public static final int postQuoteBtn=0x7f060004;
         public static final int postQuoteBtnOk=0x7f060015;
         public static final int postTextBtn=0x7f060003;
-        public static final int postTextBtnOk=0x7f060020;
+        public static final int postTextBtnOk=0x7f060021;
         public static final int postVideoBtn=0x7f060007;
-        public static final int selectedImage=0x7f060028;
-        public static final int settingsBtnCancel=0x7f060027;
-        public static final int settingsBtnOk=0x7f060026;
-        public static final int tbImageCaption=0x7f06002b;
-        public static final int tbVideoCaption=0x7f06002e;
+        public static final int selectedImage=0x7f060029;
+        public static final int settingsBtnCancel=0x7f060028;
+        public static final int settingsBtnOk=0x7f060027;
+        public static final int tbImageCaption=0x7f06002c;
+        public static final int tbVideoCaption=0x7f06002f;
+        public static final int textPrivate=0x7f060020;
     }
     public static final class layout {
         public static final int main=0x7f030000;
