@@ -2,9 +2,6 @@ package com.tacticalnuclearstrike.tttumblr;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +26,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 public class TumblrApi {
-	// http://www.androidsnippets.org/snippets/1/
-	// nonblocking
 	private Context context;
 
 	public TumblrApi(Context context) {

@@ -20,6 +20,10 @@
 			android:screenOrientation="portrait"></activity>
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.UploadVideoActivity"></activity>
 	</application>
-	<uses-sdk android:minSdkVersion="3" />
+	<uses-sdk android:minSdkVersion="3" android:targetSdkVersion="4" />
+	<supports-screens android:smallScreens="true" 
+                  android:normalScreens="true"  
+                  android:largeScreens="true" 
+                  android:anyDensity="false" />
 	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
 </manifest>
