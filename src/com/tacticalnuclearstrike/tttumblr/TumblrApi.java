@@ -2,6 +2,7 @@ package com.tacticalnuclearstrike.tttumblr;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class TumblrApi {
 	private Context context;
@@ -100,22 +102,33 @@ public class TumblrApi {
 		return null;
 	}
 	
+	private MultipartEntity getEntityWithBaseParamsSet(Boolean Private)
+	{
+		MultipartEntity entity = new MultipartEntity();
+		try{
+		entity.addPart("email", new StringBody(getUserName()));
+		entity.addPart("password", new StringBody(getPassword()));
+		if(Private)
+			entity.addPart("private", new StringBody("1"));		
+		entity.addPart("generator", new StringBody("ttTumblr"));
+		}
+		catch(UnsupportedEncodingException e)
+		{
+			Log.e("ttTumblr", e.getMessage());
+		}
+		return entity;
+	}
+	
 	public boolean postText(String Title, String Body, Boolean Private) {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
 		try {
-			MultipartEntity entity = new MultipartEntity();
-
-			entity.addPart("email", new StringBody(getUserName()));
-			entity.addPart("password", new StringBody(getPassword()));
+			MultipartEntity entity = getEntityWithBaseParamsSet(Private);
+			entity.addPart("type", new StringBody("regular"));
 			if (Body.compareTo("") != 0)
 				entity.addPart("body", new StringBody(Body));
 			if (Title.compareTo("") != 0)
 				entity.addPart("title", new StringBody(Title));
-			if(Private)
-				entity.addPart("private", new StringBody("1"));
-			entity.addPart("type", new StringBody("regular"));
-			entity.addPart("generator", new StringBody("ttTumblr"));
 			
 			httppost.setEntity(entity);
 
@@ -137,13 +150,10 @@ public class TumblrApi {
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
 
 		try {
-			MultipartEntity entity = new MultipartEntity();
+			MultipartEntity entity = getEntityWithBaseParamsSet(false);
 
-			entity.addPart("email", new StringBody(getUserName()));
-			entity.addPart("password", new StringBody(getPassword()));
 			entity.addPart("caption", new StringBody(caption));
 			entity.addPart("type", new StringBody("photo"));
-			entity.addPart("generator", new StringBody("ttTumblr"));
 			entity.addPart("data", new FileBody(image));
 
 			httppost.setEntity(entity);
@@ -185,13 +195,10 @@ public class TumblrApi {
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
 
 		try {
-			MultipartEntity entity = new MultipartEntity();
+			MultipartEntity entity = getEntityWithBaseParamsSet(false);
 
-			entity.addPart("email", new StringBody(getUserName()));
-			entity.addPart("password", new StringBody(getPassword()));
 			entity.addPart("caption", new StringBody(caption));
 			entity.addPart("type", new StringBody("video"));
-			entity.addPart("generator", new StringBody("ttTumblr"));
 			entity.addPart("data", new FileBody(videoToUpload));
 
 			httppost.setEntity(entity);
@@ -214,16 +221,13 @@ public class TumblrApi {
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
 
 		try { 
-			MultipartEntity entity = new MultipartEntity();
+			MultipartEntity entity = getEntityWithBaseParamsSet(false);
 
-			entity.addPart("email", new StringBody(getUserName()));
-			entity.addPart("password", new StringBody(getPassword()));
 			if (quoteText.compareTo("") != 0)
 				entity.addPart("quote", new StringBody(quoteText));
 			if (sourceText.compareTo("") != 0)
 				entity.addPart("source", new StringBody(sourceText));
 			entity.addPart("type", new StringBody("quote"));
-			entity.addPart("generator", new StringBody("ttTumblr"));
 			
 			httppost.setEntity(entity);
 
@@ -245,10 +249,8 @@ public class TumblrApi {
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
 
 		try { 
-			MultipartEntity entity = new MultipartEntity();
+			MultipartEntity entity = getEntityWithBaseParamsSet(false);
 
-			entity.addPart("email", new StringBody(getUserName()));
-			entity.addPart("password", new StringBody(getPassword()));
 			if (url.compareTo("") != 0)
 				entity.addPart("url", new StringBody(url));
 			if (name.compareTo("") != 0)
@@ -256,7 +258,6 @@ public class TumblrApi {
 			if (description.compareTo("") != 0)
 				entity.addPart("description", new StringBody(description));
 			entity.addPart("type", new StringBody("link"));
-			entity.addPart("generator", new StringBody("ttTumblr"));
 			
 			httppost.setEntity(entity);
 
@@ -278,16 +279,13 @@ public class TumblrApi {
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
 
 		try { 
-			MultipartEntity entity = new MultipartEntity();
+			MultipartEntity entity = getEntityWithBaseParamsSet(false);
 
-			entity.addPart("email", new StringBody(getUserName()));
-			entity.addPart("password", new StringBody(getPassword()));
 			if (title.compareTo("") != 0)
 				entity.addPart("title", new StringBody(title));
 			if (convo.compareTo("") != 0)
 				entity.addPart("conversation", new StringBody(convo));
 			entity.addPart("type", new StringBody("conversation"));
-			entity.addPart("generator", new StringBody("ttTumblr"));
 			
 			httppost.setEntity(entity);
 
