@@ -12,11 +12,11 @@ import android.widget.Toast;
 import com.tacticalnuclearstrike.tttumblr.R;
 import com.tacticalnuclearstrike.tttumblr.TumblrApi;
 
-public class SettingsActivity extends Activity {
+public class AccountActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.settingsview);
+		setContentView(R.layout.accountview);
 
 		setupControls();
 		
