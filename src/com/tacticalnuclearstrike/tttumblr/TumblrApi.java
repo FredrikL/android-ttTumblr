@@ -42,33 +42,35 @@ public class TumblrApi {
 		return getSharePreferences().getString("PASSWORD", "");
 	}
 
+	public Boolean getIntegrateWithTwitter() {
+		return getSharePreferences().getBoolean("TWITTER", false);
+	}
+
 	private SharedPreferences getSharePreferences() {
 		SharedPreferences settings = context.getSharedPreferences("tumblr", 0);
 		return settings;
 	}
-	
-	public boolean isUserNameAndPasswordStored()
-	{
-		return (getUserName().compareTo("") != 0) && (getPassword().compareTo("") != 0); 
+
+	public boolean isUserNameAndPasswordStored() {
+		return (getUserName().compareTo("") != 0)
+				&& (getPassword().compareTo("") != 0);
 	}
-	
-	public boolean validateUsernameAndPassword(String Username, String Password)
-	{
+
+	public boolean validateUsernameAndPassword(String Username, String Password) {
 		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/authenticate");
+		HttpPost httppost = new HttpPost(
+				"http://www.tumblr.com/api/authenticate");
 
 		try {
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 			nameValuePairs.add(new BasicNameValuePair("email", Username));
-			nameValuePairs
-					.add(new BasicNameValuePair("password", Password));
+			nameValuePairs.add(new BasicNameValuePair("password", Password));
 
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 			HttpResponse response = httpclient.execute(httppost);
-			
-			if(response.getStatusLine().getStatusCode() != 200)
-			{
+
+			if (response.getStatusLine().getStatusCode() != 200) {
 				return false;
 			}
 			return true;
@@ -76,12 +78,10 @@ public class TumblrApi {
 		} catch (IOException e) {
 		}
 
-		
 		return false;
 	}
-	
-	public List<Cookie> authenticateAndReturnCookies()
-	{
+
+	public List<Cookie> authenticateAndReturnCookies() {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/login");
 
@@ -93,7 +93,7 @@ public class TumblrApi {
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 			httpclient.execute(httppost);
-			
+
 			return httpclient.getCookieStore().getCookies();
 		} catch (ClientProtocolException e) {
 		} catch (IOException e) {
@@ -101,24 +101,28 @@ public class TumblrApi {
 
 		return null;
 	}
-	
-	private MultipartEntity getEntityWithBaseParamsSet(Boolean Private)
-	{
+
+	private MultipartEntity getEntityWithBaseParamsSet(Boolean Private) {
 		MultipartEntity entity = new MultipartEntity();
-		try{
-		entity.addPart("email", new StringBody(getUserName()));
-		entity.addPart("password", new StringBody(getPassword()));
-		if(Private)
-			entity.addPart("private", new StringBody("1"));		
-		entity.addPart("generator", new StringBody("ttTumblr"));
-		}
-		catch(UnsupportedEncodingException e)
-		{
+		try {
+			entity.addPart("email", new StringBody(getUserName()));
+			entity.addPart("password", new StringBody(getPassword()));
+			if (Private)
+				entity.addPart("private", new StringBody("1"));
+			entity.addPart("generator", new StringBody("ttTumblr"));
+
+			if (getIntegrateWithTwitter()) {
+				entity.addPart("send-to-twitter", new StringBody("auto"));
+			} else {
+				entity.addPart("send-to-twitter", new StringBody("no"));
+			}
+
+		} catch (UnsupportedEncodingException e) {
 			Log.e("ttTumblr", e.getMessage());
 		}
 		return entity;
 	}
-	
+
 	public boolean postText(String Title, String Body, Boolean Private) {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
@@ -129,13 +133,12 @@ public class TumblrApi {
 				entity.addPart("body", new StringBody(Body));
 			if (Title.compareTo("") != 0)
 				entity.addPart("title", new StringBody(Title));
-			
+
 			httppost.setEntity(entity);
 
 			HttpResponse response = httpclient.execute(httppost);
-			
-			if(response.getStatusLine().getStatusCode() != 201)
-			{
+
+			if (response.getStatusLine().getStatusCode() != 201) {
 				ShowNotification("ttTumblr", "Text creation failed", "");
 			}
 		} catch (ClientProtocolException e) {
@@ -159,8 +162,8 @@ public class TumblrApi {
 			httppost.setEntity(entity);
 
 			HttpResponse response = httpclient.execute(httppost);
-			
-			if(response.getStatusLine().getStatusCode() == 201)
+
+			if (response.getStatusLine().getStatusCode() == 201)
 				ShowNotification("ttTumblr", "Image Posted", "");
 			else
 				ShowNotification("ttTumblr", "Image upload failed", "");
@@ -170,22 +173,24 @@ public class TumblrApi {
 			ShowNotification("ttTumblr", "Image upload failed", e.toString());
 		}
 	}
-	
-    public void ShowNotification(String tickerText, String contentTitle, String contentText)
-	{
+
+	public void ShowNotification(String tickerText, String contentTitle,
+			String contentText) {
 		String ns = Context.NOTIFICATION_SERVICE;
-		NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(ns);
-		
+		NotificationManager mNotificationManager = (NotificationManager) context
+				.getSystemService(ns);
+
 		int icon = R.drawable.tumblr24x24;
 		long when = System.currentTimeMillis();
 
 		Notification notification = new Notification(icon, tickerText, when);
 		notification.flags = Notification.FLAG_AUTO_CANCEL;
-		
+
 		Intent notificationIntent = new Intent(context, MainActivity.class);
-		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
-		notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
-		
+		PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
+				notificationIntent, 0);
+		notification.setLatestEventInfo(context, contentTitle, contentText,
+				contentIntent);
 
 		mNotificationManager.notify(1, notification);
 	}
@@ -204,8 +209,8 @@ public class TumblrApi {
 			httppost.setEntity(entity);
 
 			HttpResponse response = httpclient.execute(httppost);
-			
-			if(response.getStatusLine().getStatusCode() == 201)
+
+			if (response.getStatusLine().getStatusCode() == 201)
 				ShowNotification("ttTumblr", "Video Posted", "");
 			else
 				ShowNotification("ttTumblr", "Video upload failed", "");
@@ -220,7 +225,7 @@ public class TumblrApi {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
 
-		try { 
+		try {
 			MultipartEntity entity = getEntityWithBaseParamsSet(false);
 
 			if (quoteText.compareTo("") != 0)
@@ -228,13 +233,12 @@ public class TumblrApi {
 			if (sourceText.compareTo("") != 0)
 				entity.addPart("source", new StringBody(sourceText));
 			entity.addPart("type", new StringBody("quote"));
-			
+
 			httppost.setEntity(entity);
 
 			HttpResponse response = httpclient.execute(httppost);
-			
-			if(response.getStatusLine().getStatusCode() != 201)
-			{
+
+			if (response.getStatusLine().getStatusCode() != 201) {
 				ShowNotification("ttTumblr", "Quote creation failed", "");
 			}
 		} catch (ClientProtocolException e) {
@@ -248,7 +252,7 @@ public class TumblrApi {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
 
-		try { 
+		try {
 			MultipartEntity entity = getEntityWithBaseParamsSet(false);
 
 			if (url.compareTo("") != 0)
@@ -258,13 +262,12 @@ public class TumblrApi {
 			if (description.compareTo("") != 0)
 				entity.addPart("description", new StringBody(description));
 			entity.addPart("type", new StringBody("link"));
-			
+
 			httppost.setEntity(entity);
 
 			HttpResponse response = httpclient.execute(httppost);
-			
-			if(response.getStatusLine().getStatusCode() != 201)
-			{
+
+			if (response.getStatusLine().getStatusCode() != 201) {
 				ShowNotification("ttTumblr", "Link creation failed", "");
 			}
 		} catch (ClientProtocolException e) {
@@ -278,7 +281,7 @@ public class TumblrApi {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
 
-		try { 
+		try {
 			MultipartEntity entity = getEntityWithBaseParamsSet(false);
 
 			if (title.compareTo("") != 0)
@@ -286,13 +289,12 @@ public class TumblrApi {
 			if (convo.compareTo("") != 0)
 				entity.addPart("conversation", new StringBody(convo));
 			entity.addPart("type", new StringBody("conversation"));
-			
+
 			httppost.setEntity(entity);
 
 			HttpResponse response = httpclient.execute(httppost);
-			
-			if(response.getStatusLine().getStatusCode() != 201)
-			{
+
+			if (response.getStatusLine().getStatusCode() != 201) {
 				ShowNotification("ttTumblr", "Conversation creation failed", "");
 			}
 		} catch (ClientProtocolException e) {

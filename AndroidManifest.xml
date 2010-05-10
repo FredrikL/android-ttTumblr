@@ -15,6 +15,7 @@
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.PostLinkActivity"></activity>
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.PostConversationActivity"></activity>
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.AccountActivity"></activity>
+		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.SettingsActivity"></activity>
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.Dashboard"  android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.UploadImageActivity"
 			android:screenOrientation="portrait"></activity>

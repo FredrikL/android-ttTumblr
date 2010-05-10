@@ -8,7 +8,6 @@ import android.widget.CheckBox;
 import com.tacticalnuclearstrike.tttumblr.R;
 
 public class SettingsActivity extends Activity {
-
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +19,7 @@ public class SettingsActivity extends Activity {
 	@Override
 	public void onPause()
 	{
+		super.onPause();
 		saveTwitterStatus();
 	}
 	
