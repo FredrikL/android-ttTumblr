@@ -15,12 +15,17 @@ import com.tacticalnuclearstrike.tttumblr.activites.PostConversationActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.PostLinkActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.PostQuoteActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.PostTextActivity;
+import com.tacticalnuclearstrike.tttumblr.activites.AccountActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.SettingsActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.UploadImageActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.UploadVideoActivity;
 
 public class MainActivity extends Activity {
-    /** Called when the activity is first created. */
+	
+	final int MENU_ACCOUNT = 1;
+	final int MENU_ABOUT = 2;
+	final int MENU_SETTINGS = 3;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,20 +95,23 @@ public class MainActivity extends Activity {
     
     public boolean onCreateOptionsMenu(Menu menu) {
         boolean result = super.onCreateOptionsMenu(menu);
-        menu.add(0,1,0, "Settings");
-        menu.add(0,2,0, "About");
+        menu.add(0,MENU_ACCOUNT,0, "Account");
+        menu.add(0,MENU_ABOUT,0, "About");
+        menu.add(0,MENU_SETTINGS, 0, "Settings");
         return result;
     }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case 1:
-            Intent startSettings = new Intent(MainActivity.this, SettingsActivity.class);
-            startActivityForResult(startSettings, 0);
+        case MENU_ACCOUNT: 
+            startActivityForResult(new Intent(MainActivity.this, AccountActivity.class), 0);
             return true;
-        case 2:
+        case MENU_ABOUT:
         	createAboutDialog();
+        	return true;
+        case MENU_SETTINGS:
+        	startActivity(new Intent(MainActivity.this, SettingsActivity.class));
         	return true;
         }
        
@@ -135,7 +143,7 @@ public class MainActivity extends Activity {
     	TumblrApi api = new TumblrApi(this);
     	if(!api.isUserNameAndPasswordStored())
     	{
-    		infoView.setText("Please enter email and password in settings.");
+    		infoView.setText("Please press menu and select Account to enter email and password.");
     		infoView.setVisibility(View.VISIBLE);
     	} else {
     		infoView.setVisibility(View.GONE);
