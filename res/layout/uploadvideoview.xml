@@ -23,6 +23,7 @@
         
 	<EditText android:id="@+id/tbVideoCaption"
 		android:padding="10dp"
+		android:inputType="textAutoCorrect|textCapSentences"
 		android:layout_marginLeft="10dp"
 		android:layout_marginRight="10dp"
 		android:layout_marginBottom="30dp"
