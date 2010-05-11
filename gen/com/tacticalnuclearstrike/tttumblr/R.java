@@ -23,7 +23,8 @@ public final class R {
         public static final int btnSelectImage=0x7f06002b;
         public static final int btnSelectVideo=0x7f06002f;
         public static final int btnTakePicture=0x7f06002c;
-        public static final int cbTwitter=0x7f060029;
+        public static final int cbPostExtras=0x7f060029;
+        public static final int cbTwitter=0x7f060028;
         public static final int dashboardBtn=0x7f060008;
         public static final int inputConversation=0x7f060013;
         public static final int inputDescription=0x7f06001b;
@@ -60,14 +61,13 @@ public final class R {
         public static final int postQuoteBtn=0x7f06000b;
         public static final int postQuoteBtnOk=0x7f06001c;
         public static final int postTextBtn=0x7f06000a;
-        public static final int postTextBtnOk=0x7f060028;
+        public static final int postTextBtnOk=0x7f060027;
         public static final int postVideoBtn=0x7f06000e;
         public static final int selectedImage=0x7f06002a;
         public static final int settingsBtnCancel=0x7f060006;
         public static final int settingsBtnOk=0x7f060005;
         public static final int tbImageCaption=0x7f06002d;
         public static final int tbVideoCaption=0x7f060030;
-        public static final int textPrivate=0x7f060027;
     }
     public static final class layout {
         public static final int accountview=0x7f030000;

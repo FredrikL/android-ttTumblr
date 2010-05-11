@@ -45,19 +45,12 @@ android:inputType="textAutoCorrect|textCapSentences|textMultiLine"
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content"
 		android:layout_below="@id/labelPost" />
-		
-	<CheckBox android:id="@+id/textPrivate"
-			android:layout_marginLeft="10dp" 
-			android:layout_width="fill_parent" 
-		android:layout_height="wrap_content"
-			android:layout_below="@id/inputPost"
-			android:text="Private post" />
 
 	<Button
         android:id="@+id/postTextBtnOk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textPrivate"
+        android:layout_below="@id/inputPost"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dp"
