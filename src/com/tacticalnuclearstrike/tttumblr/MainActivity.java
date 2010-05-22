@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -111,24 +112,22 @@ public class MainActivity extends Activity {
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
-		boolean result = super.onCreateOptionsMenu(menu);
-		menu.add(0, MENU_ACCOUNT, 0, "Account");
-		menu.add(0, MENU_ABOUT, 0, "About");
-		menu.add(0, MENU_SETTINGS, 0, "Settings");
-		return result;
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main_menu, menu);
+		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case MENU_ACCOUNT:
+		case R.id.menu_account:
 			startActivityForResult(new Intent(MainActivity.this,
 					AccountActivity.class), 0);
 			return true;
-		case MENU_ABOUT:
+		case R.id.menu_about:
 			createAboutDialog();
 			return true;
-		case MENU_SETTINGS:
+		case R.id.menu_settings:
 			startActivity(new Intent(MainActivity.this, SettingsActivity.class));
 			return true;
 		}
@@ -154,7 +153,9 @@ public class MainActivity extends Activity {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder
 				.setMessage(
-						"ttTumblr "+ version +"\n\nIf you find any errors please contact me so that I can fix them.\n\nKnown issues: selecting an image from gallery multiple times causes a crash.")
+						"ttTumblr "
+								+ version
+								+ "\n\nIf you find any errors please contact me so that I can fix them.\n\nKnown issues: selecting an image from gallery multiple times causes a crash.")
 				.setCancelable(true).setPositiveButton("Ok",
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
