@@ -19,15 +19,15 @@ public class AccountActivity extends Activity {
 		setContentView(R.layout.accountview);
 
 		setupControls();
-		
+
 		loadUserNameAndPassword();
 	}
 
 	private void loadUserNameAndPassword() {
 		TumblrApi api = new TumblrApi(this);
-		EditText username = (EditText)findViewById(R.id.inputUsername);
+		EditText username = (EditText) findViewById(R.id.inputUsername);
 		username.setText(api.getUserName());
-		EditText password = (EditText)findViewById(R.id.inputPassword);
+		EditText password = (EditText) findViewById(R.id.inputPassword);
 		password.setText(api.getPassword());
 	}
 
@@ -41,22 +41,20 @@ public class AccountActivity extends Activity {
 		btnOk.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				okButtonClick();				
+				okButtonClick();
 			}
 		});
 	}
-	
-	private void okButtonClick()
-	{
-		if (IsAuthenticationCorrect())
-		{
-		saveSettings();
-		returnToMainActivity();
-		}
-		else
-		{
-			Toast.makeText(this, "email and/or password incorrect", Toast.LENGTH_LONG).show();
-		}	
+
+	private void okButtonClick() {
+		final ProgressDialog pd = ProgressDialog.show(this, "Authenticating",
+				"Validating email/password with tumblr", true, false);
+		new Thread(new Runnable() {
+			public void run() {
+				checkAuthentication();
+				pd.dismiss();
+			}
+		}).start();
 	}
 
 	private void returnToMainActivity() {
@@ -89,19 +87,26 @@ public class AccountActivity extends Activity {
 		setSetting("PASSWORD", text.getEditableText().toString());
 
 	}
-	
-	private Boolean IsAuthenticationCorrect()
-	{
+
+	private Boolean IsAuthenticationCorrect() {
 		EditText text = (EditText) findViewById(R.id.inputUsername);
-		String username =  text.getEditableText().toString();
+		String username = text.getEditableText().toString();
 
 		text = (EditText) findViewById(R.id.inputPassword);
 		String password = text.getEditableText().toString();
-		
+
 		TumblrApi api = new TumblrApi(this);
-		ProgressDialog pd = ProgressDialog.show(this, "Authenticating", "Validating email/password with tumblr", true, false); 
 		Boolean result = api.validateUsernameAndPassword(username, password);
-		pd.dismiss();
 		return result;
+	}
+
+	private void checkAuthentication() {
+		if (IsAuthenticationCorrect()) {
+			saveSettings();
+			returnToMainActivity();
+		} else {
+			Toast.makeText(this, "email and/or password incorrect",
+					Toast.LENGTH_LONG).show();
+		}
 	}
 }
