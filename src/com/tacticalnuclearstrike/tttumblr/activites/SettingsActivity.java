@@ -19,6 +19,7 @@ public class SettingsActivity extends Activity {
 	private void loadSettings() {
 		((CheckBox)findViewById(R.id.cbTwitter)).setChecked(integrateWithTwitter());
         ((CheckBox)findViewById(R.id.cbPostExtras)).setChecked(extraPostOptions());
+        ((CheckBox)findViewById(R.id.cbDashboardOnStartup)).setChecked(showDashBoard());
 	}
 		
 	@Override
@@ -31,6 +32,7 @@ public class SettingsActivity extends Activity {
 	private void saveSettings() {
 		saveTwitterStatus();
 		saveExtraPostOptions();
+		saveShowDashboard();
 	}
 	
 	private void saveTwitterStatus(){
@@ -49,6 +51,14 @@ public class SettingsActivity extends Activity {
 		editor.commit();
 	}
 	
+	private void saveShowDashboard(){
+		Boolean checked = ((CheckBox)findViewById(R.id.cbDashboardOnStartup)).isChecked();
+		
+		SharedPreferences.Editor editor = getSharedPreferences().edit();
+		editor.putBoolean("DASHBOARD_STARTUP", checked);
+		editor.commit();
+	}
+	
 	private Boolean integrateWithTwitter()
 	{
 		return getSharedPreferences().getBoolean("TWITTER", false);
@@ -57,6 +67,11 @@ public class SettingsActivity extends Activity {
 	private Boolean extraPostOptions()
 	{
 		return getSharedPreferences().getBoolean("POST_EXTRAS", false);
+	}
+	
+	private Boolean showDashBoard()
+	{
+		return getSharedPreferences().getBoolean("DASHBOARD_STARTUP", false);
 	}
 	
 	private SharedPreferences getSharedPreferences() {

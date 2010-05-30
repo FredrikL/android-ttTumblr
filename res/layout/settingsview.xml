@@ -12,6 +12,11 @@
 			android:layout_width="fill_parent" 
 			android:layout_height="wrap_content"
 			android:text="Send posts to twitter" />
+		<CheckBox android:id="@+id/cbDashboardOnStartup"
+			android:layout_marginLeft="10dp" 
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="Show dashboard on startup" />
 		<CheckBox android:id="@+id/cbPostExtras"
 			android:layout_marginLeft="10dp" 
 			android:layout_width="fill_parent" 

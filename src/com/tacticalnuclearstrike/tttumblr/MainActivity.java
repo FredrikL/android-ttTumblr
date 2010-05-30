@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -33,11 +34,28 @@ public class MainActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		regularStartup();
+		
+		if(showDashBoard())
+			startDashboardActivity();
+	}
+
+	private void regularStartup() {
 		setContentView(R.layout.main);
 
 		setupButtons();
 
 		CheckIsUserNameAndPasswordCorrect();
+	}
+	
+	private boolean showDashBoard()
+	{
+		return getSharePreferences().getBoolean("DASHBOARD_STARTUP", false);
+	}
+	
+	private SharedPreferences getSharePreferences() {
+		SharedPreferences settings = this.getSharedPreferences("tumblr", 0);
+		return settings;
 	}
 
 	private void setupButtons() {
@@ -105,8 +123,7 @@ public class MainActivity extends Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						startActivity(new Intent(MainActivity.this,
-								Dashboard.class));
+						startDashboardActivity();
 					}
 				});
 	}
@@ -177,5 +194,10 @@ public class MainActivity extends Activity {
 		} else {
 			infoView.setVisibility(View.GONE);
 		}
+	}
+
+	private void startDashboardActivity() {
+		startActivity(new Intent(MainActivity.this,
+				Dashboard.class));
 	}
 }
