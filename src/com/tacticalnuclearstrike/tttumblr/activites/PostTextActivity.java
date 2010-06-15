@@ -42,7 +42,7 @@ public class PostTextActivity extends Activity {
 		final String postText = post.getText().toString();
 		final Boolean privPost = false;
 		
-		if(postText.compareTo("") == 0){
+		if(titleText.compareTo("") == 0 && postText.compareTo("") == 0){
 			Toast.makeText(this, "Cannont create post without content!", Toast.LENGTH_SHORT).show();
 			return;		
 		}
