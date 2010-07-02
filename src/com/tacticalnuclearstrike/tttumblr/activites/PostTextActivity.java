@@ -1,6 +1,7 @@
 package com.tacticalnuclearstrike.tttumblr.activites;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -47,15 +48,10 @@ public class PostTextActivity extends Activity {
 			return;		
 		}
 		
-		final TumblrApi api = new TumblrApi(this);
-		
-		Toast.makeText(this, "Creating post", Toast.LENGTH_LONG).show();
-		
-		new Thread(new Runnable() {
-			public void run() {
-				api.postText(titleText, postText, privPost);
-			}
-		}).start();
+        Intent postIntent = new Intent("com.tacticalnuclearstrike.tttumblr.POST_TEXT");
+        postIntent.putExtra("title", titleText);
+        postIntent.putExtra("body", postText);
+        startService(postIntent);
 		
 		returnToMainActivity();
 	}
