@@ -4,6 +4,7 @@ import android.app.Service;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.IBinder;
 import android.os.Message;
 import android.widget.Toast;
@@ -15,12 +16,17 @@ import android.util.Log;
  * contains all the relevant bits for making calls to the backend web service.
  *
  * Intents received by this service (prefixed with package name):
- * * POST_TEXT - 
+ * * POST_TEXT - String title, String body, boolean isPrivate
+ * * POST_PHOTO - Uri photo, String caption
  */
 public class TumblrService extends Service {
     private static final String TAG = "TumblrService";
     // notification integers.
     public static final int N_POSTING = 1; // we're currently posting something
+
+    //Actions:
+    public static final String ACTION_POST_TEXT = "com.tacticalnuclearstrike.tttumblr.POST_TEXT";
+    public static final String ACTION_POST_PHOTO = "com.tacticalnuclearstrike.tttumblr.POST_PHOTO";
 
     @Override
     public void onCreate() {
@@ -34,10 +40,16 @@ public class TumblrService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "start intent received: " + intent.getAction());
         //XXX: assuming braindump here.
-        startForeground(N_POSTING, getNotification());
-        //do the posting.
-        doTextPost(intent);
-        stopForeground(true);
+        if (ACTION_POST_TEXT.equals(intent.getAction())){
+            startForeground(N_POSTING, getNotification());
+            //do the posting.
+            doTextPost(intent);
+            stopForeground(true);
+        } else if (ACTION_POST_PHOTO.equals(intent.getAction())) {
+            startForeground(N_POSTING, getNotification());
+            doPhotoPost(intent);
+            stopForeground(true);
+        }
         return START_REDELIVER_INTENT;
     }
 
@@ -45,11 +57,26 @@ public class TumblrService extends Service {
     private void doTextPost(Intent i){
         final String titleText = i.getStringExtra("title");
         final String postText = i.getStringExtra("body");
-        final boolean privPost = true;
+        final boolean privPost = i.getBooleanExtra("isPrivate", false);
 		final TumblrApi api = new TumblrApi(this);
 		new Thread(new Runnable() {
 			public void run() {
 				api.postText(titleText, postText, privPost);
+			}
+		}).start();
+    }
+
+    /** doPhotoPost - posts a photo (given extras).
+     * Extras: 'photo' - Uri, 'caption' - String.
+     */
+    private void doPhotoPost(Intent i){
+        final Uri photo = Uri.parse(i.getStringExtra("photo"));
+        final String text = i.getStringExtra("caption");
+		final TumblrApi api = new TumblrApi(this);
+		new Thread(new Runnable() {
+			public void run() {
+                //FIXME: fix postImage to use a URI.
+				api.PostImage(photo, text);
 			}
 		}).start();
     }

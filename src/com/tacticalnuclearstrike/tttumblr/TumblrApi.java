@@ -25,6 +25,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.util.Log;
 
 public class TumblrApi {
@@ -147,6 +148,12 @@ public class TumblrApi {
 
 		return true;
 	}
+
+
+    //FIXME: implement this.
+	public void PostImage(Uri image, String caption) {
+        return;
+    }
 
 	public void PostImage(File image, String caption) {
 		HttpClient httpclient = new DefaultHttpClient();

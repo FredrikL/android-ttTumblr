@@ -51,6 +51,7 @@ public class PostTextActivity extends Activity {
         Intent postIntent = new Intent("com.tacticalnuclearstrike.tttumblr.POST_TEXT");
         postIntent.putExtra("title", titleText);
         postIntent.putExtra("body", postText);
+        postIntent.putExtra("isPrivate", privPost);
         startService(postIntent);
 		
 		returnToMainActivity();
