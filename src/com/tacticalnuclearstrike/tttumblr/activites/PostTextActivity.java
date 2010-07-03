@@ -1,6 +1,7 @@
 package com.tacticalnuclearstrike.tttumblr.activites;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,12 +12,41 @@ import com.tacticalnuclearstrike.tttumblr.R;
 import com.tacticalnuclearstrike.tttumblr.TumblrApi;
 
 public class PostTextActivity extends Activity {
+	private final static String[] URL_PREFIXES = {"http://", "https://", "ftp://", "sftp://"};
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.posttextview);
 
 		setupOkButton();
+
+		Intent intent = getIntent();
+		String action = intent.getAction();
+		// SEND intents for URLs (from, for instance, the Browser) are also text,
+		// which is somewhat tedious. While it means that you can share a URL to
+		// an email program easily, it also means that you can't distinguish
+		// between an URL and plain body text. So we make this activity receive both
+		// text and URLs and launch the appropriate activity.
+		if (Intent.ACTION_SEND.equals(action)){
+			String textBody = intent.getExtras().getString(Intent.EXTRA_TEXT);
+
+			boolean isUrl = false;
+			for (String urlPrefix: URL_PREFIXES){
+				isUrl = textBody.startsWith(urlPrefix) && !textBody.contains("\n") && !textBody.contains("\r");
+				if (isUrl){
+					break;
+				}
+			}
+			if (isUrl){
+				Intent urlLaunchIntent = new Intent(getIntent());
+				urlLaunchIntent.setClass(getApplicationContext(), PostLinkActivity.class);
+				startActivity(urlLaunchIntent);
+				finish();
+			}else{
+				((EditText)findViewById(R.id.inputPost)).setText(textBody);
+			}
+		}
 	}
 	
 	private void returnToMainActivity() {

@@ -53,6 +53,13 @@ public class UploadImageActivity extends Activity {
 				selectImage();
 			}
 		});
+
+		Intent intent = getIntent();
+		String action = intent.getAction();
+		if (Intent.ACTION_SEND.equals(action)){
+			outputFileUri = (Uri)(intent.getExtras().get(Intent.EXTRA_STREAM));
+			setSelectedImageThumbnail(outputFileUri);
+		}
 	}
 
 	private void takePhoto() {
