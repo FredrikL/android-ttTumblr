@@ -41,14 +41,10 @@ public class TumblrService extends Service {
         Log.d(TAG, "start intent received: " + intent.getAction());
         //XXX: assuming braindump here.
         if (ACTION_POST_TEXT.equals(intent.getAction())){
-            startForeground(N_POSTING, getNotification());
             //do the posting.
             doTextPost(intent);
-            stopForeground(true);
         } else if (ACTION_POST_PHOTO.equals(intent.getAction())) {
-            startForeground(N_POSTING, getNotification());
             doPhotoPost(intent);
-            stopForeground(true);
         }
         return START_REDELIVER_INTENT;
     }
@@ -61,7 +57,9 @@ public class TumblrService extends Service {
 		final TumblrApi api = new TumblrApi(this);
 		new Thread(new Runnable() {
 			public void run() {
+                startForeground(N_POSTING, getNotification());
 				api.postText(titleText, postText, privPost);
+                stopForeground(true);
 			}
 		}).start();
     }
@@ -75,8 +73,9 @@ public class TumblrService extends Service {
 		final TumblrApi api = new TumblrApi(this);
 		new Thread(new Runnable() {
 			public void run() {
-                //FIXME: fix postImage to use a URI.
+                startForeground(N_POSTING, getNotification());
 				api.PostImage(photo, text);
+                stopForeground(true);
 			}
 		}).start();
     }
