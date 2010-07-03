@@ -23,6 +23,8 @@ import com.tacticalnuclearstrike.tttumblr.TumblrApi;
 import com.tacticalnuclearstrike.tttumblr.TumblrService;
 
 public class UploadImageActivity extends Activity {
+    private static final String TAG = "UploadImageActivity";
+
 	Uri outputFileUri;
 	int TAKE_PICTURE = 0;
 	int SELECT_IMAGE = 1;
@@ -31,6 +33,14 @@ public class UploadImageActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.uploadimageview);
+
+        Intent startIntent = getIntent();
+        if(startIntent != null){
+            Uri startData = (Uri)startIntent.getExtras().get(Intent.EXTRA_STREAM);
+            Log.d(TAG, "got initial data: " + startData.toString());
+            outputFileUri = startData;
+			setSelectedImageThumbnail(outputFileUri);
+        }
 
 		Button btnTakePicture = (Button) findViewById(R.id.btnTakePicture);
 		btnTakePicture.setOnClickListener(new View.OnClickListener() {
@@ -133,20 +143,6 @@ public class UploadImageActivity extends Activity {
         uploadIntent.putExtra("caption", caption);
         startService(uploadIntent);
 
-        /*
-		String path = getRealPathFromURI(outputFileUri);
-		final File photoToUpload = new File(path);
-		
-		Toast.makeText(this, "Upload started", Toast.LENGTH_LONG).show();
-
-		new Thread(new Runnable() {
-			public void run() {
-				api.PostImage(photoToUpload, caption);
-				
-			}
-		}).start();
-        */
-		
 		setResult(RESULT_OK);
 		finish();
 	}
