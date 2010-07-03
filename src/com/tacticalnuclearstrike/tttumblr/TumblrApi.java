@@ -1,7 +1,9 @@
 package com.tacticalnuclearstrike.tttumblr;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +24,15 @@ import org.apache.http.message.BasicNameValuePair;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
+import android.webkit.MimeTypeMap;
+
+import org.nerdcircus.android.tumblr.MediaUriBody;
 
 public class TumblrApi {
 	private Context context;
@@ -150,8 +156,43 @@ public class TumblrApi {
 	}
 
 
-    //FIXME: implement this.
 	public void PostImage(Uri image, String caption) {
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
+
+		try {
+			MultipartEntity entity = getEntityWithBaseParamsSet(false);
+
+			entity.addPart("caption", new StringBody(caption));
+			entity.addPart("type", new StringBody("photo"));
+            // Do the MediaUriBody dance.
+            // Getting the type of the file
+            ContentResolver cR = context.getContentResolver();
+            MimeTypeMap mime = MimeTypeMap.getSingleton();
+            String type = mime.getExtensionFromMimeType(cR.getType(image));
+            InputStream stream = null;
+            try {
+                stream = cR.openInputStream(image);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            //TODO: fix filename to be something unique.
+            entity.addPart("data", new MediaUriBody(context, image, stream, "file."+type));
+
+			httppost.setEntity(entity);
+
+			HttpResponse response = httpclient.execute(httppost);
+
+			if (response.getStatusLine().getStatusCode() == 201)
+				ShowNotification("ttTumblr", "Image Posted", "");
+			else
+				ShowNotification("ttTumblr", "Image upload failed", "");
+		} catch (ClientProtocolException e) {
+			ShowNotification("ttTumblr", "Image upload failed", e.toString());
+		} catch (IOException e) {
+			ShowNotification("ttTumblr", "Image upload failed", e.toString());
+		}
+
         return;
     }
 
