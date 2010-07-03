@@ -16,9 +16,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.util.Log;
 
 import com.tacticalnuclearstrike.tttumblr.R;
 import com.tacticalnuclearstrike.tttumblr.TumblrApi;
+import com.tacticalnuclearstrike.tttumblr.TumblrService;
 
 public class UploadImageActivity extends Activity {
 	Uri outputFileUri;
@@ -126,6 +128,12 @@ public class UploadImageActivity extends Activity {
 		EditText text = (EditText) findViewById(R.id.tbImageCaption);
 		final String caption = text.getText().toString();
 
+        Intent uploadIntent = new Intent(TumblrService.ACTION_POST_PHOTO);
+        uploadIntent.putExtra("photo", outputFileUri.toString());
+        uploadIntent.putExtra("caption", caption);
+        startService(uploadIntent);
+
+        /*
 		String path = getRealPathFromURI(outputFileUri);
 		final File photoToUpload = new File(path);
 		
@@ -137,6 +145,7 @@ public class UploadImageActivity extends Activity {
 				
 			}
 		}).start();
+        */
 		
 		setResult(RESULT_OK);
 		finish();

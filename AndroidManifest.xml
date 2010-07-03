@@ -17,12 +17,21 @@
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.AccountActivity"></activity>
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.SettingsActivity"></activity>
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.Dashboard"  android:theme="@android:style/Theme.NoTitleBar"></activity>
-		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.UploadImageActivity"
-			android:screenOrientation="portrait"></activity>
+		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.UploadImageActivity">
+            <intent-filter>
+                <!-- support this action from the "Share" menu in the gallery -->
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.ALTERNATIVE"/>
+                <category android:name="android.intent.category.SELECTED_ALTERNATIVE"/>
+                <data android:mimeType="image/*"/>
+            </intent-filter>
+        </activity>
 		<activity android:name="com.tacticalnuclearstrike.tttumblr.activites.UploadVideoActivity"></activity>
         <service android:name=".TumblrService" android:label="TumblrService">
             <intent-filter>
 				<action android:name="com.tacticalnuclearstrike.tttumblr.POST_TEXT" />
+				<action android:name="com.tacticalnuclearstrike.tttumblr.POST_PHOTO" />
             </intent-filter>
         </service>
 	</application>
