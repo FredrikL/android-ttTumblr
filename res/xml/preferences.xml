@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:key="prefs" > 
+    <CheckBoxPreference android:key="twitter"
+        android:title="Send to Twitter"
+        android:summary="by default, should posts be sent to twitter?"
+        android:defaultValue="false"
+    />
+    <CheckBoxPreference android:key="private"
+        android:title="Post Privately?"
+        android:summary="should posts be private by default?"
+        android:defaultValue="false"
+    />
+    <EditTextPreference android:key="tags"
+        android:title="Tags"
+        android:summary="tags here will be included in all posts"
+        android:defaultValue=""
+    />
+</PreferenceScreen>
