@@ -166,7 +166,7 @@ public class TumblrApi {
                     entity.addPart("send-to-twitter", new StringBody("1"));
             }
             if( options.containsKey("group")){
-                entity.addPart("group", new StringBody(options.getString("group")));
+                entity.addPart("group", new StringBody(options.getString("group") + ".tumblr.com"));
                 Log.d(TAG, "group: " + options.getString("group"));
             }
             if( options.containsKey("private")){

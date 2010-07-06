@@ -5,6 +5,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Message;
 import android.widget.Toast;
@@ -46,6 +47,9 @@ public class TumblrService extends Service {
         } else if (ACTION_POST_PHOTO.equals(intent.getAction())) {
             doPhotoPost(intent);
         }
+        else {
+            Log.d(TAG, "UNKNOWN ACTION!");
+        }
         return START_REDELIVER_INTENT;
     }
 
@@ -53,12 +57,14 @@ public class TumblrService extends Service {
     private void doTextPost(Intent i){
         final String titleText = i.getStringExtra("title");
         final String postText = i.getStringExtra("body");
-        final boolean privPost = i.getBooleanExtra("isPrivate", false);
+        final Bundle options = i.getBundleExtra("options");
 		final TumblrApi api = new TumblrApi(this);
+        Log.d(TAG, "attempting text post..");
 		new Thread(new Runnable() {
 			public void run() {
                 startForeground(N_POSTING, getNotification());
-				api.postText(titleText, postText, privPost);
+                Log.d(TAG, "calling api.");
+				api.postText(titleText, postText, options);
                 stopForeground(true);
 			}
 		}).start();
