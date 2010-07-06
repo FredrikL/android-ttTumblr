@@ -24,7 +24,7 @@ public class PostTextActivity extends Activity {
     //menu group for blog selection list.
     private static final int BLOG_GROUP = 1;
 
-    private Bundle mPostOptions = new Bundle();
+    private Bundle mPostOptions = new Bundle(); //this should get the defaults from the preferences.
     private SharedPreferences mBloglist;
 
 	@Override
@@ -97,6 +97,27 @@ public class PostTextActivity extends Activity {
             blogitem.setOnMenuItemClickListener(blogchoice_listener);
         }
         blogmenu.setGroupCheckable(BLOG_GROUP, true, true); 
+
+        //add a checkable item for twitter
+        MenuItem tweet = menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Tweet?");
+        tweet.setCheckable(true);
+        tweet.setOnMenuItemClickListener(new OnMenuItemClickListener(){
+            public boolean onMenuItemClick(MenuItem mi){
+                if( mi.isChecked() ){
+                    mi.setChecked(false);
+                    Log.d(TAG, "not tweeting");
+                    mPostOptions.putString("send-to-twitter", "no");
+                    //change the title to reflect what happens if we press it again.
+                    mi.setTitle("Tweet");
+                } else {
+                    mi.setChecked(true);
+                    Log.d(TAG, "tweeting!");
+                    mPostOptions.putString("send-to-twitter", "auto");
+                    mi.setTitle("Do not Tweet");
+                }
+                return true;
+            }
+        });
 
         return true;
     }
