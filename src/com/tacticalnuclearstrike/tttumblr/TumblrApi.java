@@ -34,6 +34,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
@@ -45,12 +46,13 @@ public class TumblrApi {
 
     public static final String GENERATOR = "ttTumblr"; //user-agent string.
 
-    private SharedPreferences mPrefs = getSharedPreferences();
+    private SharedPreferences mPrefs;
 
 	private Context context;
 
 	public TumblrApi(Context context) {
 		this.context = context;
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 	}
 
 	public String getUserName() {
@@ -218,7 +220,7 @@ public class TumblrApi {
         //Backward-compatability
         Bundle o = new Bundle();
         if(Private)
-            o.put("private", "1");
+            o.putString("private", "1");
         return postText(Title, Body, o);
 	}
 
@@ -253,7 +255,7 @@ public class TumblrApi {
 
     //backward compatability
 	public void PostImage(Uri image, String caption) {
-        PostImage(image, caption, new Bundle());
+        postImage(image, caption, new Bundle());
     }
 
 
