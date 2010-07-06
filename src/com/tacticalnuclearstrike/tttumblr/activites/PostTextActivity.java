@@ -2,6 +2,7 @@ package com.tacticalnuclearstrike.tttumblr.activites;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +16,9 @@ import com.tacticalnuclearstrike.tttumblr.R;
 import com.tacticalnuclearstrike.tttumblr.TumblrApi;
 
 public class PostTextActivity extends Activity {
+
+    //menu group for blog selection list.
+    private static final int BLOG_GROUP = 1;
 
     private Bundle mPostOptions = new Bundle();
 
@@ -72,9 +76,14 @@ public class PostTextActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu){
         super.onCreateOptionsMenu(menu);
         SubMenu blogmenu = menu.addSubMenu(Menu.NONE, Menu.NONE, Menu.NONE, "Select Tumblelog");
-        blogmenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "blog 1");
-        blogmenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "blog 2");
-        blogmenu.setGroupCheckable(Menu.NONE, true, true); 
+        //create the sub-menu based on the stored list of preferences.
+        SharedPreferences bloglist = getSharedPreferences(TumblrApi.BLOGS_PREFS, 0);
+        for (String k : bloglist.getAll().keySet()){
+            blogmenu.add(BLOG_GROUP, Menu.NONE, Menu.NONE, k);
+        }
+        blogmenu.add(BLOG_GROUP, Menu.NONE, Menu.NONE, "blog 1");
+        blogmenu.add(BLOG_GROUP, Menu.NONE, Menu.NONE, "blog 2");
+        blogmenu.setGroupCheckable(BLOG_GROUP, true, true); 
 
         return true;
     }

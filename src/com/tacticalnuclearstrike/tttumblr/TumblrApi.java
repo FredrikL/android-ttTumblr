@@ -98,8 +98,11 @@ public class TumblrApi {
             SharedPreferences blogs = context.getSharedPreferences(BLOGS_PREFS, 0);
             saveBlogList(response, blogs);
 			return true;
+
 		} catch (ClientProtocolException e) {
+            Log.d(TAG, "client proto exception", e);
 		} catch (IOException e) {
+            Log.d(TAG, "io exception", e);
 		}
         return false;
     }
