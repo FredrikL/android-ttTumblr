@@ -21,7 +21,7 @@ import com.tacticalnuclearstrike.tttumblr.activites.PostConversationActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.PostLinkActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.PostQuoteActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.PostTextActivity;
-import com.tacticalnuclearstrike.tttumblr.activites.SettingsActivity;
+import com.tacticalnuclearstrike.tttumblr.activites.Preferences;
 import com.tacticalnuclearstrike.tttumblr.activites.UploadImageActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.UploadVideoActivity;
 
@@ -145,7 +145,7 @@ public class MainActivity extends Activity {
 			createAboutDialog();
 			return true;
 		case R.id.menu_settings:
-			startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+			startActivity(new Intent(MainActivity.this, Preferences.class));
 			return true;
 		}
 
