@@ -45,6 +45,8 @@ public class TumblrApi {
 
     public static final String GENERATOR = "ttTumblr"; //user-agent string.
 
+    private SharedPreferences mPrefs = getSharedPreferences();
+
 	private Context context;
 
 	public TumblrApi(Context context) {
@@ -126,17 +128,7 @@ public class TumblrApi {
 		try {
 			entity.addPart("email", new StringBody(getUserName()));
 			entity.addPart("password", new StringBody(getPassword()));
-			if (Private)
-				entity.addPart("private", new StringBody("1"));
 			entity.addPart("generator", new StringBody(GENERATOR));
-
-            /*
-			if (getIntegrateWithTwitter()) {
-				entity.addPart("send-to-twitter", new StringBody("auto"));
-			} else {
-				entity.addPart("send-to-twitter", new StringBody("no"));
-			}
-            */
 
 		} catch (UnsupportedEncodingException e) {
 			Log.e("ttTumblr", e.getMessage());
@@ -162,6 +154,11 @@ public class TumblrApi {
                 entity.addPart("send-to-twitter", new StringBody(options.getString("send-to-twitter")));
                 Log.d(TAG, "send-to-twitter: " + options.getString("send-to-twitter"));
             }
+            else {
+                //set the param from the defaults.
+                if (mPrefs.getBoolean("twitter",false))
+                    entity.addPart("send-to-twitter", new StringBody("1"));
+            }
             if( options.containsKey("group")){
                 entity.addPart("group", new StringBody(options.getString("group")));
                 Log.d(TAG, "group: " + options.getString("group"));
@@ -169,6 +166,11 @@ public class TumblrApi {
             if( options.containsKey("private")){
                 entity.addPart("private", new StringBody(options.getString("private")));
                 Log.d(TAG, "private: " + options.getString("private"));
+            }
+            else {
+                //set the param from the defaults.
+                if (mPrefs.getBoolean("private",false))
+                    entity.addPart("private", new StringBody("1"));
             }
 		} catch (UnsupportedEncodingException e) {
 			Log.e(TAG, "unsupported encoding: " + e.getMessage());
@@ -213,32 +215,15 @@ public class TumblrApi {
     }
 
 	public boolean postText(String Title, String Body, Boolean Private) {
-		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
-		try {
-			MultipartEntity entity = getEntityWithBaseParamsSet(Private);
-			entity.addPart("type", new StringBody("regular"));
-			if (Body.compareTo("") != 0)
-				entity.addPart("body", new StringBody(Body));
-			if (Title.compareTo("") != 0)
-				entity.addPart("title", new StringBody(Title));
-
-			httppost.setEntity(entity);
-
-			HttpResponse response = httpclient.execute(httppost);
-
-			if (response.getStatusLine().getStatusCode() != 201) {
-				ShowNotification("ttTumblr", "Text creation failed", "");
-			}
-		} catch (ClientProtocolException e) {
-		} catch (IOException e) {
-		}
-
-		return true;
+        //Backward-compatability
+        Bundle o = new Bundle();
+        if(Private)
+            o.put("private", "1");
+        return postText(Title, Body, o);
 	}
 
 
-	public boolean postImage(Uri image, String caption, Bundle options) {
+	public void postImage(Uri image, String caption, Bundle options) {
         MultipartEntity entity = getEntityWithOptions(options);
         try {
             entity.addPart("type", new StringBody("photo"));
@@ -260,77 +245,17 @@ public class TumblrApi {
             Log.d(TAG, e.getMessage());
         }
         HttpResponse response = postEntity(entity);
-        if (response.getStatusLine().getStatusCode() != 201) {
-            ShowNotification("ttTumblr", "Text creation failed", "");
-            return false;
-        }
-        return true;
+        if (response.getStatusLine().getStatusCode() == 201)
+            ShowNotification("ttTumblr", "Image Posted", "");
+        else
+            ShowNotification("ttTumblr", "Image upload failed", "");
     }
+
+    //backward compatability
 	public void PostImage(Uri image, String caption) {
-		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
-
-		try {
-			MultipartEntity entity = getEntityWithBaseParamsSet(false);
-
-			entity.addPart("caption", new StringBody(caption));
-			entity.addPart("type", new StringBody("photo"));
-            // Do the MediaUriBody dance.
-            // Getting the type of the file
-            ContentResolver cR = context.getContentResolver();
-            MimeTypeMap mime = MimeTypeMap.getSingleton();
-            String type = mime.getExtensionFromMimeType(cR.getType(image));
-            InputStream stream = null;
-            try {
-                stream = cR.openInputStream(image);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            //TODO: fix filename to be something unique.
-            entity.addPart("data", new MediaUriBody(context, image, stream, "file."+type));
-
-			httppost.setEntity(entity);
-
-			HttpResponse response = httpclient.execute(httppost);
-
-			if (response.getStatusLine().getStatusCode() == 201)
-				ShowNotification("ttTumblr", "Image Posted", "");
-			else
-				ShowNotification("ttTumblr", "Image upload failed", "");
-		} catch (ClientProtocolException e) {
-			ShowNotification("ttTumblr", "Image upload failed", e.toString());
-		} catch (IOException e) {
-			ShowNotification("ttTumblr", "Image upload failed", e.toString());
-		}
-
-        return;
+        PostImage(image, caption, new Bundle());
     }
 
-	public void PostImage(File image, String caption) {
-		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
-
-		try {
-			MultipartEntity entity = getEntityWithBaseParamsSet(false);
-
-			entity.addPart("caption", new StringBody(caption));
-			entity.addPart("type", new StringBody("photo"));
-			entity.addPart("data", new FileBody(image));
-
-			httppost.setEntity(entity);
-
-			HttpResponse response = httpclient.execute(httppost);
-
-			if (response.getStatusLine().getStatusCode() == 201)
-				ShowNotification("ttTumblr", "Image Posted", "");
-			else
-				ShowNotification("ttTumblr", "Image upload failed", "");
-		} catch (ClientProtocolException e) {
-			ShowNotification("ttTumblr", "Image upload failed", e.toString());
-		} catch (IOException e) {
-			ShowNotification("ttTumblr", "Image upload failed", e.toString());
-		}
-	}
 
 	public void ShowNotification(String tickerText, String contentTitle,
 			String contentText) {
