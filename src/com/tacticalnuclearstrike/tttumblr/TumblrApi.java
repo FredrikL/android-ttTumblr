@@ -96,6 +96,7 @@ public class TumblrApi {
 			}
             //Save our list of available blogs.
             SharedPreferences blogs = context.getSharedPreferences(BLOGS_PREFS, 0);
+            Log.d("ttT", "attempting blog list extraction");
             saveBlogList(response, blogs);
 			return true;
 
@@ -393,12 +394,15 @@ public class TumblrApi {
 	}
 
     private void saveBlogList(HttpResponse r, SharedPreferences bloglist){
+        bloglist.edit().clear().commit();
         try{
             XmlPullParser xpp = XmlPullParserFactory.newInstance().newPullParser();
             xpp.setInput(r.getEntity().getContent(), null);
             int eventType = xpp.getEventType();
+            Log.d("ttT", "starting to loop...");
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 if(eventType == XmlPullParser.START_TAG && xpp.getName().equals("tumblelog")){
+                    Log.d("ttT", "found a tumblelog.");
                     String title = xpp.getAttributeValue(null, "title");
                     String type = xpp.getAttributeValue(null, "type");
                     if(type.equals("public")){
@@ -407,7 +411,7 @@ public class TumblrApi {
                         bloglist.edit().putString(title, name).commit();
                     }
                 }
-                xpp.next();
+                eventType = xpp.next();
             }
         } catch (XmlPullParserException e){
             Log.e(TAG, "blog list parser failure", e);

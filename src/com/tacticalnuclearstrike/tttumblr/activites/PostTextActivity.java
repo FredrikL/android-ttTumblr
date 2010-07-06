@@ -6,26 +6,32 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.SubMenu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.util.Log;
 
 import com.tacticalnuclearstrike.tttumblr.R;
 import com.tacticalnuclearstrike.tttumblr.TumblrApi;
 
 public class PostTextActivity extends Activity {
 
+    public static final String TAG = "PostTextActivity";
+
     //menu group for blog selection list.
     private static final int BLOG_GROUP = 1;
 
     private Bundle mPostOptions = new Bundle();
+    private SharedPreferences mBloglist;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.posttextview);
+        mBloglist = getSharedPreferences(TumblrApi.BLOGS_PREFS, 0);
 
 		setupOkButton();
 
@@ -75,14 +81,21 @@ public class PostTextActivity extends Activity {
 
     public boolean onCreateOptionsMenu(Menu menu){
         super.onCreateOptionsMenu(menu);
+        
+        OnMenuItemClickListener blogchoice_listener = new OnMenuItemClickListener(){
+            public boolean onMenuItemClick(MenuItem mi){
+                Log.d(TAG, "setting tumblelog to " + mBloglist.getString(mi.getTitle().toString(), "unknown!!"));
+                mPostOptions.putString("group", mBloglist.getString(mi.getTitle().toString(), "unknown"));
+                return true;
+            }
+        };
+                
         SubMenu blogmenu = menu.addSubMenu(Menu.NONE, Menu.NONE, Menu.NONE, "Select Tumblelog");
         //create the sub-menu based on the stored list of preferences.
-        SharedPreferences bloglist = getSharedPreferences(TumblrApi.BLOGS_PREFS, 0);
-        for (String k : bloglist.getAll().keySet()){
-            blogmenu.add(BLOG_GROUP, Menu.NONE, Menu.NONE, k);
+        for (String k : mBloglist.getAll().keySet()){
+            MenuItem blogitem = blogmenu.add(BLOG_GROUP, Menu.NONE, Menu.NONE, k);
+            blogitem.setOnMenuItemClickListener(blogchoice_listener);
         }
-        blogmenu.add(BLOG_GROUP, Menu.NONE, Menu.NONE, "blog 1");
-        blogmenu.add(BLOG_GROUP, Menu.NONE, Menu.NONE, "blog 2");
         blogmenu.setGroupCheckable(BLOG_GROUP, true, true); 
 
         return true;
