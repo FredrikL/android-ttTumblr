@@ -439,6 +439,8 @@ public class TumblrApi {
             postoptions.putString("private", "0");
         }
 
+        postoptions.putString("format", prefs.getString("text_format", "Markdown"));
+
         return postoptions;
     }
 }

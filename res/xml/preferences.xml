@@ -17,4 +17,11 @@
         android:summary="tags here will be included in all posts"
         android:defaultValue=""
     />
+    <ListPreference android:key="format"
+        android:title="Markup format"
+        android:summary="preferred markup format for text in posts"
+        android:defaultValue="Markdown"
+        android:entries="@array/post_formats"
+        android:entryValues="@array/post_formats"
+    />
 </PreferenceScreen>
