@@ -22,20 +22,24 @@ import com.tacticalnuclearstrike.tttumblr.R;
 import com.tacticalnuclearstrike.tttumblr.TumblrApi;
 import com.tacticalnuclearstrike.tttumblr.TumblrService;
 
-public class UploadImageActivity extends Activity {
+public class UploadImageActivity extends PostActivity {
     private static final String TAG = "UploadImageActivity";
 
 	Uri outputFileUri;
 	int TAKE_PICTURE = 0;
 	int SELECT_IMAGE = 1;
-	final TumblrApi api = new TumblrApi(this);
+	TumblrApi api;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+        api  = new TumblrApi(this);
 		setContentView(R.layout.uploadimageview);
 
         Intent startIntent = getIntent();
-        if(startIntent != null){
+        if(startIntent != null 
+            && startIntent.getExtras() != null
+            && startIntent.getExtras().containsKey(Intent.EXTRA_STREAM)){
             Uri startData = (Uri)startIntent.getExtras().get(Intent.EXTRA_STREAM);
             Log.d(TAG, "got initial data: " + startData.toString());
             outputFileUri = startData;
@@ -141,6 +145,7 @@ public class UploadImageActivity extends Activity {
         Intent uploadIntent = new Intent(TumblrService.ACTION_POST_PHOTO);
         uploadIntent.putExtra("photo", outputFileUri.toString());
         uploadIntent.putExtra("caption", caption);
+        uploadIntent.putExtra("options", mPostOptions);
         startService(uploadIntent);
 
 		setResult(RESULT_OK);

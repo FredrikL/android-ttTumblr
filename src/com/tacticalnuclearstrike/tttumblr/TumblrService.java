@@ -76,11 +76,12 @@ public class TumblrService extends Service {
     private void doPhotoPost(Intent i){
         final Uri photo = Uri.parse(i.getStringExtra("photo"));
         final String text = i.getStringExtra("caption");
+        final Bundle options = i.getBundleExtra("options");
 		final TumblrApi api = new TumblrApi(this);
 		new Thread(new Runnable() {
 			public void run() {
                 startForeground(N_POSTING, getNotification());
-				api.PostImage(photo, text);
+				api.postImage(photo, text, options);
                 stopForeground(true);
 			}
 		}).start();

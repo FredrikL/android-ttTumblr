@@ -258,8 +258,8 @@ public class TumblrApi {
     }
 
     //backward compatability
-	public void PostImage(Uri image, String caption) {
-        postImage(image, caption, new Bundle());
+	public void postImage(Uri image, String caption) {
+        postImage(image, caption, getDefaultPostOptions(context));
     }
 
 
