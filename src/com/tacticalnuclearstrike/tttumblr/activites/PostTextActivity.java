@@ -99,6 +99,7 @@ public class PostTextActivity extends Activity {
         };
                 
         SubMenu blogmenu = menu.addSubMenu(Menu.NONE, Menu.NONE, Menu.NONE, "Select Tumblelog");
+        blogmenu.setIcon(android.R.drawable.ic_menu_agenda);
         //create the sub-menu based on the stored list of preferences.
         for (String k : mBloglist.getAll().keySet()){
             MenuItem blogitem = blogmenu.add(MENU_GROUP_BLOG, Menu.NONE, Menu.NONE, k);
@@ -112,6 +113,7 @@ public class PostTextActivity extends Activity {
 
         //add a submenu for twitter
         SubMenu tweetmenu = menu.addSubMenu(Menu.NONE, Menu.NONE, Menu.NONE, "Twitter");
+        tweetmenu.setIcon(android.R.drawable.ic_menu_share);
         MenuItem tweet = tweetmenu.add(MENU_GROUP_TWEET, Menu.NONE, Menu.NONE, "send to twitter");
         tweet.setOnMenuItemClickListener(new OnMenuItemClickListener(){
             public boolean onMenuItemClick(MenuItem mi){
@@ -135,6 +137,7 @@ public class PostTextActivity extends Activity {
 
         //add a submenu for "private" posts.
         SubMenu privmenu = menu.addSubMenu(Menu.NONE, Menu.NONE, Menu.NONE, "Post Privately?");
+        privmenu.setIcon(android.R.drawable.ic_menu_view);
         MenuItem mi = privmenu.add(MENU_GROUP_PRIVATE, Menu.NONE, Menu.NONE, "yes");
         mi.setOnMenuItemClickListener(new OnMenuItemClickListener(){
             public boolean onMenuItemClick(MenuItem mi){

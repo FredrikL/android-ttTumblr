@@ -29,7 +29,7 @@ public class Preferences extends PreferenceActivity {
         ListPreference bloglistpref = (ListPreference)this.findPreference("default_blog");
         SharedPreferences bloglist = getSharedPreferences(TumblrApi.BLOGS_PREFS, 0);
 
-        if(bloglistpref.getAll().isEmpty()){
+        if(bloglist.getAll().isEmpty()){
             //no entries, dont do anything.
         } else {
             bloglistpref.setEnabled(true);
