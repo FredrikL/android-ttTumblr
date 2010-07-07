@@ -61,6 +61,7 @@ public abstract class PostActivity extends Activity {
             public boolean onMenuItemClick(MenuItem mi){
                 Log.d(TAG, "setting tumblelog to " + mBloglist.getString(mi.getTitle().toString(), "unknown!!"));
                 mPostOptions.putString("group", mBloglist.getString(mi.getTitle().toString(), "unknown"));
+                mi.setChecked(true);
                 return true;
             }
         };
@@ -85,21 +86,25 @@ public abstract class PostActivity extends Activity {
         tweet.setOnMenuItemClickListener(new OnMenuItemClickListener(){
             public boolean onMenuItemClick(MenuItem mi){
                 mPostOptions.putString("send-to-twitter", "auto");
+                mi.setChecked(true);
                 return true;
             }
         });
-        if( mPostOptions.getString("send-to-twitter").equals("auto"))
-            tweet.setChecked(true);
 
         MenuItem notweet = tweetmenu.add(MENU_GROUP_TWEET, Menu.NONE, Menu.NONE, "do not send");
         notweet.setOnMenuItemClickListener(new OnMenuItemClickListener(){
             public boolean onMenuItemClick(MenuItem mi){
                 mPostOptions.putString("send-to-twitter", "no");
+                mi.setChecked(true);
                 return true;
             }
         });
-        if( mPostOptions.getString("send-to-twitter").equals("no"))
+        //set default item checked.
+        if( mPostOptions.getString("send-to-twitter").equals("auto")){
+            tweet.setChecked(true);
+        } else if( mPostOptions.getString("send-to-twitter").equals("no")){
             notweet.setChecked(true);
+        }
         tweetmenu.setGroupCheckable(MENU_GROUP_TWEET, true, true); 
 
         //add a submenu for "private" posts.
@@ -109,6 +114,7 @@ public abstract class PostActivity extends Activity {
         mi.setOnMenuItemClickListener(new OnMenuItemClickListener(){
             public boolean onMenuItemClick(MenuItem mi){
                 mPostOptions.putString("private", "1");
+                mi.setChecked(true);
                 return true;
             }
         });
@@ -119,6 +125,7 @@ public abstract class PostActivity extends Activity {
         mi.setOnMenuItemClickListener(new OnMenuItemClickListener(){
             public boolean onMenuItemClick(MenuItem mi){
                 mPostOptions.putString("private", "0");
+                mi.setChecked(true);
                 return true;
             }
         });
