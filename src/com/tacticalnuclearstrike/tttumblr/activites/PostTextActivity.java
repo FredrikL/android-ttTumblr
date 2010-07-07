@@ -119,6 +119,8 @@ public class PostTextActivity extends Activity {
                 return true;
             }
         });
+        if( mPostOptions.getString("send-to-twitter").equals("auto"))
+            tweet.setChecked(true);
 
         MenuItem notweet = tweetmenu.add(MENU_GROUP_TWEET, Menu.NONE, Menu.NONE, "do not send");
         notweet.setOnMenuItemClickListener(new OnMenuItemClickListener(){
@@ -127,7 +129,9 @@ public class PostTextActivity extends Activity {
                 return true;
             }
         });
-        blogmenu.setGroupCheckable(MENU_GROUP_TWEET, true, true); 
+        if( mPostOptions.getString("send-to-twitter").equals("no"))
+            notweet.setChecked(true);
+        tweetmenu.setGroupCheckable(MENU_GROUP_TWEET, true, true); 
 
         //add a submenu for "private" posts.
         SubMenu privmenu = menu.addSubMenu(Menu.NONE, Menu.NONE, Menu.NONE, "Post Privately?");
@@ -138,6 +142,8 @@ public class PostTextActivity extends Activity {
                 return true;
             }
         });
+        if( mPostOptions.getString("private").equals("1"))
+            mi.setChecked(true);
 
         mi = privmenu.add(MENU_GROUP_PRIVATE, Menu.NONE, Menu.NONE, "no");
         mi.setOnMenuItemClickListener(new OnMenuItemClickListener(){
@@ -146,7 +152,9 @@ public class PostTextActivity extends Activity {
                 return true;
             }
         });
-        blogmenu.setGroupCheckable(MENU_GROUP_PRIVATE, true, true); 
+        if( mPostOptions.getString("private").equals("0"))
+            mi.setChecked(true);
+        privmenu.setGroupCheckable(MENU_GROUP_PRIVATE, true, true); 
 
         return true;
     }
