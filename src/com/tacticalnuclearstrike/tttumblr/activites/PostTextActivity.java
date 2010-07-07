@@ -22,16 +22,21 @@ public class PostTextActivity extends Activity {
     public static final String TAG = "PostTextActivity";
 
     //menu group for blog selection list.
-    private static final int BLOG_GROUP = 1;
+    private static final int MENU_GROUP_BLOG = 1;
+    private static final int MENU_GROUP_TWEET = 2;
+    private static final int MENU_GROUP_PRIVATE = 3;
 
-    private Bundle mPostOptions = new Bundle(); //this should get the defaults from the preferences.
+    private Bundle mPostOptions;
     private SharedPreferences mBloglist;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+        //set defaults for common post options.
+        mPostOptions = TumblrApi.getDefaultPostOptions(this);
+        mBloglist = getSharedPreferences(TumblrApi.BLOGS_PREFS, 0);
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.posttextview);
-        mBloglist = getSharedPreferences(TumblrApi.BLOGS_PREFS, 0);
 
 		setupOkButton();
 
@@ -93,31 +98,48 @@ public class PostTextActivity extends Activity {
         SubMenu blogmenu = menu.addSubMenu(Menu.NONE, Menu.NONE, Menu.NONE, "Select Tumblelog");
         //create the sub-menu based on the stored list of preferences.
         for (String k : mBloglist.getAll().keySet()){
-            MenuItem blogitem = blogmenu.add(BLOG_GROUP, Menu.NONE, Menu.NONE, k);
+            MenuItem blogitem = blogmenu.add(MENU_GROUP_BLOG, Menu.NONE, Menu.NONE, k);
             blogitem.setOnMenuItemClickListener(blogchoice_listener);
         }
-        blogmenu.setGroupCheckable(BLOG_GROUP, true, true); 
+        blogmenu.setGroupCheckable(MENU_GROUP_BLOG, true, true); 
 
-        //add a checkable item for twitter
-        MenuItem tweet = menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Tweet?");
-        tweet.setCheckable(true);
+        //add a submenu for twitter
+        SubMenu tweetmenu = menu.addSubMenu(Menu.NONE, Menu.NONE, Menu.NONE, "Twitter");
+        MenuItem tweet = tweetmenu.add(MENU_GROUP_TWEET, Menu.NONE, Menu.NONE, "send to twitter");
         tweet.setOnMenuItemClickListener(new OnMenuItemClickListener(){
             public boolean onMenuItemClick(MenuItem mi){
-                if( mi.isChecked() ){
-                    mi.setChecked(false);
-                    Log.d(TAG, "not tweeting");
-                    mPostOptions.putString("send-to-twitter", "no");
-                    //change the title to reflect what happens if we press it again.
-                    mi.setTitle("Tweet");
-                } else {
-                    mi.setChecked(true);
-                    Log.d(TAG, "tweeting!");
-                    mPostOptions.putString("send-to-twitter", "auto");
-                    mi.setTitle("Do not Tweet");
-                }
+                mPostOptions.putString("send-to-twitter", "auto");
                 return true;
             }
         });
+
+        MenuItem notweet = tweetmenu.add(MENU_GROUP_TWEET, Menu.NONE, Menu.NONE, "do not send");
+        notweet.setOnMenuItemClickListener(new OnMenuItemClickListener(){
+            public boolean onMenuItemClick(MenuItem mi){
+                mPostOptions.putString("send-to-twitter", "no");
+                return true;
+            }
+        });
+        blogmenu.setGroupCheckable(MENU_GROUP_TWEET, true, true); 
+
+        //add a submenu for "private" posts.
+        SubMenu privmenu = menu.addSubMenu(Menu.NONE, Menu.NONE, Menu.NONE, "Post Privately?");
+        MenuItem mi = privmenu.add(MENU_GROUP_PRIVATE, Menu.NONE, Menu.NONE, "yes");
+        mi.setOnMenuItemClickListener(new OnMenuItemClickListener(){
+            public boolean onMenuItemClick(MenuItem mi){
+                mPostOptions.putString("private", "1");
+                return true;
+            }
+        });
+
+        mi = privmenu.add(MENU_GROUP_PRIVATE, Menu.NONE, Menu.NONE, "no");
+        mi.setOnMenuItemClickListener(new OnMenuItemClickListener(){
+            public boolean onMenuItemClick(MenuItem mi){
+                mPostOptions.putString("private", "0");
+                return true;
+            }
+        });
+        blogmenu.setGroupCheckable(MENU_GROUP_PRIVATE, true, true); 
 
         return true;
     }

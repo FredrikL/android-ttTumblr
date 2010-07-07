@@ -420,4 +420,25 @@ public class TumblrApi {
         }
 
     }
+
+    /** Returns a Bundle with user's preferred default post options.
+     * settings are read from preferences, and can be overridden.
+     */
+    public static Bundle getDefaultPostOptions(Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        Bundle postoptions = new Bundle();
+        if(prefs.getBoolean("twitter", false)){
+            postoptions.putString("send-to-twitter", "auto");
+        } else {
+            postoptions.putString("send-to-twitter", "no");
+        }
+
+        if(prefs.getBoolean("private", false)){
+            postoptions.putString("private", "1");
+        } else {
+            postoptions.putString("private", "0");
+        }
+
+        return postoptions;
+    }
 }
