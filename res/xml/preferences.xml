@@ -24,4 +24,9 @@
         android:entries="@array/post_formats"
         android:entryValues="@array/post_formats"
     />
+    <ListPreference android:key="default_blog"
+        android:title="Default Blog"
+        android:summary="preferred blog for posts"
+        android:enabled="false"
+    />
 </PreferenceScreen>
