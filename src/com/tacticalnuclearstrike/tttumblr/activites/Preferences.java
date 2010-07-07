@@ -29,16 +29,20 @@ public class Preferences extends PreferenceActivity {
         ListPreference bloglistpref = (ListPreference)this.findPreference("default_blog");
         SharedPreferences bloglist = getSharedPreferences(TumblrApi.BLOGS_PREFS, 0);
 
-        bloglistpref.setEnabled(true);
-        ArrayList<String> entries = new ArrayList();
-        ArrayList<String> entryVals = new ArrayList();
+        if(bloglistpref.getAll().isEmpty()){
+            //no entries, dont do anything.
+        } else {
+            bloglistpref.setEnabled(true);
+            ArrayList<String> entries = new ArrayList();
+            ArrayList<String> entryVals = new ArrayList();
 
-        for (String k : bloglist.getAll().keySet()){
-            entries.add(k);
-            entryVals.add(bloglist.getString(k,""));
+            for (String k : bloglist.getAll().keySet()){
+                entries.add(k);
+                entryVals.add(bloglist.getString(k,""));
+            }
+            bloglistpref.setEntries(entries.toArray(new CharSequence[1]));
+            bloglistpref.setEntryValues(entryVals.toArray(new CharSequence[1]));
         }
-        bloglistpref.setEntries(entries.toArray(new CharSequence[1]));
-        bloglistpref.setEntryValues(entryVals.toArray(new CharSequence[1]));
 
     }
 
