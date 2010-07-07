@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
@@ -28,12 +29,14 @@ public class PostTextActivity extends Activity {
 
     private Bundle mPostOptions;
     private SharedPreferences mBloglist;
+    private SharedPreferences mPrefs;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
         //set defaults for common post options.
         mPostOptions = TumblrApi.getDefaultPostOptions(this);
         mBloglist = getSharedPreferences(TumblrApi.BLOGS_PREFS, 0);
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.posttextview);
@@ -100,6 +103,10 @@ public class PostTextActivity extends Activity {
         for (String k : mBloglist.getAll().keySet()){
             MenuItem blogitem = blogmenu.add(MENU_GROUP_BLOG, Menu.NONE, Menu.NONE, k);
             blogitem.setOnMenuItemClickListener(blogchoice_listener);
+            if(mPrefs.getString("default_blog", "NO DEFAULT").equals(mBloglist.getString(k,""))){
+                //this is our default blog. mark it as selected.
+                blogitem.setChecked(true);
+            }
         }
         blogmenu.setGroupCheckable(MENU_GROUP_BLOG, true, true); 
 

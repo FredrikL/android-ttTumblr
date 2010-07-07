@@ -409,6 +409,12 @@ public class TumblrApi {
                         String name = xpp.getAttributeValue(null, "name");  
                         Log.d(TAG, "found public blog named: " + name);
                         bloglist.edit().putString(title, name).commit();
+                        if(xpp.getAttributeValue(null, "is-primary") != null 
+                            && xpp.getAttributeValue(null, "is-primary").equals("yes")){
+                            //set the primary blog as our default.
+                            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+                            prefs.edit().putString("default_blog", name).commit();
+                        }
                     }
                 }
                 eventType = xpp.next();
