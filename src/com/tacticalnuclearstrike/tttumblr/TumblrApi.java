@@ -446,6 +446,7 @@ public class TumblrApi {
         }
 
         postoptions.putString("format", prefs.getString("text_format", "Markdown"));
+        postoptions.putString("group", prefs.getString("default_blog", "")+".tumblr.com");
 
         return postoptions;
     }

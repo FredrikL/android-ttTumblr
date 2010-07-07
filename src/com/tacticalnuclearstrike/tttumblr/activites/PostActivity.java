@@ -18,25 +18,31 @@ import android.util.Log;
 import com.tacticalnuclearstrike.tttumblr.R;
 import com.tacticalnuclearstrike.tttumblr.TumblrApi;
 
-public class PostTextActivity extends PostActivity {
+/** Base class for activities which post content.
+ * provides the menu for setting post options.
+ */
+public abstract class PostActivity extends Activity {
 
-    public static final String TAG = "PostTextActivity";
+    private static final String TAG = "PostActivity";
 
     //menu group for blog selection list.
-    private static final int MENU_GROUP_BLOG = 1;
-    private static final int MENU_GROUP_TWEET = 2;
-    private static final int MENU_GROUP_PRIVATE = 3;
+    protected static final int MENU_GROUP_BLOG = 1;
+    protected static final int MENU_GROUP_TWEET = 2;
+    protected static final int MENU_GROUP_PRIVATE = 3;
 
-    private SharedPreferences mPrefs;
+    protected Bundle mPostOptions;
+    protected SharedPreferences mBloglist;
+    protected SharedPreferences mPrefs;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.posttextview);
-
-		setupOkButton();
-
+        //set defaults for common post options.
+        mPostOptions = TumblrApi.getDefaultPostOptions(this);
+        mBloglist = getSharedPreferences(TumblrApi.BLOGS_PREFS, 0);
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         loadDefaultPostOptions();
+		super.onCreate(savedInstanceState);
+
 	}
 	
 	private void returnToMainActivity() {
@@ -44,39 +50,10 @@ public class PostTextActivity extends PostActivity {
 		finish();
 	}
 
-	private void setupOkButton() {
-		Button btnOk = (Button) findViewById(R.id.postTextBtnOk);
-		btnOk.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				okButtonClick();
-			}
-		});
-	}
+    protected void loadDefaultPostOptions(){
+        //TODO: fill this in.
+    }
 
-	private void okButtonClick() {
-		EditText title = (EditText) findViewById(R.id.inputText);
-		EditText post = (EditText) findViewById(R.id.inputPost);
-		
-		final String titleText = title.getText().toString();
-		final String postText = post.getText().toString();
-		final Boolean privPost = false;
-		
-		if(titleText.compareTo("") == 0 && postText.compareTo("") == 0){
-			Toast.makeText(this, "Cannont create post without content!", Toast.LENGTH_SHORT).show();
-			return;		
-		}
-		
-        Intent postIntent = new Intent("com.tacticalnuclearstrike.tttumblr.POST_TEXT");
-        postIntent.putExtra("title", titleText);
-        postIntent.putExtra("body", postText);
-        postIntent.putExtra("options", mPostOptions);
-        startService(postIntent);
-		
-		returnToMainActivity();
-	}
-
-    /*
     public boolean onCreateOptionsMenu(Menu menu){
         super.onCreateOptionsMenu(menu);
         
@@ -151,5 +128,4 @@ public class PostTextActivity extends PostActivity {
 
         return true;
     }
-    */
 }
