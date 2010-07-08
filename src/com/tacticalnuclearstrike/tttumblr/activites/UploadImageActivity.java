@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -111,10 +111,8 @@ public class UploadImageActivity extends PostActivity {
 
 	private void setSelectedImageThumbnail(Uri image) {
 		try {			
-			String path = getRealPathFromURI(image);
 			ImageView iv = (ImageView) findViewById(R.id.selectedImage);
-			Drawable dr = Drawable.createFromPath(path);
-			iv.setImageDrawable(dr);
+			iv.setImageBitmap(getThumbnail(image));
 			iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
 			iv.invalidate();
 		} catch (Exception e) {
@@ -122,14 +120,17 @@ public class UploadImageActivity extends PostActivity {
 		}
 	}
 
-	private String getRealPathFromURI(Uri contentUri) {
-		String[] proj = { MediaStore.Images.Media.DATA };
+	private Bitmap getThumbnail(Uri contentUri) {
+		String[] proj = { MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA };
 		Cursor cursor = managedQuery(contentUri, proj, null, null, null);
 		int column_index = cursor
-				.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+				.getColumnIndexOrThrow(MediaStore.Images.Media._ID);
 		cursor.moveToFirst();
 
-		return cursor.getString(column_index);
+        return MediaStore.Images.Thumbnails.getThumbnail(this.getContentResolver(),
+                                                    cursor.getLong(column_index),
+                                                    MediaStore.Images.Thumbnails.MINI_KIND,
+                                                    null);
 	}
 
 	private void uploadImage() {
