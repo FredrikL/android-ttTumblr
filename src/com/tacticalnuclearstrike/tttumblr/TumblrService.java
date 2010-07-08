@@ -29,6 +29,8 @@ public class TumblrService extends Service {
     public static final String ACTION_POST_TEXT = "com.tacticalnuclearstrike.tttumblr.POST_TEXT";
     public static final String ACTION_POST_PHOTO = "com.tacticalnuclearstrike.tttumblr.POST_PHOTO";
     public static final String ACTION_POST_CONVERSATION = "com.tacticalnuclearstrike.tttumblr.POST_CONVERSATION";
+    public static final String ACTION_POST_QUOTE = "com.tacticalnuclearstrike.tttumblr.POST_QUOTE";
+    public static final String ACTION_POST_URL = "com.tacticalnuclearstrike.tttumblr.POST_URL";
 
     @Override
     public void onCreate() {
@@ -47,6 +49,10 @@ public class TumblrService extends Service {
             doPhotoPost(intent);
         } else if (ACTION_POST_CONVERSATION.equals(intent.getAction())) {
             doConversationPost(intent);
+        } else if (ACTION_POST_QUOTE.equals(intent.getAction())) {
+            doQuotePost(intent);
+        } else if (ACTION_POST_URL.equals(intent.getAction())) {
+            doUrlPost(intent);
         }
         else {
             Log.d(TAG, "UNKNOWN ACTION!");
@@ -100,6 +106,41 @@ public class TumblrService extends Service {
 			public void run() {
                 startForeground(N_POSTING, getNotification());
 				api.postConversation(title, convo, options);
+                stopForeground(true);
+			}
+		}).start();
+    }
+
+    /** doQuotePost - posts a quote
+     * Extras: 'quote' - String, 'source' - String (optional).
+     */
+    private void doQuotePost(Intent i){
+        final String quote = i.getStringExtra("quote");
+        final String source = i.getStringExtra("source");
+        final Bundle options = i.getBundleExtra("options");
+		final TumblrApi api = new TumblrApi(this);
+		new Thread(new Runnable() {
+			public void run() {
+                startForeground(N_POSTING, getNotification());
+				api.postQuote(quote, source, options);
+                stopForeground(true);
+			}
+		}).start();
+    }
+
+    /** doUrlPost - posts a link
+     * Extras: 'link' - String, 'name' - String, 'description' - String
+     */
+    private void doUrlPost(Intent i){
+        final String link = i.getStringExtra("link");
+        final String name = i.getStringExtra("name");
+        final String description = i.getStringExtra("description");
+        final Bundle options = i.getBundleExtra("options");
+		final TumblrApi api = new TumblrApi(this);
+		new Thread(new Runnable() {
+			public void run() {
+                startForeground(N_POSTING, getNotification());
+				api.postUrl(link, name, description, options);
                 stopForeground(true);
 			}
 		}).start();

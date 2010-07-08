@@ -252,9 +252,9 @@ public class TumblrApi {
         }
         HttpResponse response = postEntity(entity);
         if (response.getStatusLine().getStatusCode() == 201)
-            ShowNotification("ttTumblr", "Image Posted", "");
+            ShowNotification("Image Posted", "", "");
         else
-            ShowNotification("ttTumblr", "Image upload failed", "");
+            ShowNotification("Image upload failed", "", "");
     }
 
     //backward compatability
@@ -284,6 +284,7 @@ public class TumblrApi {
 		mNotificationManager.notify(1, notification);
 	}
 
+    //TODO: make this use a URI, not a File
 	public void PostVideo(File videoToUpload, String caption) {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
@@ -310,58 +311,42 @@ public class TumblrApi {
 		}
 	}
 
-	public boolean postQuote(String quoteText, String sourceText) {
-		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
-
-		try {
-			MultipartEntity entity = getEntityWithBaseParamsSet(false);
-
-			if (quoteText.compareTo("") != 0)
-				entity.addPart("quote", new StringBody(quoteText));
-			if (sourceText.compareTo("") != 0)
-				entity.addPart("source", new StringBody(sourceText));
-			entity.addPart("type", new StringBody("quote"));
-
-			httppost.setEntity(entity);
-
-			HttpResponse response = httpclient.execute(httppost);
-
-			if (response.getStatusLine().getStatusCode() != 201) {
-				ShowNotification("ttTumblr", "Quote creation failed", "");
-			}
-		} catch (ClientProtocolException e) {
-		} catch (IOException e) {
-		}
+	public boolean postQuote(String quoteText, String sourceText, Bundle options) {
+        MultipartEntity entity = getEntityWithOptions(options);
+        try {
+            entity.addPart("type", new StringBody("quote"));
+            entity.addPart("quote", new StringBody(quoteText));
+            if(sourceText != null)
+                entity.addPart("source", new StringBody(sourceText));
+        }
+        catch(UnsupportedEncodingException e){
+            Log.e(TAG, e.getMessage());
+        }
+        HttpResponse response = postEntity(entity);
+        if (response.getStatusLine().getStatusCode() != 201) {
+            ShowNotification("ttTumblr", "Quote creation failed", "");
+        }
 
 		return true;
 	}
 
-	public boolean postUrl(String url, String name, String description) {
-		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
-
-		try {
-			MultipartEntity entity = getEntityWithBaseParamsSet(false);
-
-			if (url.compareTo("") != 0)
-				entity.addPart("url", new StringBody(url));
-			if (name.compareTo("") != 0)
-				entity.addPart("name", new StringBody(name));
-			if (description.compareTo("") != 0)
-				entity.addPart("description", new StringBody(description));
-			entity.addPart("type", new StringBody("link"));
-
-			httppost.setEntity(entity);
-
-			HttpResponse response = httpclient.execute(httppost);
-
-			if (response.getStatusLine().getStatusCode() != 201) {
-				ShowNotification("ttTumblr", "Link creation failed", "");
-			}
-		} catch (ClientProtocolException e) {
-		} catch (IOException e) {
-		}
+	public boolean postUrl(String url, String name, String description, Bundle options) {
+        MultipartEntity entity = getEntityWithOptions(options);
+        try {
+            entity.addPart("type", new StringBody("link"));
+            entity.addPart("url", new StringBody(url));
+            if(name != null)
+                entity.addPart("name", new StringBody(name));
+            if(description != null)
+                entity.addPart("description", new StringBody(description));
+        }
+        catch(UnsupportedEncodingException e){
+            Log.e(TAG, e.getMessage());
+        }
+        HttpResponse response = postEntity(entity);
+        if (response.getStatusLine().getStatusCode() != 201) {
+            ShowNotification("Link creation failed", "", "");
+        }
 
 		return true;
 	}
