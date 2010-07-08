@@ -366,32 +366,25 @@ public class TumblrApi {
 		return true;
 	}
 
-	public boolean postConversation(String title, String convo) {
-		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
-
-		try {
-			MultipartEntity entity = getEntityWithBaseParamsSet(false);
-
-			if (title.compareTo("") != 0)
-				entity.addPart("title", new StringBody(title));
-			if (convo.compareTo("") != 0)
-				entity.addPart("conversation", new StringBody(convo));
-			entity.addPart("type", new StringBody("conversation"));
-
-			httppost.setEntity(entity);
-
-			HttpResponse response = httpclient.execute(httppost);
-
-			if (response.getStatusLine().getStatusCode() != 201) {
-				ShowNotification("ttTumblr", "Conversation creation failed", "");
-			}
-		} catch (ClientProtocolException e) {
-		} catch (IOException e) {
-		}
-
-		return true;
-	}
+	public boolean postConversation(String title, String convo, Bundle options) {
+        MultipartEntity entity = getEntityWithOptions(options);
+        try {
+            entity.addPart("type", new StringBody("conversation"));
+            if(title != null)
+                entity.addPart("title", new StringBody(title));
+            if(convo != null)
+                entity.addPart("conversation", new StringBody(convo));
+        }
+        catch(UnsupportedEncodingException e){
+            Log.e(TAG, e.getMessage());
+        }
+        HttpResponse response = postEntity(entity);
+        if (response.getStatusLine().getStatusCode() != 201) {
+            ShowNotification("Post creation failed", "", "");
+            return false;
+        }
+        return true;
+    }
 
     private void saveBlogList(HttpResponse r, SharedPreferences bloglist){
         bloglist.edit().clear().commit();

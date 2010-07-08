@@ -28,6 +28,7 @@ public class TumblrService extends Service {
     //Actions:
     public static final String ACTION_POST_TEXT = "com.tacticalnuclearstrike.tttumblr.POST_TEXT";
     public static final String ACTION_POST_PHOTO = "com.tacticalnuclearstrike.tttumblr.POST_PHOTO";
+    public static final String ACTION_POST_CONVERSATION = "com.tacticalnuclearstrike.tttumblr.POST_CONVERSATION";
 
     @Override
     public void onCreate() {
@@ -40,12 +41,12 @@ public class TumblrService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "start intent received: " + intent.getAction());
-        //XXX: assuming braindump here.
         if (ACTION_POST_TEXT.equals(intent.getAction())){
-            //do the posting.
             doTextPost(intent);
         } else if (ACTION_POST_PHOTO.equals(intent.getAction())) {
             doPhotoPost(intent);
+        } else if (ACTION_POST_CONVERSATION.equals(intent.getAction())) {
+            doConversationPost(intent);
         }
         else {
             Log.d(TAG, "UNKNOWN ACTION!");
@@ -53,7 +54,7 @@ public class TumblrService extends Service {
         return START_REDELIVER_INTENT;
     }
 
-    //XXX: should these posts be cached somewhere so we can retry?
+    //TODO: should these posts be cached somewhere so we can retry?
     private void doTextPost(Intent i){
         final String titleText = i.getStringExtra("title");
         final String postText = i.getStringExtra("body");
@@ -87,10 +88,21 @@ public class TumblrService extends Service {
 		}).start();
     }
 
-    @Override
-    public void onDestroy() {
-        // Tell the user we stopped.
-        Toast.makeText(this, "tumblr service stopped!", Toast.LENGTH_SHORT).show();
+    /** doConversationPost - posts a conversation.
+     * Extras: 'title' - String, 'conversation' - String.
+     */
+    private void doConversationPost(Intent i){
+        final String title = i.getStringExtra("title");
+        final String convo = i.getStringExtra("conversation");
+        final Bundle options = i.getBundleExtra("options");
+		final TumblrApi api = new TumblrApi(this);
+		new Thread(new Runnable() {
+			public void run() {
+                startForeground(N_POSTING, getNotification());
+				api.postConversation(title, convo, options);
+                stopForeground(true);
+			}
+		}).start();
     }
 
     private Notification getNotification(){
@@ -101,5 +113,10 @@ public class TumblrService extends Service {
         n.setLatestEventInfo(this, "posting", "posting text", pi);
         return n;
     }
-    
+
+    @Override
+    public void onDestroy() {
+        // Tell the user we stopped.
+        Toast.makeText(this, "tumblr service stopped!", Toast.LENGTH_SHORT).show();
+    }
 }

@@ -32,6 +32,7 @@
             <intent-filter>
 				<action android:name="com.tacticalnuclearstrike.tttumblr.POST_TEXT" />
 				<action android:name="com.tacticalnuclearstrike.tttumblr.POST_PHOTO" />
+				<action android:name="com.tacticalnuclearstrike.tttumblr.POST_CONVERSATION" />
             </intent-filter>
         </service>
 	</application>
