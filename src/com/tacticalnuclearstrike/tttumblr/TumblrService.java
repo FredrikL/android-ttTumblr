@@ -30,7 +30,7 @@ public class TumblrService extends Service {
     public static final String ACTION_POST_PHOTO = "com.tacticalnuclearstrike.tttumblr.POST_PHOTO";
     public static final String ACTION_POST_CONVERSATION = "com.tacticalnuclearstrike.tttumblr.POST_CONVERSATION";
     public static final String ACTION_POST_QUOTE = "com.tacticalnuclearstrike.tttumblr.POST_QUOTE";
-    public static final String ACTION_POST_URL = "com.tacticalnuclearstrike.tttumblr.POST_URL";
+    public static final String ACTION_POST_LINK = "com.tacticalnuclearstrike.tttumblr.POST_LINK";
 
     @Override
     public void onCreate() {
@@ -51,7 +51,7 @@ public class TumblrService extends Service {
             doConversationPost(intent);
         } else if (ACTION_POST_QUOTE.equals(intent.getAction())) {
             doQuotePost(intent);
-        } else if (ACTION_POST_URL.equals(intent.getAction())) {
+        } else if (ACTION_POST_LINK.equals(intent.getAction())) {
             doUrlPost(intent);
         }
         else {

@@ -220,15 +220,6 @@ public class TumblrApi {
         return true;
     }
 
-	public boolean postText(String Title, String Body, Boolean Private) {
-        //Backward-compatability
-        Bundle o = new Bundle();
-        if(Private)
-            o.putString("private", "1");
-        return postText(Title, Body, o);
-	}
-
-
 	public void postImage(Uri image, String caption, Bundle options) {
         MultipartEntity entity = getEntityWithOptions(options);
         try {
@@ -256,12 +247,6 @@ public class TumblrApi {
         else
             ShowNotification("Image upload failed", "", "");
     }
-
-    //backward compatability
-	public void postImage(Uri image, String caption) {
-        postImage(image, caption, getDefaultPostOptions(context));
-    }
-
 
 	public void ShowNotification(String tickerText, String contentTitle,
 			String contentText) {
