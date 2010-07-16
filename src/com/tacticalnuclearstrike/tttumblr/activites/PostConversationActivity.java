@@ -1,6 +1,6 @@
 package com.tacticalnuclearstrike.tttumblr.activites;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,9 +8,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.tacticalnuclearstrike.tttumblr.R;
-import com.tacticalnuclearstrike.tttumblr.TumblrApi;
 
-public class PostConversationActivity extends Activity {
+public class PostConversationActivity extends PostActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -19,11 +18,6 @@ public class PostConversationActivity extends Activity {
 		setupOkButton();
 	}
 	
-	private void returnToMainActivity() {
-		setResult(RESULT_OK);
-		finish();
-	}
-
 	private void setupOkButton() {
 		Button btnOk = (Button) findViewById(R.id.postConversationBtnOk);
 		btnOk.setOnClickListener(new View.OnClickListener() {
@@ -42,16 +36,12 @@ public class PostConversationActivity extends Activity {
 			Toast.makeText(this, "Cannont create post without content!", Toast.LENGTH_SHORT).show();
 			return;		
 		}
-		
-		final TumblrApi api = new TumblrApi(this);
-		
-		Toast.makeText(this, "Creating post", Toast.LENGTH_LONG).show();
-		
-		new Thread(new Runnable() {
-			public void run() {
-				api.postConversation(title, convo);
-			}
-		}).start();
+
+        Intent postIntent = new Intent("com.tacticalnuclearstrike.tttumblr.POST_CONVERSATION");
+        postIntent.putExtra("title", title);
+        postIntent.putExtra("conversation", convo);
+        postIntent.putExtra("options", mPostOptions);
+        startService(postIntent);
 		
 		returnToMainActivity();
 	}

@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,19 +16,35 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.util.Log;
 
 import com.tacticalnuclearstrike.tttumblr.R;
 import com.tacticalnuclearstrike.tttumblr.TumblrApi;
+import com.tacticalnuclearstrike.tttumblr.TumblrService;
 
-public class UploadImageActivity extends Activity {
+public class UploadImageActivity extends PostActivity {
+    private static final String TAG = "UploadImageActivity";
+
 	Uri outputFileUri;
 	int TAKE_PICTURE = 0;
 	int SELECT_IMAGE = 1;
-	final TumblrApi api = new TumblrApi(this);
+	TumblrApi api;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+        api  = new TumblrApi(this);
 		setContentView(R.layout.uploadimageview);
+
+        Intent startIntent = getIntent();
+        if(startIntent != null 
+            && startIntent.getExtras() != null
+            && startIntent.getExtras().containsKey(Intent.EXTRA_STREAM)){
+            Uri startData = (Uri)startIntent.getExtras().get(Intent.EXTRA_STREAM);
+            Log.d(TAG, "got initial data: " + startData.toString());
+            outputFileUri = startData;
+			setSelectedImageThumbnail(outputFileUri);
+        }
 
 		Button btnTakePicture = (Button) findViewById(R.id.btnTakePicture);
 		btnTakePicture.setOnClickListener(new View.OnClickListener() {
@@ -102,10 +118,8 @@ public class UploadImageActivity extends Activity {
 
 	private void setSelectedImageThumbnail(Uri image) {
 		try {			
-			String path = getRealPathFromURI(image);
 			ImageView iv = (ImageView) findViewById(R.id.selectedImage);
-			Drawable dr = Drawable.createFromPath(path);
-			iv.setImageDrawable(dr);
+			iv.setImageBitmap(getThumbnail(image));
 			iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
 			iv.invalidate();
 		} catch (Exception e) {
@@ -113,14 +127,17 @@ public class UploadImageActivity extends Activity {
 		}
 	}
 
-	private String getRealPathFromURI(Uri contentUri) {
-		String[] proj = { MediaStore.Images.Media.DATA };
+	private Bitmap getThumbnail(Uri contentUri) {
+		String[] proj = { MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA };
 		Cursor cursor = managedQuery(contentUri, proj, null, null, null);
 		int column_index = cursor
-				.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+				.getColumnIndexOrThrow(MediaStore.Images.Media._ID);
 		cursor.moveToFirst();
 
-		return cursor.getString(column_index);
+        return MediaStore.Images.Thumbnails.getThumbnail(this.getContentResolver(),
+                                                    cursor.getLong(column_index),
+                                                    MediaStore.Images.Thumbnails.MINI_KIND,
+                                                    null);
 	}
 
 	private void uploadImage() {
@@ -133,18 +150,12 @@ public class UploadImageActivity extends Activity {
 		EditText text = (EditText) findViewById(R.id.tbImageCaption);
 		final String caption = text.getText().toString();
 
-		String path = getRealPathFromURI(outputFileUri);
-		final File photoToUpload = new File(path);
-		
-		Toast.makeText(this, "Upload started", Toast.LENGTH_LONG).show();
+        Intent uploadIntent = new Intent(TumblrService.ACTION_POST_PHOTO);
+        uploadIntent.putExtra("photo", outputFileUri.toString());
+        uploadIntent.putExtra("caption", caption);
+        uploadIntent.putExtra("options", mPostOptions);
+        startService(uploadIntent);
 
-		new Thread(new Runnable() {
-			public void run() {
-				api.PostImage(photoToUpload, caption);
-				
-			}
-		}).start();
-		
 		setResult(RESULT_OK);
 		finish();
 	}

@@ -1,6 +1,5 @@
 package com.tacticalnuclearstrike.tttumblr.activites;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,9 +8,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.tacticalnuclearstrike.tttumblr.R;
-import com.tacticalnuclearstrike.tttumblr.TumblrApi;
+import com.tacticalnuclearstrike.tttumblr.TumblrService;
 
-public class PostLinkActivity extends Activity {
+public class PostLinkActivity extends PostActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -26,11 +25,6 @@ public class PostLinkActivity extends Activity {
 		}
 	}
 	
-	private void returnToMainActivity() {
-		setResult(RESULT_OK);
-		finish();
-	}
-
 	private void setupOkButton() {
 		Button btnOk = (Button) findViewById(R.id.postQuoteBtnOk);
 		btnOk.setOnClickListener(new View.OnClickListener() {
@@ -52,15 +46,12 @@ public class PostLinkActivity extends Activity {
 			return;		
 		}
 		
-		final TumblrApi api = new TumblrApi(this);
-		
-		Toast.makeText(this, "Creating post", Toast.LENGTH_LONG).show();
-		
-		new Thread(new Runnable() {
-			public void run() {
-				api.postUrl(url, name, description);
-			}
-		}).start();
+        Intent postIntent = new Intent(TumblrService.ACTION_POST_LINK);
+        postIntent.putExtra("link", url);
+        postIntent.putExtra("name", name);
+        postIntent.putExtra("description", description);
+        postIntent.putExtra("options", mPostOptions);
+        startService(postIntent);
 		
 		returnToMainActivity();
 	}
