@@ -12,11 +12,11 @@
         android:summary="should posts be private by default?"
         android:defaultValue="false"
     />
-    <EditTextPreference android:key="tags"
+<!--     <EditTextPreference android:key="tags"
         android:title="Tags"
         android:summary="tags here will be included in all posts"
         android:defaultValue=""
-    />
+    />-->
     <ListPreference android:key="format"
         android:title="Markup format"
         android:summary="preferred markup format for text in posts"
