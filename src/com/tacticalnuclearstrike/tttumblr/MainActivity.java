@@ -172,7 +172,7 @@ public class MainActivity extends Activity {
 				.setMessage(
 						"ttTumblr "
 								+ version
-								+ "\n\nIf you find any errors please contact me so that I can fix them.\n\nKnown issues: selecting an image from gallery multiple times causes a crash.")
+								+ "\n\nIf you find any errors please contact me so that I can fix them.")
 				.setCancelable(true).setPositiveButton("Ok",
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
