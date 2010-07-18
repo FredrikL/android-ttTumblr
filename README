@@ -1,12 +1,10 @@
-ttTumblr - forked.
-
-improvements include:
-* sharing images from gallery
-* using a Service to upload (prevents uploads from being broken if app is killed)
-* support for multiple tumblr blogs
-* preferences for privacy and twitter
+ttTumblr
 
 Tumblr application for android devices, handles view dashboard, post images, text, links, quotes and chats.
+
+Contributors:
+muncus - Multiple blogs, privacy & twitter handling and a bunch of crashfixes
+xxv - Sharing from gallery 
 
 Released under the MIT License.
 
