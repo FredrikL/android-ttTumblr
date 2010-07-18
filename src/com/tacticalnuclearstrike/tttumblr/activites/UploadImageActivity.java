@@ -101,7 +101,7 @@ public class UploadImageActivity extends PostActivity {
 								.insertImage(getContentResolver(), f
 										.getAbsolutePath(), null, null));
 
-				f.delete();
+				//f.delete();
 				setSelectedImageThumbnail(outputFileUri);
 
 			} catch (FileNotFoundException e) {
@@ -139,6 +139,16 @@ public class UploadImageActivity extends PostActivity {
                                                     MediaStore.Images.Thumbnails.MINI_KIND,
                                                     null);
 	}
+	
+	private String getRealPathFromURI(Uri contentUri) {
+		String[] proj = { MediaStore.Images.Media.DATA };
+		Cursor cursor = managedQuery(contentUri, proj, null, null, null);
+		int column_index = cursor
+				.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+		cursor.moveToFirst();
+
+		return cursor.getString(column_index);
+	}
 
 	private void uploadImage() {
 		if(outputFileUri == null)
@@ -151,7 +161,7 @@ public class UploadImageActivity extends PostActivity {
 		final String caption = text.getText().toString();
 
         Intent uploadIntent = new Intent(TumblrService.ACTION_POST_PHOTO);
-        uploadIntent.putExtra("photo", outputFileUri.toString());
+        uploadIntent.putExtra("photo", getRealPathFromURI(outputFileUri));
         uploadIntent.putExtra("caption", caption);
         uploadIntent.putExtra("options", mPostOptions);
         startService(uploadIntent);

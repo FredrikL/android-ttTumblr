@@ -41,18 +41,18 @@ import android.webkit.MimeTypeMap;
 import org.nerdcircus.android.tumblr.MediaUriBody;
 
 public class TumblrApi {
-    public static final String TAG = "TumblrApi";
-    public static final String BLOGS_PREFS = "blogs";
+	public static final String TAG = "TumblrApi";
+	public static final String BLOGS_PREFS = "blogs";
 
-    public static final String GENERATOR = "ttTumblr"; //user-agent string.
+	public static final String GENERATOR = "ttTumblr"; // user-agent string.
 
-    private SharedPreferences mPrefs;
+	private SharedPreferences mPrefs;
 
 	private Context context;
 
 	public TumblrApi(Context context) {
 		this.context = context;
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+		mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 	}
 
 	public String getUserName() {
@@ -94,19 +94,20 @@ public class TumblrApi {
 			if (response.getStatusLine().getStatusCode() != 200) {
 				return false;
 			}
-            //Save our list of available blogs.
-            SharedPreferences blogs = context.getSharedPreferences(BLOGS_PREFS, 0);
-            Log.d("ttT", "attempting blog list extraction");
-            saveBlogList(response, blogs);
+			// Save our list of available blogs.
+			SharedPreferences blogs = context.getSharedPreferences(BLOGS_PREFS,
+					0);
+			Log.d("ttT", "attempting blog list extraction");
+			saveBlogList(response, blogs);
 			return true;
 
 		} catch (ClientProtocolException e) {
-            Log.d(TAG, "client proto exception", e);
+			Log.d(TAG, "client proto exception", e);
 		} catch (IOException e) {
-            Log.d(TAG, "io exception", e);
+			Log.d(TAG, "io exception", e);
 		}
-        return false;
-    }
+		return false;
+	}
 
 	public List<Cookie> authenticateAndReturnCookies() {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -142,111 +143,105 @@ public class TumblrApi {
 		return entity;
 	}
 
-    /* post options are fields that can be set in the tumblr api:
-     * - send-to-twitter 
-     * - private
-     * - group
-     * - tags
-     * - format
-     * etc. 
-     */
+	/*
+	 * post options are fields that can be set in the tumblr api: -
+	 * send-to-twitter - private - group - tags - format etc.
+	 */
 	public MultipartEntity getEntityWithOptions(Bundle options) {
-        MultipartEntity entity = getEntityWithBaseParamsSet(false);
-        if (options == null){ return entity; };
-        try {
-            //TODO: detect if the options have already been set?
-            //FIXME: use a foreach loop here.
-            if( options.containsKey("send-to-twitter")){
-                entity.addPart("send-to-twitter", new StringBody(options.getString("send-to-twitter")));
-                Log.d(TAG, "send-to-twitter: " + options.getString("send-to-twitter"));
-            }
-            else {
-                //set the param from the defaults.
-                if (mPrefs.getBoolean("twitter",false))
-                    entity.addPart("send-to-twitter", new StringBody("1"));
-            }
-            if( options.containsKey("group")){
-                entity.addPart("group", new StringBody(options.getString("group") + ".tumblr.com"));
-                Log.d(TAG, "group: " + options.getString("group"));
-            }
-            if( options.containsKey("private")){
-                entity.addPart("private", new StringBody(options.getString("private")));
-                Log.d(TAG, "private: " + options.getString("private"));
-            }
-            else {
-                //set the param from the defaults.
-                if (mPrefs.getBoolean("private",false))
-                    entity.addPart("private", new StringBody("1"));
-            }
+		MultipartEntity entity = getEntityWithBaseParamsSet(false);
+		if (options == null) {
+			return entity;
+		}
+		;
+		try {
+			// TODO: detect if the options have already been set?
+			// FIXME: use a foreach loop here.
+			if (options.containsKey("send-to-twitter")) {
+				entity.addPart("send-to-twitter", new StringBody(options
+						.getString("send-to-twitter")));
+				Log.d(TAG, "send-to-twitter: "
+						+ options.getString("send-to-twitter"));
+			} else {
+				// set the param from the defaults.
+				if (mPrefs.getBoolean("twitter", false))
+					entity.addPart("send-to-twitter", new StringBody("1"));
+			}
+			if (options.containsKey("group")) {
+				entity.addPart("group", new StringBody(options
+						.getString("group")
+						+ ".tumblr.com"));
+				Log.d(TAG, "group: " + options.getString("group"));
+			}
+			if (options.containsKey("private")) {
+				entity.addPart("private", new StringBody(options
+						.getString("private")));
+				Log.d(TAG, "private: " + options.getString("private"));
+			} else {
+				// set the param from the defaults.
+				if (mPrefs.getBoolean("private", false))
+					entity.addPart("private", new StringBody("1"));
+			}
 		} catch (UnsupportedEncodingException e) {
 			Log.e(TAG, "unsupported encoding: " + e.getMessage());
 		}
-        return entity;
-    }
+		return entity;
+	}
 
-    /* helper to enclose all the http-related code */
-    private HttpResponse postEntity(MultipartEntity entity){
+	/* helper to enclose all the http-related code */
+	private HttpResponse postEntity(MultipartEntity entity) {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
 		try {
 			httppost.setEntity(entity);
 			HttpResponse response = httpclient.execute(httppost);
-            return response;
+			return response;
 		} catch (ClientProtocolException e) {
-            Log.e(TAG, "client proto exception!", e);
+			Log.e(TAG, "client proto exception!", e);
 		} catch (IOException e) {
-            Log.e(TAG, "io exception", e);
+			Log.e(TAG, "io exception", e);
 		}
 		return null;
-    }
+	}
 
 	public boolean postText(String title, String body, Bundle options) {
-        MultipartEntity entity = getEntityWithOptions(options);
-        try {
-            entity.addPart("type", new StringBody("regular"));
-            if(title != null)
-                entity.addPart("title", new StringBody(title));
-            if(body != null)
-                entity.addPart("body", new StringBody(body));
-        }
-        catch(UnsupportedEncodingException e){
-            Log.e(TAG, e.getMessage());
-        }
-        HttpResponse response = postEntity(entity);
-        if (response.getStatusLine().getStatusCode() != 201) {
-            ShowNotification("ttTumblr", "Text creation failed", "");
-            return false;
-        }
-        return true;
-    }
+		MultipartEntity entity = getEntityWithOptions(options);
+		try {
+			entity.addPart("type", new StringBody("regular"));
+			if (title != null)
+				entity.addPart("title", new StringBody(title));
+			if (body != null)
+				entity.addPart("body", new StringBody(body));
+		} catch (UnsupportedEncodingException e) {
+			Log.e(TAG, e.getMessage());
+		}
+		HttpResponse response = postEntity(entity);
+		if (response.getStatusLine().getStatusCode() != 201) {
+			ShowNotification("ttTumblr", "Text creation failed", "");
+			return false;
+		}
+		return true;
+	}
 
 	public void postImage(Uri image, String caption, Bundle options) {
-        MultipartEntity entity = getEntityWithOptions(options);
-        try {
-            entity.addPart("type", new StringBody("photo"));
-            if(caption != null)
-                entity.addPart("caption", new StringBody(caption));
-            // Do the MediaUriBody dance.
-            // Getting the type of the file
-            ContentResolver cR = context.getContentResolver();
-            MimeTypeMap mime = MimeTypeMap.getSingleton();
-            String type = mime.getExtensionFromMimeType(cR.getType(image));
-            //TODO: fix filename to be something unique.
-            InputStream stream = cR.openInputStream(image);
-            entity.addPart("data", new MediaUriBody(context, image, stream, "file."+type));
+		MultipartEntity entity = getEntityWithOptions(options);
+		try {
+			entity.addPart("type", new StringBody("photo"));
+			if (caption != null)
+				entity.addPart("caption", new StringBody(caption));
+			
+			File f = new File(image.getPath());
+			entity.addPart("data",new FileBody(f));
 
-        } catch (FileNotFoundException e) {
-            //from MediaUriBody constructor.
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            Log.d(TAG, e.getMessage());
-        }
-        HttpResponse response = postEntity(entity);
-        if (response.getStatusLine().getStatusCode() == 201)
-            ShowNotification("Image Posted", "", "");
-        else
-            ShowNotification("Image upload failed", "", "");
-    }
+		} catch (UnsupportedEncodingException e) {
+			Log.d(TAG, e.getMessage());
+		}
+		HttpResponse response = postEntity(entity);
+		Log.d(TAG, "Server said:" + response.getStatusLine().getStatusCode());
+		if (response.getStatusLine().getStatusCode() == 201)
+			ShowNotification("Image Posted", "", "");
+		else
+			ShowNotification("Image upload failed", "", "");
+	}
 
 	public void ShowNotification(String tickerText, String contentTitle,
 			String contentText) {
@@ -269,7 +264,7 @@ public class TumblrApi {
 		mNotificationManager.notify(1, notification);
 	}
 
-    //TODO: make this use a URI, not a File
+	// TODO: make this use a URI, not a File
 	public void PostVideo(File videoToUpload, String caption) {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
@@ -297,120 +292,127 @@ public class TumblrApi {
 	}
 
 	public boolean postQuote(String quoteText, String sourceText, Bundle options) {
-        MultipartEntity entity = getEntityWithOptions(options);
-        try {
-            entity.addPart("type", new StringBody("quote"));
-            entity.addPart("quote", new StringBody(quoteText));
-            if(sourceText != null)
-                entity.addPart("source", new StringBody(sourceText));
-        }
-        catch(UnsupportedEncodingException e){
-            Log.e(TAG, e.getMessage());
-        }
-        HttpResponse response = postEntity(entity);
-        if (response.getStatusLine().getStatusCode() != 201) {
-            ShowNotification("ttTumblr", "Quote creation failed", "");
-        }
+		MultipartEntity entity = getEntityWithOptions(options);
+		try {
+			entity.addPart("type", new StringBody("quote"));
+			entity.addPart("quote", new StringBody(quoteText));
+			if (sourceText != null)
+				entity.addPart("source", new StringBody(sourceText));
+		} catch (UnsupportedEncodingException e) {
+			Log.e(TAG, e.getMessage());
+		}
+		HttpResponse response = postEntity(entity);
+		if (response.getStatusLine().getStatusCode() != 201) {
+			ShowNotification("ttTumblr", "Quote creation failed", "");
+		}
 
 		return true;
 	}
 
-	public boolean postUrl(String url, String name, String description, Bundle options) {
-        MultipartEntity entity = getEntityWithOptions(options);
-        try {
-            entity.addPart("type", new StringBody("link"));
-            entity.addPart("url", new StringBody(url));
-            if(name != null)
-                entity.addPart("name", new StringBody(name));
-            if(description != null)
-                entity.addPart("description", new StringBody(description));
-        }
-        catch(UnsupportedEncodingException e){
-            Log.e(TAG, e.getMessage());
-        }
-        HttpResponse response = postEntity(entity);
-        if (response.getStatusLine().getStatusCode() != 201) {
-            ShowNotification("Link creation failed", "", "");
-        }
+	public boolean postUrl(String url, String name, String description,
+			Bundle options) {
+		MultipartEntity entity = getEntityWithOptions(options);
+		try {
+			entity.addPart("type", new StringBody("link"));
+			entity.addPart("url", new StringBody(url));
+			if (name != null)
+				entity.addPart("name", new StringBody(name));
+			if (description != null)
+				entity.addPart("description", new StringBody(description));
+		} catch (UnsupportedEncodingException e) {
+			Log.e(TAG, e.getMessage());
+		}
+		HttpResponse response = postEntity(entity);
+		if (response.getStatusLine().getStatusCode() != 201) {
+			ShowNotification("Link creation failed", "", "");
+		}
 
 		return true;
 	}
 
 	public boolean postConversation(String title, String convo, Bundle options) {
-        MultipartEntity entity = getEntityWithOptions(options);
-        try {
-            entity.addPart("type", new StringBody("conversation"));
-            if(title != null)
-                entity.addPart("title", new StringBody(title));
-            if(convo != null)
-                entity.addPart("conversation", new StringBody(convo));
-        }
-        catch(UnsupportedEncodingException e){
-            Log.e(TAG, e.getMessage());
-        }
-        HttpResponse response = postEntity(entity);
-        if (response.getStatusLine().getStatusCode() != 201) {
-            ShowNotification("Post creation failed", "", "");
-            return false;
-        }
-        return true;
-    }
+		MultipartEntity entity = getEntityWithOptions(options);
+		try {
+			entity.addPart("type", new StringBody("conversation"));
+			if (title != null)
+				entity.addPart("title", new StringBody(title));
+			if (convo != null)
+				entity.addPart("conversation", new StringBody(convo));
+		} catch (UnsupportedEncodingException e) {
+			Log.e(TAG, e.getMessage());
+		}
+		HttpResponse response = postEntity(entity);
+		if (response.getStatusLine().getStatusCode() != 201) {
+			ShowNotification("Post creation failed", "", "");
+			return false;
+		}
+		return true;
+	}
 
-    private void saveBlogList(HttpResponse r, SharedPreferences bloglist){
-        bloglist.edit().clear().commit();
-        try{
-            XmlPullParser xpp = XmlPullParserFactory.newInstance().newPullParser();
-            xpp.setInput(r.getEntity().getContent(), null);
-            int eventType = xpp.getEventType();
-            Log.d("ttT", "starting to loop...");
-            while (eventType != XmlPullParser.END_DOCUMENT) {
-                if(eventType == XmlPullParser.START_TAG && xpp.getName().equals("tumblelog")){
-                    Log.d("ttT", "found a tumblelog.");
-                    String title = xpp.getAttributeValue(null, "title");
-                    String type = xpp.getAttributeValue(null, "type");
-                    if(type.equals("public")){
-                        String name = xpp.getAttributeValue(null, "name");  
-                        Log.d(TAG, "found public blog named: " + name);
-                        bloglist.edit().putString(title, name).commit();
-                        if(xpp.getAttributeValue(null, "is-primary") != null 
-                            && xpp.getAttributeValue(null, "is-primary").equals("yes")){
-                            //set the primary blog as our default.
-                            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-                            prefs.edit().putString("default_blog", name).commit();
-                        }
-                    }
-                }
-                eventType = xpp.next();
-            }
-        } catch (XmlPullParserException e){
-            Log.e(TAG, "blog list parser failure", e);
-        } catch (IOException e){
-            Log.e(TAG, "i/o error", e);
-        }
+	private void saveBlogList(HttpResponse r, SharedPreferences bloglist) {
+		bloglist.edit().clear().commit();
+		try {
+			XmlPullParser xpp = XmlPullParserFactory.newInstance()
+					.newPullParser();
+			xpp.setInput(r.getEntity().getContent(), null);
+			int eventType = xpp.getEventType();
+			Log.d("ttT", "starting to loop...");
+			while (eventType != XmlPullParser.END_DOCUMENT) {
+				if (eventType == XmlPullParser.START_TAG
+						&& xpp.getName().equals("tumblelog")) {
+					Log.d("ttT", "found a tumblelog.");
+					String title = xpp.getAttributeValue(null, "title");
+					String type = xpp.getAttributeValue(null, "type");
+					if (type.equals("public")) {
+						String name = xpp.getAttributeValue(null, "name");
+						Log.d(TAG, "found public blog named: " + name);
+						bloglist.edit().putString(title, name).commit();
+						if (xpp.getAttributeValue(null, "is-primary") != null
+								&& xpp.getAttributeValue(null, "is-primary")
+										.equals("yes")) {
+							// set the primary blog as our default.
+							SharedPreferences prefs = PreferenceManager
+									.getDefaultSharedPreferences(context);
+							prefs.edit().putString("default_blog", name)
+									.commit();
+						}
+					}
+				}
+				eventType = xpp.next();
+			}
+		} catch (XmlPullParserException e) {
+			Log.e(TAG, "blog list parser failure", e);
+		} catch (IOException e) {
+			Log.e(TAG, "i/o error", e);
+		}
 
-    }
+	}
 
-    /** Returns a Bundle with user's preferred default post options.
-     * settings are read from preferences, and can be overridden.
-     */
-    public static Bundle getDefaultPostOptions(Context context){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        Bundle postoptions = new Bundle();
-        if(prefs.getBoolean("twitter", false)){
-            postoptions.putString("send-to-twitter", "auto");
-        } else {
-            postoptions.putString("send-to-twitter", "no");
-        }
+	/**
+	 * Returns a Bundle with user's preferred default post options. settings are
+	 * read from preferences, and can be overridden.
+	 */
+	public static Bundle getDefaultPostOptions(Context context) {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		Bundle postoptions = new Bundle();
+		if (prefs.getBoolean("twitter", false)) {
+			postoptions.putString("send-to-twitter", "auto");
+		} else {
+			postoptions.putString("send-to-twitter", "no");
+		}
 
-        if(prefs.getBoolean("private", false)){
-            postoptions.putString("private", "1");
-        } else {
-            postoptions.putString("private", "0");
-        }
+		if (prefs.getBoolean("private", false)) {
+			postoptions.putString("private", "1");
+		} else {
+			postoptions.putString("private", "0");
+		}
 
-        postoptions.putString("format", prefs.getString("text_format", "Markdown"));
-        postoptions.putString("group", prefs.getString("default_blog", "")+".tumblr.com");
+		postoptions.putString("format", prefs.getString("text_format",
+				"Markdown"));
+		postoptions.putString("group", prefs.getString("default_blog", "")
+				+ ".tumblr.com");
 
-        return postoptions;
-    }
+		return postoptions;
+	}
 }
