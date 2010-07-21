@@ -9,21 +9,22 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-import android.util.Log;
 
 import com.tacticalnuclearstrike.tttumblr.R;
 import com.tacticalnuclearstrike.tttumblr.TumblrApi;
 import com.tacticalnuclearstrike.tttumblr.TumblrService;
 
 public class UploadImageActivity extends PostActivity {
-    private static final String TAG = "UploadImageActivity";
+	private static final String TAG = "UploadImageActivity";
 
 	Uri outputFileUri;
 	int TAKE_PICTURE = 0;
@@ -33,18 +34,18 @@ public class UploadImageActivity extends PostActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-        api  = new TumblrApi(this);
+		api = new TumblrApi(this);
 		setContentView(R.layout.uploadimageview);
 
-        Intent startIntent = getIntent();
-        if(startIntent != null 
-            && startIntent.getExtras() != null
-            && startIntent.getExtras().containsKey(Intent.EXTRA_STREAM)){
-            Uri startData = (Uri)startIntent.getExtras().get(Intent.EXTRA_STREAM);
-            Log.d(TAG, "got initial data: " + startData.toString());
-            outputFileUri = startData;
+		Intent startIntent = getIntent();
+		if (startIntent != null && startIntent.getExtras() != null
+				&& startIntent.getExtras().containsKey(Intent.EXTRA_STREAM)) {
+			Uri startData = (Uri) startIntent.getExtras().get(
+					Intent.EXTRA_STREAM);
+			Log.d(TAG, "got initial data: " + startData.toString());
+			outputFileUri = startData;
 			setSelectedImageThumbnail(outputFileUri);
-        }
+		}
 
 		Button btnTakePicture = (Button) findViewById(R.id.btnTakePicture);
 		btnTakePicture.setOnClickListener(new View.OnClickListener() {
@@ -72,8 +73,8 @@ public class UploadImageActivity extends PostActivity {
 
 		Intent intent = getIntent();
 		String action = intent.getAction();
-		if (Intent.ACTION_SEND.equals(action)){
-			outputFileUri = (Uri)(intent.getExtras().get(Intent.EXTRA_STREAM));
+		if (Intent.ACTION_SEND.equals(action)) {
+			outputFileUri = (Uri) (intent.getExtras().get(Intent.EXTRA_STREAM));
 			setSelectedImageThumbnail(outputFileUri);
 		}
 	}
@@ -101,7 +102,7 @@ public class UploadImageActivity extends PostActivity {
 								.insertImage(getContentResolver(), f
 										.getAbsolutePath(), null, null));
 
-				//f.delete();
+				// f.delete();
 				setSelectedImageThumbnail(outputFileUri);
 
 			} catch (FileNotFoundException e) {
@@ -117,29 +118,37 @@ public class UploadImageActivity extends PostActivity {
 	}
 
 	private void setSelectedImageThumbnail(Uri image) {
-		try {			
+		try {
 			ImageView iv = (ImageView) findViewById(R.id.selectedImage);
-			iv.setImageBitmap(getThumbnail(image));
+			Bitmap bmp = getThumbnail(image);
+			if (bmp != null)
+				iv.setImageBitmap(bmp);
+			else
+				iv.setImageURI(image);
 			iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
 			iv.invalidate();
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.d("ttTumblr", e.getMessage());
 		}
 	}
 
 	private Bitmap getThumbnail(Uri contentUri) {
-		String[] proj = { MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA };
+		String[] proj = { MediaStore.Images.Media._ID,
+				MediaStore.Images.Media.DATA };
 		Cursor cursor = managedQuery(contentUri, proj, null, null, null);
 		int column_index = cursor
 				.getColumnIndexOrThrow(MediaStore.Images.Media._ID);
 		cursor.moveToFirst();
-
-        return MediaStore.Images.Thumbnails.getThumbnail(this.getContentResolver(),
-                                                    cursor.getLong(column_index),
-                                                    MediaStore.Images.Thumbnails.MINI_KIND,
-                                                    null);
+		Bitmap bmp = null;
+		// Requires 2.0+
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ECLAIR)
+			bmp = MediaStore.Images.Thumbnails.getThumbnail(this
+					.getContentResolver(), cursor.getLong(column_index),
+					MediaStore.Images.Thumbnails.MICRO_KIND, null);
+		
+		return bmp;
 	}
-	
+
 	private String getRealPathFromURI(Uri contentUri) {
 		String[] proj = { MediaStore.Images.Media.DATA };
 		Cursor cursor = managedQuery(contentUri, proj, null, null, null);
@@ -151,20 +160,20 @@ public class UploadImageActivity extends PostActivity {
 	}
 
 	private void uploadImage() {
-		if(outputFileUri == null)
-		{
-			Toast.makeText(this, "No image to upload!", Toast.LENGTH_SHORT).show();
+		if (outputFileUri == null) {
+			Toast.makeText(this, "No image to upload!", Toast.LENGTH_SHORT)
+					.show();
 			return;
 		}
-		
+
 		EditText text = (EditText) findViewById(R.id.tbImageCaption);
 		final String caption = text.getText().toString();
 
-        Intent uploadIntent = new Intent(TumblrService.ACTION_POST_PHOTO);
-        uploadIntent.putExtra("photo", getRealPathFromURI(outputFileUri));
-        uploadIntent.putExtra("caption", caption);
-        uploadIntent.putExtra("options", mPostOptions);
-        startService(uploadIntent);
+		Intent uploadIntent = new Intent(TumblrService.ACTION_POST_PHOTO);
+		uploadIntent.putExtra("photo", getRealPathFromURI(outputFileUri));
+		uploadIntent.putExtra("caption", caption);
+		uploadIntent.putExtra("options", mPostOptions);
+		startService(uploadIntent);
 
 		setResult(RESULT_OK);
 		finish();
@@ -176,5 +185,5 @@ public class UploadImageActivity extends PostActivity {
 		intent.setAction(Intent.ACTION_GET_CONTENT);
 		startActivityForResult(Intent.createChooser(intent, "Select Picture"),
 				SELECT_IMAGE);
-	} 
+	}
 }
