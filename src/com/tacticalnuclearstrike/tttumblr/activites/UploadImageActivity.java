@@ -120,33 +120,12 @@ public class UploadImageActivity extends PostActivity {
 	private void setSelectedImageThumbnail(Uri image) {
 		try {
 			ImageView iv = (ImageView) findViewById(R.id.selectedImage);
-			Bitmap bmp = getThumbnail(image);
-			if (bmp != null)
-				iv.setImageBitmap(bmp);
-			else
-				iv.setImageURI(image);
+			iv.setImageURI(image);
 			iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
 			iv.invalidate();
 		} catch (Exception e) {
 			Log.d("ttTumblr", e.getMessage());
 		}
-	}
-
-	private Bitmap getThumbnail(Uri contentUri) {
-		String[] proj = { MediaStore.Images.Media._ID,
-				MediaStore.Images.Media.DATA };
-		Cursor cursor = managedQuery(contentUri, proj, null, null, null);
-		int column_index = cursor
-				.getColumnIndexOrThrow(MediaStore.Images.Media._ID);
-		cursor.moveToFirst();
-		Bitmap bmp = null;
-		// Requires 2.0+
-		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ECLAIR)
-			bmp = MediaStore.Images.Thumbnails.getThumbnail(this
-					.getContentResolver(), cursor.getLong(column_index),
-					MediaStore.Images.Thumbnails.MICRO_KIND, null);
-		
-		return bmp;
 	}
 
 	private String getRealPathFromURI(Uri contentUri) {
