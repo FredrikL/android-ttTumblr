@@ -181,6 +181,10 @@ public class TumblrApi {
 				if (mPrefs.getBoolean("private", false))
 					entity.addPart("private", new StringBody("1"));
 			}
+			if(options.containsKey("tags")){
+				entity.addPart("tags", new StringBody(options.getString("tags")));
+				Log.d(TAG, "tags: " + options.getString("tags"));
+			}
 		} catch (UnsupportedEncodingException e) {
 			Log.e(TAG, "unsupported encoding: " + e.getMessage());
 		}
