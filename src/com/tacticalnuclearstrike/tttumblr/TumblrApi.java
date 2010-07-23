@@ -219,6 +219,7 @@ public class TumblrApi {
 			Log.e(TAG, e.getMessage());
 		}
 		HttpResponse response = postEntity(entity);
+		Log.d(TAG, "Server said: " + response.getStatusLine().getStatusCode());
 		if (response.getStatusLine().getStatusCode() != 201) {
 			ShowNotification("ttTumblr", "Text creation failed", "");
 			return false;
