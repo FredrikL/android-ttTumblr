@@ -73,10 +73,10 @@ public class TumblrService extends Service {
                 mStartForeground.invoke(this, mStartForegroundArgs);
             } catch (InvocationTargetException e) {
                 // Should not happen.
-                Log.w("ApiDemos", "Unable to invoke startForeground", e);
+                Log.w("ttTumblr", "Unable to invoke startForeground", e);
             } catch (IllegalAccessException e) {
                 // Should not happen.
-                Log.w("ApiDemos", "Unable to invoke startForeground", e);
+                Log.w("ttTumblr", "Unable to invoke startForeground", e);
             }
             return;
         }
@@ -98,10 +98,10 @@ public class TumblrService extends Service {
                 mStopForeground.invoke(this, mStopForegroundArgs);
             } catch (InvocationTargetException e) {
                 // Should not happen.
-                Log.w("ApiDemos", "Unable to invoke stopForeground", e);
+                Log.w("ttTumblr", "Unable to invoke stopForeground", e);
             } catch (IllegalAccessException e) {
                 // Should not happen.
-                Log.w("ApiDemos", "Unable to invoke stopForeground", e);
+                Log.w("ttTumblr", "Unable to invoke stopForeground", e);
             }
             return;
         }
