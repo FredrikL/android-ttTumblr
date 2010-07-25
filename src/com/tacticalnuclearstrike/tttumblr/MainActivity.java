@@ -68,10 +68,10 @@ public class MainActivity extends Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
+						tracker.trackPageView("/PostTextActivity");
 						Intent startPostText = new Intent(MainActivity.this,
 								PostTextActivity.class);
 						startActivity(startPostText);
-						tracker.trackPageView("/PostTextActivity");
 					}
 				});
 
@@ -79,10 +79,10 @@ public class MainActivity extends Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
+						tracker.trackPageView("/UploadImageActivity");
 						Intent intent = new Intent(MainActivity.this,
 								UploadImageActivity.class);
 						startActivity(intent);
-						tracker.trackPageView("/UploadImageActivity");
 					}
 				});
 
@@ -90,10 +90,10 @@ public class MainActivity extends Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
+						tracker.trackPageView("/UploadVideoActivity");
 						Intent intent = new Intent(MainActivity.this,
 								UploadVideoActivity.class);
 						startActivity(intent);
-						tracker.trackPageView("/UploadVideoActivity");
 					}
 				});
 
@@ -101,10 +101,10 @@ public class MainActivity extends Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
+						tracker.trackPageView("/PostQuoteActivity");
 						Intent intent = new Intent(MainActivity.this,
 								PostQuoteActivity.class);
 						startActivity(intent);
-						tracker.trackPageView("/PostQuoteActivity");
 					}
 				});
 
@@ -112,10 +112,10 @@ public class MainActivity extends Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
+						tracker.trackPageView("/PostLinkActivity");
 						Intent intent = new Intent(MainActivity.this,
 								PostLinkActivity.class);
 						startActivity(intent);
-						tracker.trackPageView("/PostLinkActivity");
 					}
 				});
 
@@ -123,10 +123,10 @@ public class MainActivity extends Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
+						tracker.trackPageView("/PostConversationActivity");
 						Intent intent = new Intent(MainActivity.this,
 								PostConversationActivity.class);
 						startActivity(intent);
-						tracker.trackPageView("/PostConversationActivity");
 					}
 				});
 
@@ -134,17 +134,17 @@ public class MainActivity extends Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						startDashboardActivity();
 						tracker.trackPageView("/DashboardActivity");
+						startDashboardActivity();
 					}
 				});
 	}
 	
 	@Override
-	  protected void onDestroy() {
-	    super.onDestroy();
-	    tracker.stop();
-	  }
+	protected void onDestroy() {
+		super.onDestroy();
+		tracker.stop();
+	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -156,17 +156,17 @@ public class MainActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_account:
+			tracker.trackPageView("/AccountActivity");
 			startActivityForResult(new Intent(MainActivity.this,
 					AccountActivity.class), 0);
-			tracker.trackPageView("/AccountActivity");
 			return true;
 		case R.id.menu_about:
-			createAboutDialog();
 			tracker.trackPageView("/AboutDialog");
+			createAboutDialog();
 			return true;
 		case R.id.menu_settings:
-			startActivity(new Intent(MainActivity.this, Preferences.class));
 			tracker.trackPageView("/Preferences");
+			startActivity(new Intent(MainActivity.this, Preferences.class));
 			return true;
 		}
 

@@ -6,10 +6,8 @@ import java.io.FileNotFoundException;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -19,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 import com.tacticalnuclearstrike.tttumblr.R;
 import com.tacticalnuclearstrike.tttumblr.TumblrApi;
 import com.tacticalnuclearstrike.tttumblr.TumblrService;
@@ -30,9 +29,13 @@ public class UploadImageActivity extends PostActivity {
 	int TAKE_PICTURE = 0;
 	int SELECT_IMAGE = 1;
 	TumblrApi api;
+	GoogleAnalyticsTracker tracker;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		tracker = GoogleAnalyticsTracker.getInstance();
+		tracker.start("UA-9100060-3", 20, this);
 
 		api = new TumblrApi(this);
 		setContentView(R.layout.uploadimageview);
@@ -47,10 +50,22 @@ public class UploadImageActivity extends PostActivity {
 			setSelectedImageThumbnail(outputFileUri);
 		}
 
+		setupButtons();
+
+		Intent intent = getIntent();
+		String action = intent.getAction();
+		if (Intent.ACTION_SEND.equals(action)) {
+			outputFileUri = (Uri) (intent.getExtras().get(Intent.EXTRA_STREAM));
+			setSelectedImageThumbnail(outputFileUri);
+		}
+	}
+
+	private void setupButtons() {
 		Button btnTakePicture = (Button) findViewById(R.id.btnTakePicture);
 		btnTakePicture.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				tracker.trackPageView("/UploadImageActivity/TakePhoto");
 				takePhoto();
 			}
 		});
@@ -67,16 +82,10 @@ public class UploadImageActivity extends PostActivity {
 		btnSelectImage.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				tracker.trackPageView("/UploadImageActivity/SelectImage");
 				selectImage();
 			}
 		});
-
-		Intent intent = getIntent();
-		String action = intent.getAction();
-		if (Intent.ACTION_SEND.equals(action)) {
-			outputFileUri = (Uri) (intent.getExtras().get(Intent.EXTRA_STREAM));
-			setSelectedImageThumbnail(outputFileUri);
-		}
 	}
 
 	private void takePhoto() {
@@ -87,6 +96,13 @@ public class UploadImageActivity extends PostActivity {
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
 		startActivityForResult(intent, TAKE_PICTURE);
 	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		tracker.stop();
+	}
+
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
