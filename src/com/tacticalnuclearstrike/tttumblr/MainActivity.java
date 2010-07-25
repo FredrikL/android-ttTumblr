@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 import com.tacticalnuclearstrike.tttumblr.activites.AccountActivity;
 import com.tacticalnuclearstrike.tttumblr.activites.Dashboard;
 import com.tacticalnuclearstrike.tttumblr.activites.PostConversationActivity;
@@ -30,10 +31,14 @@ public class MainActivity extends Activity {
 	final int MENU_ACCOUNT = 1;
 	final int MENU_ABOUT = 2;
 	final int MENU_SETTINGS = 3;
-
+	
+	GoogleAnalyticsTracker tracker;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		tracker = GoogleAnalyticsTracker.getInstance();
+		tracker.start("UA-9100060-3", 20, this);
 		regularStartup();
 		
 		if(showDashBoard())
@@ -66,6 +71,7 @@ public class MainActivity extends Activity {
 						Intent startPostText = new Intent(MainActivity.this,
 								PostTextActivity.class);
 						startActivity(startPostText);
+						tracker.trackPageView("/PostTextActivity");
 					}
 				});
 
@@ -76,6 +82,7 @@ public class MainActivity extends Activity {
 						Intent intent = new Intent(MainActivity.this,
 								UploadImageActivity.class);
 						startActivity(intent);
+						tracker.trackPageView("/UploadImageActivity");
 					}
 				});
 
@@ -86,6 +93,7 @@ public class MainActivity extends Activity {
 						Intent intent = new Intent(MainActivity.this,
 								UploadVideoActivity.class);
 						startActivity(intent);
+						tracker.trackPageView("/UploadVideoActivity");
 					}
 				});
 
@@ -96,6 +104,7 @@ public class MainActivity extends Activity {
 						Intent intent = new Intent(MainActivity.this,
 								PostQuoteActivity.class);
 						startActivity(intent);
+						tracker.trackPageView("/PostQuoteActivity");
 					}
 				});
 
@@ -106,6 +115,7 @@ public class MainActivity extends Activity {
 						Intent intent = new Intent(MainActivity.this,
 								PostLinkActivity.class);
 						startActivity(intent);
+						tracker.trackPageView("/PostLinkActivity");
 					}
 				});
 
@@ -116,6 +126,7 @@ public class MainActivity extends Activity {
 						Intent intent = new Intent(MainActivity.this,
 								PostConversationActivity.class);
 						startActivity(intent);
+						tracker.trackPageView("/PostConversationActivity");
 					}
 				});
 
@@ -124,9 +135,16 @@ public class MainActivity extends Activity {
 					@Override
 					public void onClick(View v) {
 						startDashboardActivity();
+						tracker.trackPageView("/DashboardActivity");
 					}
 				});
 	}
+	
+	@Override
+	  protected void onDestroy() {
+	    super.onDestroy();
+	    tracker.stop();
+	  }
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -140,12 +158,15 @@ public class MainActivity extends Activity {
 		case R.id.menu_account:
 			startActivityForResult(new Intent(MainActivity.this,
 					AccountActivity.class), 0);
+			tracker.trackPageView("/AccountActivity");
 			return true;
 		case R.id.menu_about:
 			createAboutDialog();
+			tracker.trackPageView("/AboutDialog");
 			return true;
 		case R.id.menu_settings:
 			startActivity(new Intent(MainActivity.this, Preferences.class));
+			tracker.trackPageView("/Preferences");
 			return true;
 		}
 
