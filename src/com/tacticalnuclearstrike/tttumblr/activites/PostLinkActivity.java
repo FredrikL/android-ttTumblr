@@ -28,7 +28,6 @@ public class PostLinkActivity extends PostActivity {
 	private void setupOkButton() {
 		Button btnOk = (Button) findViewById(R.id.postQuoteBtnOk);
 		btnOk.setOnClickListener(new View.OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				okButtonClick();
 			}

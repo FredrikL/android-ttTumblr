@@ -28,7 +28,6 @@ public class UploadVideoActivity extends Activity {
 
 		Button btnPostPhoto = (Button) findViewById(R.id.btnPostVideo);
 		btnPostPhoto.setOnClickListener(new View.OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				videoImage();
 			}
@@ -36,7 +35,6 @@ public class UploadVideoActivity extends Activity {
 
 		Button btnSelectImage = (Button) findViewById(R.id.btnSelectVideo);
 		btnSelectImage.setOnClickListener(new View.OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				selectVideo();
 			}

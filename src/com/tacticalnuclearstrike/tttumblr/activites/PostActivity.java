@@ -72,7 +72,6 @@ public abstract class PostActivity extends Activity {
 		Button cancelButton = (Button) dialog.findViewById(R.id.btnInputCancel);
 		final EditText text = (EditText) dialog.findViewById(R.id.inputText);
 		okButton.setOnClickListener(new View.OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				if (!(text.getText().toString().equals(""))) {
 					mPostOptions.putString("tags", text.getText().toString());
@@ -83,7 +82,6 @@ public abstract class PostActivity extends Activity {
 		});
 
 		cancelButton.setOnClickListener(new View.OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				dialog.dismiss();
 			}
@@ -101,7 +99,6 @@ public abstract class PostActivity extends Activity {
 		MenuItem tags = menu.add(MENU_GROUP_TAGS, Menu.NONE, Menu.NONE, "Tags");
 		tags.setIcon(android.R.drawable.ic_menu_add);
 		tags.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				showTagsInputDialog();
 				return false;

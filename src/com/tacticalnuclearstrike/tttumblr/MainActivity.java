@@ -66,7 +66,6 @@ public class MainActivity extends Activity {
 	private void setupButtons() {
 		findViewById(R.id.postTextBtn).setOnClickListener(
 				new View.OnClickListener() {
-					@Override
 					public void onClick(View v) {
 						tracker.trackPageView("/PostTextActivity");
 						Intent startPostText = new Intent(MainActivity.this,
@@ -77,7 +76,6 @@ public class MainActivity extends Activity {
 
 		findViewById(R.id.postImageBtn).setOnClickListener(
 				new View.OnClickListener() {
-					@Override
 					public void onClick(View v) {
 						tracker.trackPageView("/UploadImageActivity");
 						Intent intent = new Intent(MainActivity.this,
@@ -88,7 +86,6 @@ public class MainActivity extends Activity {
 
 		findViewById(R.id.postVideoBtn).setOnClickListener(
 				new View.OnClickListener() {
-					@Override
 					public void onClick(View v) {
 						tracker.trackPageView("/UploadVideoActivity");
 						Intent intent = new Intent(MainActivity.this,
@@ -99,7 +96,6 @@ public class MainActivity extends Activity {
 
 		findViewById(R.id.postQuoteBtn).setOnClickListener(
 				new View.OnClickListener() {
-					@Override
 					public void onClick(View v) {
 						tracker.trackPageView("/PostQuoteActivity");
 						Intent intent = new Intent(MainActivity.this,
@@ -110,7 +106,6 @@ public class MainActivity extends Activity {
 
 		findViewById(R.id.postLinkBtn).setOnClickListener(
 				new View.OnClickListener() {
-					@Override
 					public void onClick(View v) {
 						tracker.trackPageView("/PostLinkActivity");
 						Intent intent = new Intent(MainActivity.this,
@@ -121,7 +116,6 @@ public class MainActivity extends Activity {
 
 		findViewById(R.id.postConversationBtn).setOnClickListener(
 				new View.OnClickListener() {
-					@Override
 					public void onClick(View v) {
 						tracker.trackPageView("/PostConversationActivity");
 						Intent intent = new Intent(MainActivity.this,
@@ -132,7 +126,6 @@ public class MainActivity extends Activity {
 
 		findViewById(R.id.dashboardBtn).setOnClickListener(
 				new View.OnClickListener() {
-					@Override
 					public void onClick(View v) {
 						tracker.trackPageView("/DashboardActivity");
 						startDashboardActivity();

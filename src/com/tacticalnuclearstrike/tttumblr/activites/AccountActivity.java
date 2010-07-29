@@ -39,7 +39,6 @@ public class AccountActivity extends Activity {
 	private void setupOkButton() {
 		Button btnOk = (Button) findViewById(R.id.settingsBtnOk);
 		btnOk.setOnClickListener(new View.OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				okButtonClick();
 			}
@@ -65,7 +64,6 @@ public class AccountActivity extends Activity {
 	private void setupCancelButton() {
 		Button btnCancel = (Button) findViewById(R.id.settingsBtnCancel);
 		btnCancel.setOnClickListener(new View.OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				returnToMainActivity();
 			}

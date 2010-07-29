@@ -21,7 +21,6 @@ public class PostConversationActivity extends PostActivity {
 	private void setupOkButton() {
 		Button btnOk = (Button) findViewById(R.id.postConversationBtnOk);
 		btnOk.setOnClickListener(new View.OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				okButtonClick();
 			}

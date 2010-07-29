@@ -3,10 +3,10 @@ package com.tacticalnuclearstrike.tttumblr;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,8 +22,13 @@ import android.widget.Toast;
  * * POST_TEXT - String title, String body, boolean isPrivate
  * * POST_PHOTO - Uri photo, String caption
  */
-public class TumblrService extends Service {
-    private static final String TAG = "TumblrService";
+public class TumblrService extends IntentService {
+    public TumblrService() {    	
+		super("Tumblr Upload service");
+		Log.d(TAG, "TumblrService()");
+	}
+
+	private static final String TAG = "TumblrService";
     // notification integers.
     public static final int N_POSTING = 1; // we're currently posting something
 
@@ -36,6 +41,7 @@ public class TumblrService extends Service {
 
     @Override
     public void onCreate() {
+    	super.onCreate();
         Log.d(TAG, "oncreate!");
         mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         try {
@@ -117,12 +123,13 @@ public class TumblrService extends Service {
     
     @Override
     public void onStart(Intent intent, int startId) {
-        handleCommand(intent);
+    	super.onStart(intent, startId);
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        handleCommand(intent);
+    public int onStartCommand(Intent intent, int flags, int startId) {    
+    	super.onStartCommand(intent, flags, startId);
+    	Log.d(TAG,"onStartCommand");
         return START_REDELIVER_INTENT;
     }
 
@@ -151,14 +158,10 @@ public class TumblrService extends Service {
         final Bundle options = i.getBundleExtra("options");
 		final TumblrApi api = new TumblrApi(this);
         Log.d(TAG, "attempting text post..");
-		new Thread(new Runnable() {
-			public void run() {
-				startForegroundCompat(N_POSTING, getNotification("text"));
-                Log.d(TAG, "calling api.");
-				api.postText(titleText, postText, options);
-				stopForegroundCompat(true);
-			}
-		}).start();
+		startForegroundCompat(N_POSTING, getNotification("text"));
+	    Log.d(TAG, "calling api.");
+		api.postText(titleText, postText, options);
+		stopForegroundCompat(true);
     }
 
     /** doPhotoPost - posts a photo (given extras).
@@ -169,13 +172,9 @@ public class TumblrService extends Service {
         final String text = i.getStringExtra("caption");
         final Bundle options = i.getBundleExtra("options");
 		final TumblrApi api = new TumblrApi(this);
-		new Thread(new Runnable() {
-			public void run() {
-				startForegroundCompat(N_POSTING, getNotification("photo"));
-				api.postImage(photo, text, options);
-				stopForegroundCompat(true);
-			}
-		}).start();
+		startForegroundCompat(N_POSTING, getNotification("photo"));
+		api.postImage(photo, text, options);
+		stopForegroundCompat(true);
     }
 
     /** doConversationPost - posts a conversation.
@@ -186,13 +185,9 @@ public class TumblrService extends Service {
         final String convo = i.getStringExtra("conversation");
         final Bundle options = i.getBundleExtra("options");
 		final TumblrApi api = new TumblrApi(this);
-		new Thread(new Runnable() {
-			public void run() {
-				startForegroundCompat(N_POSTING, getNotification("conversation"));
-				api.postConversation(title, convo, options);
-				stopForegroundCompat(true);
-			}
-		}).start();
+		startForegroundCompat(N_POSTING, getNotification("conversation"));
+		api.postConversation(title, convo, options);
+		stopForegroundCompat(true);
     }
 
     /** doQuotePost - posts a quote
@@ -203,16 +198,12 @@ public class TumblrService extends Service {
         final String source = i.getStringExtra("source");
         final Bundle options = i.getBundleExtra("options");
 		final TumblrApi api = new TumblrApi(this);
-		new Thread(new Runnable() {
-			public void run() {
-				startForegroundCompat(N_POSTING, getNotification("quote"));
-				api.postQuote(quote, source, options);
-				stopForegroundCompat(true);
-			}
-		}).start();
+		startForegroundCompat(N_POSTING, getNotification("quote"));
+		api.postQuote(quote, source, options);
+		stopForegroundCompat(true);
     }
 
-    /** doUrlPost - posts a link
+    /** doUrlPost - posts a link;
      * Extras: 'link' - String, 'name' - String, 'description' - String
      */
     private void doUrlPost(Intent i){
@@ -221,13 +212,9 @@ public class TumblrService extends Service {
         final String description = i.getStringExtra("description");
         final Bundle options = i.getBundleExtra("options");
 		final TumblrApi api = new TumblrApi(this);
-		new Thread(new Runnable() {
-			public void run() {
-				startForegroundCompat(N_POSTING, getNotification("url"));
-				api.postUrl(link, name, description, options);
-				stopForegroundCompat(true);
-			}
-		}).start();
+		startForegroundCompat(N_POSTING, getNotification("url"));
+		api.postUrl(link, name, description, options);
+		stopForegroundCompat(true);
     }
 
     private Notification getNotification(String type){
@@ -245,4 +232,10 @@ public class TumblrService extends Service {
         Toast.makeText(this, "tumblr service stopped!", Toast.LENGTH_SHORT).show();
         stopForegroundCompat(true);
     }
+
+	@Override
+	protected void onHandleIntent(Intent intent) {
+		Log.d(TAG, "onHandleIntent");
+		handleCommand(intent);
+	}
 }

@@ -63,7 +63,6 @@ public class UploadImageActivity extends PostActivity {
 	private void setupButtons() {
 		Button btnTakePicture = (Button) findViewById(R.id.btnTakePicture);
 		btnTakePicture.setOnClickListener(new View.OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				tracker.trackPageView("/UploadImageActivity/TakePhoto");
 				takePhoto();
@@ -72,7 +71,6 @@ public class UploadImageActivity extends PostActivity {
 
 		Button btnPostPhoto = (Button) findViewById(R.id.btnPostImage);
 		btnPostPhoto.setOnClickListener(new View.OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				uploadImage();
 			}
@@ -80,7 +78,6 @@ public class UploadImageActivity extends PostActivity {
 
 		Button btnSelectImage = (Button) findViewById(R.id.btnSelectImage);
 		btnSelectImage.setOnClickListener(new View.OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				tracker.trackPageView("/UploadImageActivity/SelectImage");
 				selectImage();

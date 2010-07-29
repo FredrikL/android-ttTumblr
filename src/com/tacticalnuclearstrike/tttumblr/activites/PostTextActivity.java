@@ -53,7 +53,6 @@ public class PostTextActivity extends PostActivity {
 	private void setupOkButton() {
 		Button btnOk = (Button) findViewById(R.id.postTextBtnOk);
 		btnOk.setOnClickListener(new View.OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				okButtonClick();
 			}
