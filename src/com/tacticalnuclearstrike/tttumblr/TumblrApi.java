@@ -280,7 +280,7 @@ public class TumblrApi {
 			entity.addPart("embed ",new StringBody(url));
 
 			HttpResponse response = postEntity(entity);
-
+			Log.d(TAG, "Server said:" + response.getStatusLine().getStatusCode());
 			if (response.getStatusLine().getStatusCode() == 201)
 				ShowNotification("ttTumblr", "Video Posted", "");
 			else
@@ -300,7 +300,7 @@ public class TumblrApi {
 			entity.addPart("data",new FileBody(f));
 
 			HttpResponse response = postEntity(entity);
-
+			Log.d(TAG, "Server said:" + response.getStatusLine().getStatusCode());
 			if (response.getStatusLine().getStatusCode() == 201)
 				ShowNotification("ttTumblr", "Video Posted", "");
 			else
