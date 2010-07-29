@@ -124,7 +124,7 @@ public class TumblrService extends IntentService {
 		return null;
 	} // dont use onBind.
 
-	@Override
+/*	@Override
 	public void onStart(Intent intent, int startId) {
 		super.onStart(intent, startId);
 	}
@@ -134,7 +134,7 @@ public class TumblrService extends IntentService {
 		super.onStartCommand(intent, flags, startId);
 		Log.d(TAG, "onStartCommand");
 		return START_REDELIVER_INTENT;
-	}
+	}*/
 
 	private void handleCommand(Intent intent) {
 		Log.d(TAG, "start intent received: " + intent.getAction());
