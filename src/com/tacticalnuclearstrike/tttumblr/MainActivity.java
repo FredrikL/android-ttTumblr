@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,6 +40,9 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		tracker = GoogleAnalyticsTracker.getInstance();
 		tracker.start("UA-9100060-3", 20, this);
+		tracker.trackPageView("/OS/" + Build.VERSION.SDK);
+		tracker.trackPageView("/rev/" + getApplicationVersion());
+		
 		regularStartup();
 		
 		if(showDashBoard())
@@ -172,15 +176,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void createAboutDialog() {
-		PackageManager pm = getPackageManager();
-		String version = "r0";
-		try {
-			PackageInfo pi = pm.getPackageInfo(
-					"com.tacticalnuclearstrike.tttumblr", 0);
-			version = pi.versionName;
-		} catch (NameNotFoundException e) {
-
-		}
+		String version = getApplicationVersion();
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder
 				.setMessage(
@@ -195,6 +191,19 @@ public class MainActivity extends Activity {
 						});
 		AlertDialog alert = builder.create();
 		alert.show();
+	}
+
+	private String getApplicationVersion() {
+		PackageManager pm = getPackageManager();
+		String version = "r0";
+		try {
+			PackageInfo pi = pm.getPackageInfo(
+					"com.tacticalnuclearstrike.tttumblr", 0);
+			version = pi.versionName;
+		} catch (NameNotFoundException e) {
+
+		}
+		return version;
 	}
 
 	public void CheckIsUserNameAndPasswordCorrect() {

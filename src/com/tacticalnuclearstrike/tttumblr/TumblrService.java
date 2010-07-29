@@ -228,8 +228,7 @@ public class TumblrService extends IntentService {
 
     @Override
     public void onDestroy() {
-        // Tell the user we stopped.
-        Toast.makeText(this, "tumblr service stopped!", Toast.LENGTH_SHORT).show();
+    	Log.d(TAG, "tumblr service stopped!");
         stopForegroundCompat(true);
     }
 
