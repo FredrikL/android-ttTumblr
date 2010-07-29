@@ -58,6 +58,7 @@
         android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:text="Post video"
+        android:visibility="gone"
         android:enabled="true" />
         
          <Button
