@@ -43,6 +43,7 @@
             <intent-filter>
 				<action android:name="com.tacticalnuclearstrike.tttumblr.POST_TEXT" />
 				<action android:name="com.tacticalnuclearstrike.tttumblr.POST_PHOTO" />
+				<action android:name="com.tacticalnuclearstrike.tttumblr.POST_VIDEO" />
 				<action android:name="com.tacticalnuclearstrike.tttumblr.POST_CONVERSATION" />
 				<action android:name="com.tacticalnuclearstrike.tttumblr.POST_LINK" />
 				<action android:name="com.tacticalnuclearstrike.tttumblr.POST_QUOTE" />

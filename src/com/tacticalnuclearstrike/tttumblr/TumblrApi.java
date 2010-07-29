@@ -269,28 +269,21 @@ public class TumblrApi {
 		mNotificationManager.notify(1, notification);
 	}
 
-	// TODO: make this use a URI, not a File
-	public void PostVideo(File videoToUpload, String caption) {
-		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost("http://www.tumblr.com/api/write");
-
+	public void PostVideo(Uri video, String caption, Bundle options) {
 		try {
-			MultipartEntity entity = getEntityWithBaseParamsSet(false);
+			MultipartEntity entity = getEntityWithOptions(options);
 
 			entity.addPart("caption", new StringBody(caption));
 			entity.addPart("type", new StringBody("video"));
-			entity.addPart("data", new FileBody(videoToUpload));
+			File f = new File(video.getPath());
+			entity.addPart("data",new FileBody(f));
 
-			httppost.setEntity(entity);
-
-			HttpResponse response = httpclient.execute(httppost);
+			HttpResponse response = postEntity(entity);
 
 			if (response.getStatusLine().getStatusCode() == 201)
 				ShowNotification("ttTumblr", "Video Posted", "");
 			else
 				ShowNotification("ttTumblr", "Video upload failed", "");
-		} catch (ClientProtocolException e) {
-			ShowNotification("ttTumblr", "Video upload failed", e.toString());
 		} catch (IOException e) {
 			ShowNotification("ttTumblr", "Video upload failed", e.toString());
 		}

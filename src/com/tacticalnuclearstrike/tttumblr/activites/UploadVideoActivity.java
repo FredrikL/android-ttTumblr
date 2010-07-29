@@ -1,7 +1,5 @@
 package com.tacticalnuclearstrike.tttumblr.activites;
 
-import java.io.File;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -14,13 +12,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.tacticalnuclearstrike.tttumblr.R;
-import com.tacticalnuclearstrike.tttumblr.TumblrApi;
+import com.tacticalnuclearstrike.tttumblr.TumblrService;
 
-public class UploadVideoActivity extends Activity {
+public class UploadVideoActivity extends PostActivity {
 	Uri outputFileUri;
 	int TAKE_PICTURE = 0;
 	int SELECT_VIDEO = 1;
-	final TumblrApi api = new TumblrApi(this);
+	
+	private static final String TAG = "UploadVideoActivity";
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -70,19 +69,13 @@ public class UploadVideoActivity extends Activity {
 		}
 		
 		EditText text = (EditText) findViewById(R.id.tbVideoCaption);
-		final String caption = text.getText().toString();
+		String caption = text.getText().toString();
 
-		String path = getRealPathFromURI(outputFileUri);
-		final File videoToUpload = new File(path);
-		
-		Toast.makeText(this, "Upload started", Toast.LENGTH_LONG).show();
-
-		new Thread(new Runnable() {
-			public void run() {
-				api.PostVideo(videoToUpload, caption);
-				
-			}
-		}).start();
+		Intent uploadIntent = new Intent(TumblrService.ACTION_POST_VIDEO);
+		uploadIntent.putExtra("video", getRealPathFromURI(outputFileUri));
+		uploadIntent.putExtra("caption", caption);
+		uploadIntent.putExtra("options", mPostOptions);
+		startService(uploadIntent);
 		
 		setResult(RESULT_OK);
 		finish();

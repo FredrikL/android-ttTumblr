@@ -28,7 +28,7 @@ public class UploadImageActivity extends PostActivity {
 	Uri outputFileUri;
 	int TAKE_PICTURE = 0;
 	int SELECT_IMAGE = 1;
-	TumblrApi api;
+	//TumblrApi api;
 	GoogleAnalyticsTracker tracker;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class UploadImageActivity extends PostActivity {
 		tracker = GoogleAnalyticsTracker.getInstance();
 		tracker.start("UA-9100060-3", 20, this);
 
-		api = new TumblrApi(this);
+		//api = new TumblrApi(this);
 		setContentView(R.layout.uploadimageview);
 
 		Intent startIntent = getIntent();
