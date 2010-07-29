@@ -12,9 +12,24 @@
 		android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
+        android:visibility="gone"
 		android:text="Select Video" />
+		
+	<TextView android:text="Youtube url"
+		android:padding="10dp"
+    	android:gravity="center"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+        
+	<EditText android:id="@+id/tbYoutubeUrl"
+		android:padding="10dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:layout_marginBottom="30dp"
+		android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
 	
-	<TextView android:text="Caption (optional)"
+	<TextView android:text="Caption"
 		android:paddingLeft="10dp"
     	android:paddingRight="10dp"
     	android:gravity="center"

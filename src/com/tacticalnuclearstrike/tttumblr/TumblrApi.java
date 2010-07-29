@@ -269,6 +269,27 @@ public class TumblrApi {
 		mNotificationManager.notify(1, notification);
 	}
 
+	
+	public void PostYoutubeUrl(String url, String caption, Bundle options)
+	{
+		try {
+			MultipartEntity entity = getEntityWithOptions(options);
+
+			entity.addPart("caption", new StringBody(caption));
+			entity.addPart("type", new StringBody("video"));			
+			entity.addPart("embed ",new StringBody(url));
+
+			HttpResponse response = postEntity(entity);
+
+			if (response.getStatusLine().getStatusCode() == 201)
+				ShowNotification("ttTumblr", "Video Posted", "");
+			else
+				ShowNotification("ttTumblr", "Video post failed", "");
+		} catch (IOException e) {
+			ShowNotification("ttTumblr", "Video post failed", e.toString());
+		}
+	}
+	
 	public void PostVideo(Uri video, String caption, Bundle options) {
 		try {
 			MultipartEntity entity = getEntityWithOptions(options);

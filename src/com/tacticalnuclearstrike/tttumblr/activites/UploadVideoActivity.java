@@ -62,17 +62,25 @@ public class UploadVideoActivity extends PostActivity {
 	}
 
 	private void videoImage() {
-		if(outputFileUri == null)
+		EditText text = (EditText)findViewById(R.id.tbYoutubeUrl);
+		String youtube_url = text.getText().toString();
+		
+		if(outputFileUri == null && youtube_url.equals(""))
 		{
 			Toast.makeText(this, "No video to upload!", Toast.LENGTH_SHORT).show();
 			return;
 		}
 		
-		EditText text = (EditText) findViewById(R.id.tbVideoCaption);
+		text = (EditText) findViewById(R.id.tbVideoCaption);
 		String caption = text.getText().toString();
 
 		Intent uploadIntent = new Intent(TumblrService.ACTION_POST_VIDEO);
-		uploadIntent.putExtra("video", getRealPathFromURI(outputFileUri));
+		
+		if(outputFileUri != null)
+			uploadIntent.putExtra("video", getRealPathFromURI(outputFileUri));
+		if(!youtube_url.equals(""))
+			uploadIntent.putExtra("url", youtube_url);
+		
 		uploadIntent.putExtra("caption", caption);
 		uploadIntent.putExtra("options", mPostOptions);
 		startService(uploadIntent);

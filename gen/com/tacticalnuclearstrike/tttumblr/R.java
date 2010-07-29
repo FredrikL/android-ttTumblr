@@ -25,7 +25,7 @@ public final class R {
         public static final int btnInputCancel=0x7f080008;
         public static final int btnInputOk=0x7f080009;
         public static final int btnPostImage=0x7f080031;
-        public static final int btnPostVideo=0x7f080034;
+        public static final int btnPostVideo=0x7f080035;
         public static final int btnSelectImage=0x7f08002e;
         public static final int btnSelectVideo=0x7f080032;
         public static final int btnTakePicture=0x7f08002f;
@@ -61,23 +61,24 @@ public final class R {
         public static final int labelUrl=0x7f08001b;
         public static final int labelUrlInfo=0x7f080018;
         public static final int labelUsername=0x7f080001;
-        public static final int menu_about=0x7f080035;
-        public static final int menu_account=0x7f080036;
-        public static final int menu_settings=0x7f080037;
-        public static final int postConversationBtn=0x7f080010;
+        public static final int menu_about=0x7f080036;
+        public static final int menu_account=0x7f080037;
+        public static final int menu_settings=0x7f080038;
+        public static final int postConversationBtn=0x7f080011;
         public static final int postConversationBtnOk=0x7f080017;
         public static final int postImageBtn=0x7f08000c;
-        public static final int postLinkBtn=0x7f08000f;
-        public static final int postQuoteBtn=0x7f08000e;
+        public static final int postLinkBtn=0x7f080010;
+        public static final int postQuoteBtn=0x7f08000f;
         public static final int postQuoteBtnOk=0x7f08001f;
         public static final int postTextBtn=0x7f08000d;
         public static final int postTextBtnOk=0x7f080029;
-        public static final int postVideoBtn=0x7f080011;
+        public static final int postVideoBtn=0x7f08000e;
         public static final int selectedImage=0x7f08002d;
         public static final int settingsBtnCancel=0x7f080006;
         public static final int settingsBtnOk=0x7f080005;
         public static final int tbImageCaption=0x7f080030;
-        public static final int tbVideoCaption=0x7f080033;
+        public static final int tbVideoCaption=0x7f080034;
+        public static final int tbYoutubeUrl=0x7f080033;
     }
     public static final class layout {
         public static final int accountview=0x7f030000;

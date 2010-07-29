@@ -181,12 +181,22 @@ public class TumblrService extends IntentService {
     }
     
     private void doVideoPost(Intent i){
-        final Uri video = Uri.parse(i.getStringExtra("video"));
-        final String text = i.getStringExtra("caption");
-        final Bundle options = i.getBundleExtra("options");
-		final TumblrApi api = new TumblrApi(this);
+        Bundle options = i.getBundleExtra("options");
+        String text = i.getStringExtra("caption");
+        
+        Uri video = null;
+        if(i.hasExtra("video"))
+        	video = Uri.parse(i.getStringExtra("video"));        
+        String youtube_url = null;
+        if(i.hasExtra("url"))
+        	youtube_url = i.getStringExtra("url");
+        
+		TumblrApi api = new TumblrApi(this);
 		startForegroundCompat(N_POSTING, getNotification("video"));
-		api.PostVideo(video, text, options);
+		if(video != null)
+			api.PostVideo(video, text, options);
+		else if(youtube_url!= null)
+			api.PostYoutubeUrl(youtube_url, text, options);
 		stopForegroundCompat(true);
     }
 

@@ -51,6 +51,16 @@
         android:text="Post Text" />
         
          <Button
+    android:layout_marginTop="15dp"
+	android:padding="20dp"
+	android:textSize="18dp"
+    	android:id="@+id/postVideoBtn"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:text="Post video"
+        android:enabled="true" />
+        
+         <Button
 	 android:layout_marginTop="15dp"
 	 android:padding="20dp"
 	android:textSize="18dp"
@@ -77,16 +87,7 @@
         android:layout_height="wrap_content"
         android:text="Post Conversation" />
         
-        <Button
-    android:layout_marginTop="15dp"
-	android:padding="20dp"
-	android:textSize="18dp"
-    	android:id="@+id/postVideoBtn"
-        android:layout_width="240dp"
-        android:layout_height="wrap_content"
-        android:text="Upload video"
-        android:visibility="gone"
-        android:enabled="true" />
+       
 	
 </LinearLayout>
 </ScrollView>
