@@ -430,7 +430,7 @@ public class TumblrApi {
 		postoptions.putString("format", prefs.getString("text_format",
 				"Markdown"));
 		
-		if(prefs.contains("default_blog"))
+		if(prefs.contains("default_blog") && prefs.getString("default_blog","").compareTo("") == 0)
 			postoptions.putString("group", prefs.getString("default_blog", "")
 				+ ".tumblr.com");
 
