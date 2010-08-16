@@ -181,6 +181,11 @@ public class TumblrApi {
 				if (mPrefs.getBoolean("private", false))
 					entity.addPart("private", new StringBody("1"));
 			}
+			if(options.containsKey("format"))
+			{
+				entity.addPart("format", new StringBody(options.getString("format").toLowerCase()));
+				Log.d(TAG, "format: " + options.getString("format").toLowerCase());
+			}
 			if(options.containsKey("tags")){
 				entity.addPart("tags", new StringBody(options.getString("tags")));
 				Log.d(TAG, "tags: " + options.getString("tags"));
