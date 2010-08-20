@@ -1,7 +1,5 @@
 package com.tacticalnuclearstrike.tttumblr.activites;
 
-import org.apache.http.entity.mime.content.StringBody;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.SharedPreferences;
