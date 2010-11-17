@@ -7,6 +7,7 @@ import org.apache.http.cookie.Cookie;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
@@ -31,6 +32,8 @@ public class Dashboard extends Activity {
 
 		webView.getSettings().setJavaScriptEnabled(true);
 		webView.setWebViewClient(new InsideWebViewClient());
+		webView.getSettings().setBuiltInZoomControls(true);
+		webView.getZoomControls().setVisibility(View.VISIBLE);
 		webView.loadUrl("http://www.tumblr.com/iphone");
 	}
 
