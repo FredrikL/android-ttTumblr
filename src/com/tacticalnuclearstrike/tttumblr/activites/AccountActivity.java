@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,12 +49,25 @@ public class AccountActivity extends Activity {
 	private void okButtonClick() {
 		final ProgressDialog pd = ProgressDialog.show(this, "Authenticating",
 				"Validating email/password with tumblr", true, false);
-		new Thread(new Runnable() {
+		final Handler mHandler = new Handler();
+		final Runnable mUpdateResults = new Runnable() {
+		    public void run() {
+		    	checkAuthentication();
+				pd.dismiss();
+		    }
+		};
+		new Thread() {
+		    public void run() {
+		        mHandler.post(mUpdateResults);
+		    }
+		}.start();
+		
+	/*	new Thread(new Runnable() {
 			public void run() {
 				checkAuthentication();
 				pd.dismiss();
 			}
-		}).start();
+		}).start();*/
 	}
 
 	private void returnToMainActivity() {

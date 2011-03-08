@@ -174,13 +174,15 @@ public class TumblrApi {
 				if (mPrefs.getBoolean("private", false))
 					entity.addPart("private", new StringBody("1"));
 			}
-			if(options.containsKey("format"))
-			{
-				entity.addPart("format", new StringBody(options.getString("format").toLowerCase()));
-				Log.d(TAG, "format: " + options.getString("format").toLowerCase());
+			if (options.containsKey("format")) {
+				entity.addPart("format", new StringBody(options.getString(
+						"format").toLowerCase()));
+				Log.d(TAG, "format: "
+						+ options.getString("format").toLowerCase());
 			}
-			if(options.containsKey("tags")){
-				entity.addPart("tags", new StringBody(options.getString("tags")));
+			if (options.containsKey("tags")) {
+				entity.addPart("tags",
+						new StringBody(options.getString("tags")));
 				Log.d(TAG, "tags: " + options.getString("tags"));
 			}
 		} catch (UnsupportedEncodingException e) {
@@ -217,7 +219,13 @@ public class TumblrApi {
 			Log.e(TAG, e.getMessage());
 		}
 		HttpResponse response = postEntity(entity);
-		Log.d(TAG, "Server said: " + response.getStatusLine().getStatusCode());
+		try {
+			Log.d(TAG, "Server said: "
+					+ response.getStatusLine().getStatusCode());
+		} catch (NullPointerException npe) {
+			Log.e(TAG, "Response was null");
+			return false;
+		}
 		if (response.getStatusLine().getStatusCode() != 201) {
 			ShowNotification("ttTumblr", "Text creation failed", "");
 			return false;
@@ -231,15 +239,21 @@ public class TumblrApi {
 			entity.addPart("type", new StringBody("photo"));
 			if (caption != null)
 				entity.addPart("caption", new StringBody(caption));
-			
+
 			File f = new File(image.getPath());
-			entity.addPart("data",new FileBody(f));
+			entity.addPart("data", new FileBody(f));
 
 		} catch (UnsupportedEncodingException e) {
 			Log.d(TAG, e.getMessage());
 		}
 		HttpResponse response = postEntity(entity);
-		Log.d(TAG, "Server said:" + response.getStatusLine().getStatusCode());
+		try {
+			Log.d(TAG, "Server said: "
+					+ response.getStatusLine().getStatusCode());
+		} catch (NullPointerException npe) {
+			Log.e(TAG, "Response was null");
+			ShowNotification("Image upload failed", "", "");
+		}
 		if (response.getStatusLine().getStatusCode() == 201)
 			ShowNotification("Image Posted", "", "");
 		else
@@ -267,18 +281,17 @@ public class TumblrApi {
 		mNotificationManager.notify(1, notification);
 	}
 
-	
-	public void PostYoutubeUrl(String url, String caption, Bundle options)
-	{
+	public void PostYoutubeUrl(String url, String caption, Bundle options) {
 		try {
 			MultipartEntity entity = getEntityWithOptions(options);
 
 			entity.addPart("caption", new StringBody(caption));
-			entity.addPart("type", new StringBody("video"));			
-			entity.addPart("embed ",new StringBody(url));
+			entity.addPart("type", new StringBody("video"));
+			entity.addPart("embed ", new StringBody(url));
 
 			HttpResponse response = postEntity(entity);
-			Log.d(TAG, "Server said:" + response.getStatusLine().getStatusCode());
+			Log.d(TAG, "Server said:"
+					+ response.getStatusLine().getStatusCode());
 			if (response.getStatusLine().getStatusCode() == 201)
 				ShowNotification("ttTumblr", "Video Posted", "");
 			else
@@ -287,7 +300,7 @@ public class TumblrApi {
 			ShowNotification("ttTumblr", "Video post failed", e.toString());
 		}
 	}
-	
+
 	public void PostVideo(Uri video, String caption, Bundle options) {
 		try {
 			MultipartEntity entity = getEntityWithOptions(options);
@@ -295,10 +308,11 @@ public class TumblrApi {
 			entity.addPart("caption", new StringBody(caption));
 			entity.addPart("type", new StringBody("video"));
 			File f = new File(video.getPath());
-			entity.addPart("data",new FileBody(f));
+			entity.addPart("data", new FileBody(f));
 
 			HttpResponse response = postEntity(entity);
-			Log.d(TAG, "Server said:" + response.getStatusLine().getStatusCode());
+			Log.d(TAG, "Server said:"
+					+ response.getStatusLine().getStatusCode());
 			if (response.getStatusLine().getStatusCode() == 201)
 				ShowNotification("ttTumblr", "Video Posted", "");
 			else
@@ -427,10 +441,11 @@ public class TumblrApi {
 
 		postoptions.putString("format", prefs.getString("text_format",
 				"Markdown"));
-		
-		if(prefs.contains("default_blog") && prefs.getString("default_blog","").compareTo("") == 0)
+
+		if (prefs.contains("default_blog")
+				&& prefs.getString("default_blog", "").compareTo("") == 0)
 			postoptions.putString("group", prefs.getString("default_blog", "")
-				+ ".tumblr.com");
+					+ ".tumblr.com");
 
 		return postoptions;
 	}

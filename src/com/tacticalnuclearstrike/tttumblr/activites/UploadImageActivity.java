@@ -28,16 +28,16 @@ public class UploadImageActivity extends PostActivity {
 	Uri outputFileUri;
 	int TAKE_PICTURE = 0;
 	int SELECT_IMAGE = 1;
-	//TumblrApi api;
+	// TumblrApi api;
 	GoogleAnalyticsTracker tracker;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		tracker = GoogleAnalyticsTracker.getInstance();
 		tracker.start("UA-9100060-3", 20, this);
 
-		//api = new TumblrApi(this);
+		// api = new TumblrApi(this);
 		setContentView(R.layout.uploadimageview);
 
 		Intent startIntent = getIntent();
@@ -93,13 +93,12 @@ public class UploadImageActivity extends PostActivity {
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
 		startActivityForResult(intent, TAKE_PICTURE);
 	}
-	
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		tracker.stop();
 	}
-
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -133,7 +132,11 @@ public class UploadImageActivity extends PostActivity {
 	private void setSelectedImageThumbnail(Uri image) {
 		try {
 			ImageView iv = (ImageView) findViewById(R.id.selectedImage);
-			iv.setImageURI(image);
+			try {
+				iv.setImageURI(image);
+			} catch (OutOfMemoryError ome) {
+				Log.e("ttTumblr", ome.getMessage());
+			}
 			iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
 			iv.invalidate();
 		} catch (Exception e) {
