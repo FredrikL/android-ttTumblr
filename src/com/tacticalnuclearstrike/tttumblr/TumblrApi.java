@@ -250,14 +250,14 @@ public class TumblrApi {
 		try {
 			Log.d(TAG, "Server said: "
 					+ response.getStatusLine().getStatusCode());
+			if (response.getStatusLine().getStatusCode() == 201)
+				ShowNotification("Image Posted", "", "");
+			else
+				ShowNotification("Image upload failed", "", "");
 		} catch (NullPointerException npe) {
 			Log.e(TAG, "Response was null");
 			ShowNotification("Image upload failed", "", "");
 		}
-		if (response.getStatusLine().getStatusCode() == 201)
-			ShowNotification("Image Posted", "", "");
-		else
-			ShowNotification("Image upload failed", "", "");
 	}
 
 	public void ShowNotification(String tickerText, String contentTitle,
