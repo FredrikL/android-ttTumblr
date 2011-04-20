@@ -173,7 +173,9 @@ public class TumblrService extends IntentService {
 	 * 'caption' - String.
 	 */
 	private void doPhotoPost(Intent i) {
-		final Uri photo = Uri.parse(i.getStringExtra("photo"));
+		String p = i.getStringExtra("photo");
+		if(p.compareTo("")==0) return;
+		final Uri photo = Uri.parse(p);
 		final String text = i.getStringExtra("caption");
 		final Bundle options = i.getBundleExtra("options");
 		final TumblrApi api = new TumblrApi(this);
