@@ -2,3 +2,4 @@ Use new tumblr api
 Video upload (both url & file)
 Native dashboard (not the iphone html version)
 Widget for unread count
+Rework MainActivity to have 4 buttons: dashboard, post text, post image, post video
