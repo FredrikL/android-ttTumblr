@@ -1,6 +1,5 @@
 package com.tacticalnuclearstrike.tttumblr;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,25 +14,20 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
-import com.tacticalnuclearstrike.tttumblr.activites.AccountActivity;
-import com.tacticalnuclearstrike.tttumblr.activites.Dashboard;
-import com.tacticalnuclearstrike.tttumblr.activites.PostConversationActivity;
-import com.tacticalnuclearstrike.tttumblr.activites.PostLinkActivity;
-import com.tacticalnuclearstrike.tttumblr.activites.PostQuoteActivity;
-import com.tacticalnuclearstrike.tttumblr.activites.PostTextActivity;
-import com.tacticalnuclearstrike.tttumblr.activites.Preferences;
-import com.tacticalnuclearstrike.tttumblr.activites.UploadImageActivity;
-import com.tacticalnuclearstrike.tttumblr.activites.UploadVideoActivity;
+import com.google.inject.Inject;
+import com.tacticalnuclearstrike.tttumblr.activites.*;
+import roboguice.activity.RoboActivity;
 
-public class MainActivity extends Activity {
+public class MainActivity extends RoboActivity {
 
 	final int MENU_ACCOUNT = 1;
 	final int MENU_ABOUT = 2;
 	final int MENU_SETTINGS = 3;
 	
 	GoogleAnalyticsTracker tracker;
+
+    @Inject TumblrApi api;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -182,7 +176,7 @@ public class MainActivity extends Activity {
 				.setMessage(
 						"ttTumblr "
 								+ version
-								+ "\n\nIf you find any errors please contact me so that I can fix them.")
+								+ "\n\nIf you find any errors please contact me so that I can fix them!")
 				.setCancelable(true).setPositiveButton("Ok",
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
@@ -209,7 +203,6 @@ public class MainActivity extends Activity {
 	public void CheckIsUserNameAndPasswordCorrect() {
 		TextView infoView = (TextView) findViewById(R.id.labelAuthStatus);
 
-		TumblrApi api = new TumblrApi(this);
 		if (!api.isUserNameAndPasswordStored()) {
 			infoView
 					.setText("Please press menu and select Account to enter email and password.");

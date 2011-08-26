@@ -1,9 +1,5 @@
 package com.tacticalnuclearstrike.tttumblr;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -12,7 +8,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
+import com.google.inject.Inject;
+import roboguice.service.RoboIntentService;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * TumblrService - a Service subclass to interact with tumblr's api
@@ -23,7 +23,9 @@ import android.widget.Toast;
  * String title, String body, boolean isPrivate * POST_PHOTO - Uri photo, String
  * caption
  */
-public class TumblrService extends IntentService {
+public class TumblrService extends RoboIntentService {
+    @Inject TumblrApi api;
+
 	public TumblrService() {
 		super("Tumblr Upload service");
 		Log.d(TAG, "TumblrService()");
@@ -160,7 +162,7 @@ public class TumblrService extends IntentService {
 		final String titleText = i.getStringExtra("title");
 		final String postText = i.getStringExtra("body");
 		final Bundle options = i.getBundleExtra("options");
-		final TumblrApi api = new TumblrApi(this);
+		//final TumblrApi api = new TumblrApi(this);
 		Log.d(TAG, "attempting text post..");
 		startForegroundCompat(N_POSTING, getNotification("text"));
 		Log.d(TAG, "calling api.");
@@ -178,7 +180,7 @@ public class TumblrService extends IntentService {
 		final Uri photo = Uri.parse(p);
 		final String text = i.getStringExtra("caption");
 		final Bundle options = i.getBundleExtra("options");
-		final TumblrApi api = new TumblrApi(this);
+		//final TumblrApi api = new TumblrApi(this);
 		startForegroundCompat(N_POSTING, getNotification("photo"));
 		api.postImage(photo, text, options);
 		stopForegroundCompat(true);
@@ -195,7 +197,7 @@ public class TumblrService extends IntentService {
 		if (i.hasExtra("url"))
 			youtube_url = i.getStringExtra("url");
 
-		TumblrApi api = new TumblrApi(this);
+		//TumblrApi api = new TumblrApi(this);
 		startForegroundCompat(N_POSTING, getNotification("video"));
 		if (video != null) {
 			api.PostVideo(video, text, options);
@@ -217,7 +219,7 @@ public class TumblrService extends IntentService {
 		final String title = i.getStringExtra("title");
 		final String convo = i.getStringExtra("conversation");
 		final Bundle options = i.getBundleExtra("options");
-		final TumblrApi api = new TumblrApi(this);
+		//final TumblrApi api = new TumblrApi(this);
 		startForegroundCompat(N_POSTING, getNotification("conversation"));
 		api.postConversation(title, convo, options);
 		stopForegroundCompat(true);
@@ -231,7 +233,7 @@ public class TumblrService extends IntentService {
 		final String quote = i.getStringExtra("quote");
 		final String source = i.getStringExtra("source");
 		final Bundle options = i.getBundleExtra("options");
-		final TumblrApi api = new TumblrApi(this);
+		//final TumblrApi api = new TumblrApi(this);
 		startForegroundCompat(N_POSTING, getNotification("quote"));
 		api.postQuote(quote, source, options);
 		stopForegroundCompat(true);
@@ -246,7 +248,7 @@ public class TumblrService extends IntentService {
 		final String name = i.getStringExtra("name");
 		final String description = i.getStringExtra("description");
 		final Bundle options = i.getBundleExtra("options");
-		final TumblrApi api = new TumblrApi(this);
+		//final TumblrApi api = new TumblrApi(this);
 		startForegroundCompat(N_POSTING, getNotification("url"));
 		api.postUrl(link, name, description, options);
 		stopForegroundCompat(true);

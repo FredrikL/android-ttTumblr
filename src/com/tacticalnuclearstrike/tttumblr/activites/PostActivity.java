@@ -1,28 +1,23 @@
 package com.tacticalnuclearstrike.tttumblr.activites;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.SubMenu;
-import android.view.View;
-import android.view.WindowManager;
+import android.view.*;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-
 import com.tacticalnuclearstrike.tttumblr.R;
 import com.tacticalnuclearstrike.tttumblr.TumblrApi;
+import roboguice.activity.RoboActivity;
 
 /**
  * Base class for activities which post content. provides the menu for setting
  * post options.
  */
-public abstract class PostActivity extends Activity {
+public abstract class PostActivity extends RoboActivity {
 
 	private static final String TAG = "PostActivity";
 

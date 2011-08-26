@@ -1,11 +1,17 @@
 package com.tacticalnuclearstrike.tttumblr;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -22,31 +28,33 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TumblrApi {
 	public static final String TAG = "TumblrApi";
 	public static final String BLOGS_PREFS = "blogs";
-
 	public static final String GENERATOR = "ttTumblr"; // user-agent string.
 
-	private SharedPreferences mPrefs;
+    private Context context;
 
-	private Context context;
+	@Inject private SharedPreferences mPrefs;
 
-	public TumblrApi(Context context) {
-		this.context = context;
+    @Inject
+    public TumblrApi(Provider<Context> contextProvider)
+    {
+        Log.d(TAG, "public TumblrApi(Provider<Context> contextProvider)");
+        this.context = contextProvider.get();
+    }
+
+/*	public TumblrApi(Context context) {
+        Log.d(TAG, "public TumblrApi(Context context) {");
+		this.context =context;
 		mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-	}
+	}*/
 
 	public String getUserName() {
 		return getSharePreferences().getString("USERNAME", "");

@@ -1,6 +1,5 @@
 package com.tacticalnuclearstrike.tttumblr.activites;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,11 +8,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
+import com.google.inject.Inject;
 import com.tacticalnuclearstrike.tttumblr.R;
 import com.tacticalnuclearstrike.tttumblr.TumblrApi;
+import roboguice.activity.RoboActivity;
 
-public class AccountActivity extends Activity {
+public class AccountActivity extends RoboActivity {
+    @Inject private TumblrApi api;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -25,7 +27,6 @@ public class AccountActivity extends Activity {
 	}
 
 	private void loadUserNameAndPassword() {
-		TumblrApi api = new TumblrApi(this);
 		EditText username = (EditText) findViewById(R.id.inputUsername);
 		username.setText(api.getUserName());
 		EditText password = (EditText) findViewById(R.id.inputPassword);
@@ -107,9 +108,7 @@ public class AccountActivity extends Activity {
 		text = (EditText) findViewById(R.id.inputPassword);
 		String password = text.getEditableText().toString();
 
-		TumblrApi api = new TumblrApi(this);
-		Boolean result = api.validateUsernameAndPassword(username, password);
-		return result;
+		return api.validateUsernameAndPassword(username, password);
 	}
 
 	private void checkAuthentication() {

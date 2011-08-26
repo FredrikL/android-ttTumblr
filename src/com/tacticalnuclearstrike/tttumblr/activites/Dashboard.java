@@ -1,10 +1,5 @@
 package com.tacticalnuclearstrike.tttumblr.activites;
 
-import java.util.List;
-
-import org.apache.http.cookie.Cookie;
-
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -12,11 +7,17 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
+import com.google.inject.Inject;
 import com.tacticalnuclearstrike.tttumblr.TumblrApi;
+import org.apache.http.cookie.Cookie;
+import roboguice.activity.RoboActivity;
 
-public class Dashboard extends Activity {
+import java.util.List;
+
+public class Dashboard extends RoboActivity {
 	private WebView webView;
+
+    @Inject TumblrApi api;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,6 @@ public class Dashboard extends Activity {
 	}
 
 	private void setupCookies() {
-		TumblrApi api = new TumblrApi(this);
 		List<Cookie> cookies = api.authenticateAndReturnCookies();
 
 		if (cookies != null) {
