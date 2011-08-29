@@ -1,16 +1,15 @@
 package com.tacticalnuclearstrike.tttumblr.activites;
 
-import java.util.ArrayList;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
-import android.preference.PreferenceActivity;
-
 import com.tacticalnuclearstrike.tttumblr.R;
 import com.tacticalnuclearstrike.tttumblr.TumblrApi;
+import roboguice.activity.RoboPreferenceActivity;
 
-public class Preferences extends PreferenceActivity {
+import java.util.ArrayList;
+
+public class Preferences extends RoboPreferenceActivity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
