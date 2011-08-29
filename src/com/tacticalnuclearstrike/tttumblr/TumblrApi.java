@@ -46,7 +46,9 @@ public class TumblrApi {
     @Inject
     public TumblrApi(Provider<Context> contextProvider)
     {
+        Log.d(TAG, "public TumblrApi(Provider<Context> contextProvider)");
         this.context = contextProvider.get();
+        // mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
 	public String getUserName() {
@@ -84,7 +86,7 @@ public class TumblrApi {
 				return false;
 			}
 			// Save our list of available blogs.
-			SharedPreferences blogs = context.getSharedPreferences(BLOGS_PREFS,
+			SharedPreferences blogs = this.context.getSharedPreferences(BLOGS_PREFS,
 					0);
 			Log.d("ttT", "attempting blog list extraction");
 			saveBlogList(response, blogs);
@@ -141,7 +143,7 @@ public class TumblrApi {
 		if (options == null) {
 			return entity;
 		}
-		;
+
 		try {
 			// TODO: detect if the options have already been set?
 			// FIXME: use a foreach loop here.
