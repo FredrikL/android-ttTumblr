@@ -46,15 +46,8 @@ public class TumblrApi {
     @Inject
     public TumblrApi(Provider<Context> contextProvider)
     {
-        Log.d(TAG, "public TumblrApi(Provider<Context> contextProvider)");
         this.context = contextProvider.get();
     }
-
-/*	public TumblrApi(Context context) {
-        Log.d(TAG, "public TumblrApi(Context context) {");
-		this.context =context;
-		mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-	}*/
 
 	public String getUserName() {
 		return getSharePreferences().getString("USERNAME", "");
@@ -64,13 +57,8 @@ public class TumblrApi {
 		return getSharePreferences().getString("PASSWORD", "");
 	}
 
-	public Boolean getIntegrateWithTwitter() {
-		return getSharePreferences().getBoolean("TWITTER", false);
-	}
-
 	private SharedPreferences getSharePreferences() {
-		SharedPreferences settings = context.getSharedPreferences("tumblr", 0);
-		return settings;
+        return context.getSharedPreferences("tumblr", 0);
 	}
 
 	public boolean isUserNameAndPasswordStored() {
